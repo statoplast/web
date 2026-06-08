@@ -5,57 +5,172 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statoplast | Luksuzna Arhitektura</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Glatki prijelaz za sadržaj */
+        .tab-content {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        }
+        .tab-content.hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    </style>
 </head>
-<body class="bg-white text-gray-900 font-sans">
+<body class="bg-white text-gray-900 font-sans antialiased">
 
-    <!-- Simple Dark Header -->
-    <header class="w-full p-6 flex justify-between items-center bg-black text-white">
-        <a href="index.html" class="text-xl font-bold tracking-widest hover:text-gray-300 transition">← NATRAG</a>
-        <div class="text-xl tracking-widest">STATOPLAST <span class="font-light text-gray-400">| ARHITEKTURA</span></div>
+    <!-- Minimalistička Navigacija -->
+    <header class="w-full p-6 flex justify-between items-center bg-black text-white sticky top-0 z-50">
+        <a href="index.html" class="text-sm font-bold tracking-widest hover:text-gray-300 transition">← NATRAG NA POČETNU</a>
+        <div class="text-xl tracking-widest font-bold">STATOPLAST <span class="font-light text-gray-400">| ARHITEKTURA</span></div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative h-[60vh] flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center"></div>
-        <div class="absolute inset-0 bg-black/50"></div>
-        <div class="relative z-10 text-center text-white px-4">
-            <h1 class="text-5xl md:text-7xl font-bold mb-4">Bez Ograničenja.</h1>
-            <p class="text-xl md:text-2xl font-light max-w-2xl mx-auto">Kreiramo unikatne ulazne sustave i staklene fasade po zamisli arhitekata. Vaša vizija, naš inženjering.</p>
+    <!-- Interaktivni horizontalni izbornik (Kategorije) -->
+    <section class="bg-gray-50 border-b border-gray-200 sticky top-[72px] z-40 overflow-x-auto whitespace-nowrap scrollbar-none">
+        <div class="max-w-7xl mx-auto px-6 flex justify-start md:justify-between items-center h-16 space-x-8 md:space-x-0">
+            <button onclick="switchTab('pivot')" id="btn-pivot" class="tab-btn text-base font-medium pb-2 border-b-2 border-black text-black transition-all duration-300">
+                Pivot Vrata
+            </button>
+            <button onclick="switchTab('pergole')" id="btn-pergole" class="tab-btn text-base font-medium pb-2 border-b-2 border-transparent text-gray-400 hover:text-black transition-all duration-300">
+                Bioklimatske Pergole
+            </button>
+            <button onclick="switchTab('stolarija')" id="btn-stolarija" class="tab-btn text-base font-medium pb-2 border-b-2 border-transparent text-gray-400 hover:text-black transition-all duration-300">
+                Alu Stolarija
+            </button>
+            <button onclick="switchTab('nadstresnice')" id="btn-nadstresnice" class="tab-btn text-base font-medium pb-2 border-b-2 border-transparent text-gray-400 hover:text-black transition-all duration-300">
+                Zatvaranje Nadstrešnica
+            </button>
+            <button onclick="switchTab('ograde')" id="btn-ograde" class="tab-btn text-base font-medium pb-2 border-b-2 border-transparent text-gray-400 hover:text-black transition-all duration-300">
+                Ograde
+            </button>
         </div>
     </section>
 
-    <!-- Content Grid -->
-    <section class="py-20 px-6 md:px-12 max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <!-- Card 1 -->
-            <div class="group cursor-pointer">
-                <div class="h-80 bg-gray-200 mb-6 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pivot Vrata" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+    <!-- PROSTOR ZA DINAMIČKI SADRŽAJ -->
+    <main class="max-w-7xl mx-auto px-6 py-12 md:py-20">
+
+        <!-- 1. PIVOT VRATA -->
+        <div id="tab-pivot" class="tab-content block">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-2">Inženjering bez kompromisa</span>
+                    <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">Unikatna Pivot Vrata</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Zaboravite na standardne kataloge i ograničenja u dimenzijama. Naša pivot vrata projektiraju se od nule za vaš objekt. Koristimo skrivene pante, vrhunske aluminijske legure, karbonska vlakna i pametne biometrijske sustave zaključavanja (otisak prsta, prepoznavanje lica).</p>
+                    <div class="border-l-4 border-black pl-4 my-6">
+                        <p class="font-medium text-gray-900">Mogućnosti dizajna su neograničene: integracija u staklene fasade, skriveni ulazi u zidne panele te ekstremne visine rađene u jednom komadu.</p>
+                    </div>
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Pivot Vrata po mjeri</h3>
-                <p class="text-gray-600 mb-4">Oversized dimenzije, skriveni panti i integrirani biometrijski sustavi u aluminiju i karbonu.</p>
-                <span class="text-sm font-bold uppercase border-b border-black pb-1">Saznajte više</span>
-            </div>
-            <!-- Card 2 -->
-            <div class="group cursor-pointer">
-                <div class="h-80 bg-gray-200 mb-6 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Pergole" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                <div class="h-[500px] bg-gray-100 overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Pivot Vrata" class="w-full h-full object-cover">
                 </div>
-                <h3 class="text-2xl font-bold mb-2">Bioklimatske Pergole</h3>
-                <p class="text-gray-600 mb-4">Motorizirani sustavi zasjenjivanja s integriranom rasvjetom i odvodnjom za luksuzne eksterijere.</p>
-                <span class="text-sm font-bold uppercase border-b border-black pb-1">Saznajte više</span>
-            </div>
-            <!-- Card 3 -->
-            <div class="group cursor-pointer">
-                <div class="h-80 bg-gray-200 mb-6 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fasade" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                </div>
-                <h3 class="text-2xl font-bold mb-2">Staklene Fasade</h3>
-                <p class="text-gray-600 mb-4">Minimalistički profili i maksimalna propusnost svjetla uz vrhunska termalna svojstva.</p>
-                <span class="text-sm font-bold uppercase border-b border-black pb-1">Saznajte više</span>
             </div>
         </div>
-    </section>
+
+        <!-- 2. BIOKLIMATSKE PERGOLE -->
+        <div id="tab-pergole" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-2">Vanjski prostori kroz cijelu godinu</span>
+                    <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">Bioklimatske Pergole</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Pametni sustavi s rotirajućim aluminijskim lamelama koje omogućuju potpunu kontrolu nad sunčevom svjetlošću i prirodnom ventilacijom. Integrirani senzori za kišu i vjetar automatski zatvaraju lamele kod promjene vremena.</p>
+                    <div class="border-l-4 border-black pl-4 my-6">
+                        <p class="font-medium text-gray-900">Svi sustavi dolaze s nevidljivim sustavom odvodnje vode kroz nosive stupove, integriranom LED rasvjetom te mogućnošću potpunog upravljanja putem pametnog telefona.</p>
+                    </div>
+                </div>
+                <div class="h-[500px] bg-gray-100 overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Pergole" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. ALU STOLARIJA -->
+        <div id="tab-stolarija" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-2">Arhitektonski profili visoke klase</span>
+                    <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">Alu Stolarija</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Specijalizirani smo za minimalističke aluminijske profile koji omogućuju maksimalne staklene površine i nesmetan pogled. Vrhunska izolacijska svojstva i precizna završna obrada garantiraju dugovječnost i otpornost na sve vremenske uvjete.</p>
+                    <div class="border-l-4 border-black pl-4 my-6">
+                        <p class="font-medium text-gray-900">Nudimo podizno-klizne stijene, fiksne staklene stijene ekstremnih dimenzija i prozorske sustave s potpuno skrivenim krilima za čiste arhitektonske linije.</p>
+                    </div>
+                </div>
+                <div class="h-[500px] bg-gray-100 overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Alu Stolarija" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. ZATVARANJE NADSTREŠNICA -->
+        <div id="tab-nadstresnice" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-2">Transformacija prostora</span>
+                    <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">Zatvaranje Nadstrešnica</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Pretvorite vaše otvorene terase, balkone ili postojeće nadstrešnice u zaštićene zimske vrtove ili elegantne staklene oaze. Koristimo najmodernije klizne i preklopne staklene sustave bez vertikalnih profila za potpunu transparentnost.</p>
+                    <div class="border-l-4 border-black pl-4 my-6">
+                        <p class="font-medium text-gray-900">U kombinaciji s našom robusnom aluminijskom konstrukcijom, dobivate prostor koji u ljetnim mjesecima možete potpuno otvoriti, a u zimskim hermetički zatvoriti i grijati.</p>
+                    </div>
+                </div>
+                <div class="h-[500px] bg-gray-100 overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Zatvaranje nadstrešnica" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. OGRADE -->
+        <div id="tab-ograde" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-2">Estetika i sigurnost</span>
+                    <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">Moderne Ograde</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Aluminijske i staklene ograde koje dizajnerski prate arhitekturu modernih vila i stambenih objekata. Bez vidljivih vijaka i s potpunom otpornošću na koroziju, naše ograde ne zahtijevaju nikakvo održavanje.</p>
+                    <div class="border-l-4 border-black pl-4 my-6">
+                        <p class="font-medium text-gray-900">Razvijamo laserski rezane panele, minimalističke ograde s vertikalnim ili horizontalnim profilima te samonosive staklene ograde s podnim profilima.</p>
+                    </div>
+                </div>
+                <div class="h-[500px] bg-gray-100 overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Ograde" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- Zajednička sekcija za slanje upita na dnu -->
+        <section class="mt-20 border-t border-gray-200 pt-16 text-center">
+            <h3 class="text-2xl font-bold mb-4">Imate spreman projekt ili nacrt?</h3>
+            <p class="text-gray-600 max-w-xl mx-auto mb-8">Pošaljite nam troškovnik, CAD nacrte ili samo vašu ideju, a naš inženjerski tim će razviti tehničko rješenje.</p>
+            <button class="bg-black text-white px-8 py-4 font-bold tracking-wider hover:bg-gray-800 transition">
+                KONTAKTIRAJTE NAŠ TIM
+            </button>
+        </section>
+
+    </main>
+
+    <!-- LOGIKA ZA IZMJENU TABOVA -->
+    <script>
+        function switchTab(tabId) {
+            // 1. Sakrij sav sadržaj weba
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // 2. Makni aktivni stil sa svih gumbića
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('border-black', 'text-black');
+                btn.classList.add('border-transparent', 'text-gray-400');
+            });
+
+            // 3. Prikaži samo onaj tab koji je kliknut
+            const activeContent = document.getElementById('tab-' + tabId);
+            activeContent.classList.remove('hidden');
+
+            // 4. Aktiviraj izgled stila na kliknutom gumbu
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('border-transparent', 'text-gray-400');
+            activeBtn.classList.add('border-black', 'text-black');
+        }
+    </script>
 
 </body>
 </html>
