@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statoplast | Odaberite svoj smjer</title>
+    <!-- Tailwind CSS CDN for instant styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white overflow-hidden">
+
+    <!-- Transparent Header -->
+    <header class="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/70 to-transparent pointer-events-none">
+        <div class="text-2xl font-bold tracking-widest pointer-events-auto cursor-pointer">
+            STATOPLAST
+        </div>
+        <nav class="hidden md:flex space-x-8 text-sm font-light tracking-wide pointer-events-auto">
+            <a href="#" class="hover:text-gray-300 transition">O NAMA</a>
+            <a href="#" class="hover:text-gray-300 transition">PROJEKTI</a>
+            <a href="#" class="hover:text-gray-300 transition">KONTAKT</a>
+            <span class="text-gray-500">|</span>
+            <a href="#" class="hover:text-gray-300 transition font-medium">HR</a>
+            <a href="#" class="hover:text-gray-500 transition">EN</a>
+        </nav>
+    </header>
+
+    <!-- Main Split Layout -->
+    <main class="flex flex-col md:flex-row h-screen w-full">
+        
+        <!-- PATH A: Architecture (Left) -->
+        <a href="arhitektura.html" class="group relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden flex flex-col justify-end p-12 lg:p-24 text-left cursor-pointer transition-all duration-500">
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center transform group-hover:scale-105 transition-transform duration-1000"></div>
+            <!-- Dark Overlay -->
+            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+            
+            <!-- Content -->
+            <div class="relative z-10 transform group-hover:-translate-y-2 transition-transform duration-500">
+                <h2 class="text-4xl lg:text-6xl font-light mb-4">LUKSUZNA<br><span class="font-bold">ARHITEKTURA.</span></h2>
+                <p class="text-lg lg:text-xl font-light mb-2">Bez Ograničenja.</p>
+                <p class="text-sm lg:text-base text-gray-300 mb-8">Pivot Vrata, Bioklimatske Pergole, Staklene Fasade.</p>
+                <button class="bg-white text-black px-8 py-3 text-sm font-medium tracking-wider hover:bg-gray-200 transition-colors">
+                    ISTRAŽITE PORTFOLIO
+                </button>
+            </div>
+        </a>
+
+        <!-- PATH B: Industrial (Right) -->
+        <a href="industrija.html" class="group relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden flex flex-col justify-end p-12 lg:p-24 text-left cursor-pointer transition-all duration-500">
+            <!-- Background Image -->
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1565514020179-026b92b84bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center transform group-hover:scale-105 transition-transform duration-1000"></div>
+            <!-- Dark Overlay -->
+            <div class="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-500"></div>
+            
+            <!-- Content -->
+            <div class="relative z-10 transform group-hover:-translate-y-2 transition-transform duration-500">
+                <h2 class="text-4xl lg:text-6xl font-light mb-4 text-gray-200">INDUSTRIJSKA<br><span class="font-bold text-white">PROIZVODNJA.</span></h2>
+                <p class="text-lg lg:text-xl font-light mb-2">Preciznost Čelika.</p>
+                <p class="text-sm lg:text-base text-gray-400 mb-8">Plastifikacija Metala, CNC Obrada, Elektro Ormari.</p>
+                <button class="border-2 border-white text-white px-8 py-3 text-sm font-medium tracking-wider hover:bg-white hover:text-black transition-colors">
+                    POŠALJITE B2B UPIT
+                </button>
+            </div>
+        </a>
+
+    </main>
+
+</body>
+</html>
