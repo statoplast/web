@@ -5,61 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statoplast | Industrijska Proizvodnja</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .tab-content {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        }
+        .tab-content.hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-900 font-sans">
+<body class="bg-gray-50 text-gray-900 font-sans antialiased">
 
-    <!-- Simple Dark Header -->
-    <header class="w-full p-6 flex justify-between items-center bg-gray-900 text-white border-b-4 border-blue-600">
-        <a href="index.html" class="text-xl font-bold tracking-widest hover:text-blue-400 transition">← NATRAG</a>
-        <div class="text-xl tracking-widest">STATOPLAST <span class="font-light text-blue-400">| B2B INDUSTRIJA</span></div>
+    <!-- Industrijska Navigacija -->
+    <header class="w-full p-6 flex justify-between items-center bg-gray-950 text-white sticky top-0 z-50 border-b border-gray-800">
+        <a href="index.html" class="text-sm font-bold tracking-widest text-gray-400 hover:text-white transition">← NATRAG NA POČETNU</a>
+        <div class="text-xl tracking-widest font-bold">STATOPLAST <span class="font-light text-blue-500">| B2B INDUSTRIJA</span></div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="relative h-[50vh] flex items-center justify-start overflow-hidden px-6 md:px-20">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"></div>
-        <div class="relative z-10 text-left text-white max-w-3xl">
-            <h1 class="text-5xl md:text-6xl font-bold mb-4 text-blue-500">Preciznost Čelika.</h1>
-            <p class="text-xl font-light mb-8">Certificirana B2B proizvodnja, CNC obrada metala i vrhunska linija za plastifikaciju.</p>
-            <button class="bg-blue-600 text-white px-8 py-3 text-sm font-bold tracking-wider hover:bg-blue-700 transition-colors">
-                ZATRAŽITE PONUDU
+    <!-- B2B Izbornik (Kategorije) -->
+    <section class="bg-white border-b border-gray-200 sticky top-[73px] z-40 overflow-x-auto whitespace-nowrap">
+        <div class="max-w-7xl mx-auto px-6 flex justify-start md:justify-between items-center h-16 space-x-8 md:space-x-0">
+            <button onclick="switchTab('plastifikacija')" id="btn-plastifikacija" class="tab-btn text-base font-semibold pb-2 border-b-2 border-blue-600 text-blue-600 transition-all duration-300">
+                Plastifikacija Metala
+            </button>
+            <button onclick="switchTab('obrada')" id="btn-obrada" class="tab-btn text-base font-medium pb-2 border-b-2 border-transparent text-gray-400 hover:text-gray-900 transition-all duration-300">
+                Obrada Metala & CNC
+            </button>
+            <button onclick="switchTab('ormari')" id="btn-ormari" class="tab-btn text-base font-medium pb-2 border-b-2 border-transparent text-gray-400 hover:text-gray-900 transition-all duration-300">
+                Izrada Metalnih Ormara
+            </button>
+            <button onclick="switchTab('serijska')" id="btn-serijska" class="tab-btn text-base font-medium pb-2 border-b-2 border-transparent text-gray-400 hover:text-gray-900 transition-all duration-300">
+                Serijska B2B Proizvodnja
             </button>
         </div>
     </section>
 
-    <!-- Content Table / List -->
-    <section class="py-20 px-6 md:px-20 max-w-7xl mx-auto">
-        <div class="bg-white shadow-xl rounded-lg p-8 md:p-12">
-            <h2 class="text-3xl font-bold mb-8 border-b pb-4">Naše B2B Usluge</h2>
-            
-            <div class="space-y-8">
-                <!-- Service 1 -->
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 hover:bg-gray-50 transition border-l-4 border-blue-600">
-                    <div>
-                        <h3 class="text-xl font-bold">Plastifikacija Metala</h3>
-                        <p class="text-gray-600">Qualicoat standard, automatska linija, RAL boje po izboru.</p>
+    <!-- DINAMIČKI INDUSTRIJSKI SADRŽAJ -->
+    <main class="max-w-7xl mx-auto px-6 py-12 md:py-20">
+
+        <!-- 1. PLASTIFIKACIJA METALA -->
+        <div id="tab-plastifikacija" class="tab-content block">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-2">Vrhunska površinska zaštita</span>
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-6">Automatska Plastifikacija Metala</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Posjedujemo modernu, visokokapacitetnu liniju za plastifikaciju (praškasto bojenje) koja zadovoljava najstrože industrijske standarde površinske zaštite. Naš proces uključuje naprednu kemijsku pripremu materijala, što osigurava maksimalno prianjanje boje i otpornost na koroziju.</p>
+                    <div class="bg-gray-100 p-6 rounded-lg border-l-4 border-blue-600 my-6">
+                        <p class="font-medium text-gray-800">Radimo s kompletnom RAL kartom, različitim teksturama (mat, sjaj, fina struktura) te garantiramo brzu isporuku i postojanost nanosa na aluminiju, crnom i pocinčanom limu.</p>
                     </div>
-                    <button class="mt-4 md:mt-0 text-blue-600 font-bold text-sm uppercase">Tehnički Detalji →</button>
                 </div>
-                <!-- Service 2 -->
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 hover:bg-gray-50 transition border-l-4 border-gray-300 hover:border-blue-600">
-                    <div>
-                        <h3 class="text-xl font-bold">Proizvodnja Elektro Ormara</h3>
-                        <p class="text-gray-600">Samostojeći i zidni ormari, pultovi za upravljanje prilagođeni nacrtima.</p>
-                    </div>
-                    <button class="mt-4 md:mt-0 text-blue-600 font-bold text-sm uppercase">Tehnički Detalji →</button>
-                </div>
-                <!-- Service 3 -->
-                <div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 hover:bg-gray-50 transition border-l-4 border-gray-300 hover:border-blue-600">
-                    <div>
-                        <h3 class="text-xl font-bold">Garderobni Ormari i Oprema</h3>
-                        <p class="text-gray-600">Metalni namještaj za industriju, škole i sportske objekte.</p>
-                    </div>
-                    <button class="mt-4 md:mt-0 text-blue-600 font-bold text-sm uppercase">Tehnički Detalji →</button>
+                <div class="h-[450px] bg-gray-200 overflow-hidden rounded-xl shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1565514020179-026b92b84bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Plastifikacija metala" class="w-full h-full object-cover">
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- 2. OBRADA METALA & CNC -->
+        <div id="tab-obrada" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-2">Preciznost i tehnologija</span>
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-6">Strojna Obrada Metala</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Nudimo kompletnu uslugu primarne i sekundarne obrade limova i profila. Naš strojni park opremljen je naprednim tehnologijama koje omogućuju visoku preciznost, ponovljivost i brzinu izrade, bez obzira radi li se o pojedinačnim prototipovima ili velikim serijama.</p>
+                    <div class="bg-gray-100 p-6 rounded-lg border-l-4 border-blue-600 my-6">
+                        <ul class="space-y-2 text-gray-800 font-medium">
+                            <li>✓ CNC Lasersko rezanje limova i cijevi</li>
+                            <li>✓ Precizno CNC savijanje na višesovinskim prešama</li>
+                            <li>✓ TIG / MIG / MAG profesionalno zavarivanje</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="h-[450px] bg-gray-200 overflow-hidden rounded-xl shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Obrada metala" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. IZRADA METALNIH ORMARA -->
+        <div id="tab-ormari" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-2">Inženjerska rješenja po mjeri</span>
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-6">Elektro i Industrijski Ormari</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Specijalizirani smo za razvoj i proizvodnju kućišta za elektro i razvodne ormare, upravljačke pultove te IT mrežne kabinete. Svi ormari se izrađuju prema tehničkoj dokumentaciji naručitelja ili ih naš inženjerski tim projektira prema vašim specifikacijama.</p>
+                    <div class="bg-gray-100 p-6 rounded-lg border-l-4 border-blue-600 my-6">
+                        <p class="font-medium text-gray-800">Osiguravamo visoku razinu IP mehaničke zaštite, precizne perforacije za uvod kabela i montažne ploče spremne za ugradnju komponenti.</p>
+                    </div>
+                </div>
+                <div class="h-[450px] bg-gray-200 overflow-hidden rounded-xl shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Elektro ormari" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. SERIJSKA B2B PROIZVODNJA -->
+        <div id="tab-serijska" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-blue-600 block mb-2">Ugovorna proizvodnja za partnere</span>
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-6">Serijska Proizvodnja Opreme</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Za potrebe opremanja industrijskih objekata, škola, sportskih dvorana i ureda vršimo serijsku proizvodnju metalnog namještaja. Kao pouzdan "outsourcing" partner, proizvodimo gotove metalne sklopove i podkonstrukcije za druge proizvodne tvrtke na europskom tržištu.</p>
+                    <div class="bg-gray-100 p-6 rounded-lg border-l-4 border-blue-600 my-6">
+                        <p class="font-medium text-gray-800">Naš asortiman uključuje standardne i izvanstandardne garderobne ormare, arhivske police, metalna postolja te zaštitna kućišta za strojeve.</p>
+                    </div>
+                </div>
+                <div class="h-[450px] bg-gray-200 overflow-hidden rounded-xl shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Serijska proizvodnja" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+
+        <!-- B2B Kontakt i tehnički upit -->
+        <section class="mt-20 bg-gray-900 text-white rounded-2xl p-8 md:p-12 shadow-xl flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-6 md:mb-0 max-w-2xl">
+                <h3 class="text-2xl font-bold mb-2 text-blue-400">Pošaljite nacrte za tehničku ponudu</h3>
+                <p class="text-gray-400 text-sm md:text-base">Naš odjel pripreme proizvodnje analizirat će vaše DWG/DXF/STEP nacrte ili troškovnike i pripremiti neobvezujuću B2B ponudu u najkraćem roku.</p>
+            </div>
+            <button class="bg-blue-600 text-white px-8 py-4 font-bold tracking-wider hover:bg-blue-700 transition shrink-0 rounded-lg">
+                ZATRAŽI TEHNIČKU PONUDU
+            </button>
+        </section>
+
+    </main>
+
+    <!-- LOGIKA ZA IZMJENU TABOVA -->
+    <script>
+        function switchTab(tabId) {
+            // 1. Sakrij sav sadržaj
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // 2. Makni aktivni stil s gumba
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('border-blue-600', 'text-blue-600', 'font-semibold');
+                btn.classList.add('border-transparent', 'text-gray-400', 'font-medium');
+            });
+
+            // 3. Prikaži odabrani sadržaj
+            const activeContent = document.getElementById('tab-' + tabId);
+            activeContent.classList.remove('hidden');
+
+            // 4. Aktiviraj kliknuti gumb
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('border-transparent', 'text-gray-400', 'font-medium');
+            activeBtn.classList.add('border-blue-600', 'text-blue-600', 'font-semibold');
+        }
+    </script>
 
 </body>
 </html>
