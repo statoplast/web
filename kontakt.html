@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statoplast | Kontakt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-50 text-zinc-900 font-sans antialiased">
+
+    <!-- Zaglavlje -->
+    <header class="w-full p-6 flex justify-between items-center bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-zinc-200">
+        <a href="/" class="text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300">← POVRATAK</a>
+        <div class="pointer-events-auto cursor-pointer absolute left-1/2 -translate-x-1/2 hidden md:block">
+            <img src="logo.png" alt="Statoplast Logo" class="h-6 w-auto object-contain">
+        </div>
+        <div class="text-sm tracking-widest font-bold hidden md:block">KONTAKTIRAJTE <span class="font-light text-zinc-400">NAS</span></div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-16 md:py-24">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+            
+            <!-- Kontakt Informacije -->
+            <div class="flex flex-col justify-center">
+                <h1 class="text-4xl md:text-6xl font-light tracking-tight mb-6">Tu smo za<br><span class="font-bold">vaše projekte.</span></h1>
+                <p class="text-lg text-zinc-500 mb-12 font-light">Zatražite ponudu, tehničku dokumentaciju ili dogovorite sastanak s našim inženjerskim timom.</p>
+                
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="text-xs font-bold tracking-widest text-zinc-400 uppercase mb-2">Lokacija</h4>
+                        <p class="text-xl font-medium text-black">Zagrebačka ulica 123,<br>10000 Zagreb, Hrvatska</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold tracking-widest text-zinc-400 uppercase mb-2">Kontakt podaci</h4>
+                        <a href="mailto:info@statoplast.hr" class="text-xl font-medium text-black hover:text-blue-600 block transition-colors">info@statoplast.hr</a>
+                        <a href="tel:+3851234567" class="text-xl font-medium text-black hover:text-blue-600 block transition-colors">+385 1 234 5678</a>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold tracking-widest text-zinc-400 uppercase mb-2">Radno Vrijeme</h4>
+                        <p class="text-base text-zinc-600">Pon - Pet: 07:00 - 15:00<br>Subota, Nedjelja: Zatvoreno</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kontakt Forma -->
+            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-zinc-100">
+                <!-- Form action koristi mailto. Za pravu server formu, potrebno je spojiti na backend (npr. formspree.io ili custom PHP) -->
+                <form action="mailto:info@statoplast.hr" method="POST" enctype="text/plain" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="flex flex-col">
+                            <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Ime i Prezime / Tvrtka</label>
+                            <input type="text" name="Ime" required class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent">
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Email Adresa</label>
+                            <input type="email" name="Email" required class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent">
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col pt-4">
+                        <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Predmet upita</label>
+                        <select name="Predmet" class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent text-zinc-700">
+                            <option value="ALU Sustavi">ALU Sustavi (Vrata, Pergole, Stolarija)</option>
+                            <option value="B2B Industrija">B2B Industrija (Plastifikacija, CNC, Ormari)</option>
+                            <option value="Opci upit">Opći upit</option>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col pt-4">
+                        <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Vaša poruka</label>
+                        <textarea name="Poruka" rows="4" required class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent resize-none"></textarea>
+                    </div>
+
+                    <div class="pt-6">
+                        <button type="submit" class="w-full bg-black hover:bg-zinc-800 text-white py-4 rounded-lg text-sm font-bold tracking-widest uppercase transition-colors">
+                            Pošaljite Upit
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
