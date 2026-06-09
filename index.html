@@ -4,69 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statoplast | Odaberite svoj smjer</title>
-    <!-- Tailwind CSS CDN for instant styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .animate-pulse-slow { animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
 </head>
-<body class="bg-gray-900 text-white overflow-hidden">
+<body class="bg-black text-white overflow-hidden font-sans antialiased">
 
     <!-- Transparent Header -->
-    <header class="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/70 to-transparent pointer-events-none">
-        <!-- New image logo -->
-        <!-- Logo s modernom blago prozirnom bijelom podlogom i zaobljenim rubovima -->
-        <!-- Dodana je klasa "invert" koja crni logo pretvara u bijeli -->
-        <!-- Ovaj miks klasa (brightness-0 invert) pretvara bilo koji logo u boji u čisto bijeli -->
+    <header class="fixed top-0 left-0 w-full z-50 p-6 md:p-8 flex justify-between items-center bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none">
+        <!-- Potpuno bijeli logo za tamnu pozadinu -->
         <div class="pointer-events-auto cursor-pointer">
-            <img src="logo.png" alt="Statoplast Logo" class="h-8 w-auto object-contain brightness-0 invert">
+            <img src="logo.png" alt="Statoplast Logo" class="h-8 md:h-10 w-auto object-contain brightness-0 invert">
         </div>
-        <nav class="hidden md:flex space-x-8 text-sm font-light tracking-wide pointer-events-auto">
-            <a href="#" class="hover:text-gray-300 transition">O NAMA</a>
-            <a href="#" class="hover:text-gray-300 transition">PROJEKTI</a>
-            <a href="#" class="hover:text-gray-300 transition">KONTAKT</a>
-            <span class="text-gray-500">|</span>
-            <a href="#" class="hover:text-gray-300 transition font-medium">HR</a>
-            <a href="#" class="hover:text-gray-500 transition">EN</a>
+        <nav class="hidden md:flex items-center space-x-8 text-xs font-bold tracking-[0.2em] pointer-events-auto">
+            <a href="#" class="text-zinc-300 hover:text-white transition-colors duration-300">O NAMA</a>
+            <a href="#" class="text-zinc-300 hover:text-white transition-colors duration-300">PROJEKTI</a>
+            <a href="#" class="text-zinc-300 hover:text-white transition-colors duration-300">KONTAKT</a>
+            <div class="h-4 w-[1px] bg-white/30"></div>
+            <div class="flex space-x-3">
+                <a href="#" class="text-white">HR</a>
+                <a href="#" class="text-zinc-500 hover:text-zinc-300 transition-colors">EN</a>
+            </div>
         </nav>
     </header>
 
     <!-- Main Split Layout -->
-    <main class="flex flex-col md:flex-row h-screen w-full">
+    <main class="relative flex flex-col md:flex-row h-screen w-full">
         
-        <!-- PATH A: Architecture (Left) -->
-        <a href="arhitektura" class="group relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden flex flex-col justify-end p-12 lg:p-24 text-left cursor-pointer transition-all duration-500">
+        <!-- Centralni bedž (Moderni detalj) -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 hidden md:flex items-center justify-center w-16 h-16 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-white/50 text-xs font-bold tracking-widest animate-pulse-slow">
+            ILI
+        </div>
+
+        <!-- PATH A: ALU Sustavi (Lijevo) -->
+        <a href="arhitektura" class="group relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden flex flex-col justify-end p-10 lg:p-20 text-left cursor-pointer border-b md:border-b-0 md:border-r border-white/10">
             <!-- Background Image -->
-            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center transform group-hover:scale-105 transition-transform duration-1000"></div>
-            <!-- Dark Overlay -->
-            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center transform group-hover:scale-105 transition-transform duration-[1.5s] ease-out"></div>
+            <!-- Dark Overlay (Soft gradient) -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 group-hover:from-black/80 transition-colors duration-700"></div>
             
             <!-- Content -->
-            <div class="relative z-10 transform group-hover:-translate-y-2 transition-transform duration-500">
-                <h2 class="text-4xl lg:text-6xl font-light mb-4">LUKSUZNA<br><span class="font-bold">ARHITEKTURA.</span></h2>
-                <p class="text-lg lg:text-xl font-light mb-2">Bez Ograničenja.</p>
-                <p class="text-sm lg:text-base text-gray-300 mb-8">Pivot Vrata, Bioklimatske Pergole, Staklene Fasade.</p>
-                <button class="bg-white text-black px-8 py-3 text-sm font-medium tracking-wider hover:bg-gray-200 transition-colors">
-                    ISTRAŽITE PORTFOLIO
-                </button>
+            <div class="relative z-10 transform group-hover:-translate-y-4 transition-transform duration-700 ease-out">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="h-[1px] w-8 bg-white/50"></div>
+                    <span class="text-xs font-bold tracking-[0.2em] text-white/70">PREMIUM DIZAJN</span>
+                </div>
+                <h2 class="text-5xl lg:text-7xl font-light mb-4 tracking-tight">ALU<br><span class="font-bold">SUSTAVI.</span></h2>
+                <p class="text-sm lg:text-base text-zinc-400 mb-8 max-w-md leading-relaxed">Pivot vrata, bioklimatske pergole i staklene fasade. Vrhunski inženjering bez ograničenja za modernu arhitekturu.</p>
+                <div class="inline-flex items-center space-x-4">
+                    <span class="bg-white text-black px-8 py-3 text-xs font-bold tracking-widest group-hover:bg-zinc-200 transition-colors">ISTRAŽITE</span>
+                    <span class="text-white/50 group-hover:text-white group-hover:translate-x-2 transition-all duration-300">→</span>
+                </div>
             </div>
         </a>
 
-        <!-- PATH B: Industrial (Right) -->
-        <a href="industrija" class="group relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden flex flex-col justify-end p-12 lg:p-24 text-left cursor-pointer transition-all duration-500">
+        <!-- PATH B: Industrija (Desno) -->
+        <a href="industrija" class="group relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden flex flex-col justify-end p-10 lg:p-20 text-left cursor-pointer">
             <!-- Background Image -->
-            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1565514020179-026b92b84bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center transform group-hover:scale-105 transition-transform duration-1000"></div>
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1565514020179-026b92b84bb6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center transform group-hover:scale-105 transition-transform duration-[1.5s] ease-out"></div>
             <!-- Dark Overlay -->
-            <div class="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-500"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-black/30 group-hover:from-black/80 transition-colors duration-700"></div>
             
             <!-- Content -->
-            <div class="relative z-10 transform group-hover:-translate-y-2 transition-transform duration-500">
-                <h2 class="text-4xl lg:text-6xl font-light mb-4 text-gray-200">INDUSTRIJSKA<br><span class="font-bold text-white">PROIZVODNJA.</span></h2>
-                <p class="text-lg lg:text-xl font-light mb-2">Preciznost Čelika.</p>
-                <p class="text-sm lg:text-base text-gray-400 mb-8">Plastifikacija Metala, CNC Obrada, Elektro Ormari.</p>
-                <button class="border-2 border-white text-white px-8 py-3 text-sm font-medium tracking-wider hover:bg-white hover:text-black transition-colors">
-                    POŠALJITE B2B UPIT
-                </button>
+            <div class="relative z-10 transform group-hover:-translate-y-4 transition-transform duration-700 ease-out">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="h-[1px] w-8 bg-blue-500/50"></div>
+                    <span class="text-xs font-bold tracking-[0.2em] text-blue-400">B2B SEKTOR</span>
+                </div>
+                <h2 class="text-5xl lg:text-7xl font-light mb-4 tracking-tight text-zinc-300">METALNA<br><span class="font-bold text-white">INDUSTRIJA.</span></h2>
+                <p class="text-sm lg:text-base text-zinc-400 mb-8 max-w-md leading-relaxed">Plastifikacija metala, CNC obrada i serijska proizvodnja elektro ormara. Preciznost i kapacitet za velike projekte.</p>
+                <div class="inline-flex items-center space-x-4">
+                    <span class="border border-white/30 text-white px-8 py-3 text-xs font-bold tracking-widest group-hover:bg-white group-hover:text-black transition-all">POGLEDAJTE USLUGE</span>
+                    <span class="text-white/50 group-hover:text-white group-hover:translate-x-2 transition-all duration-300">→</span>
+                </div>
             </div>
         </a>
-
     </main>
 
 </body>
