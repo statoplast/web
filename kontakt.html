@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statoplast | Kontakt</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    </style>
 </head>
 <body class="bg-zinc-50 text-zinc-900 font-sans antialiased">
 
@@ -42,10 +49,11 @@
                 </div>
             </div>
 
-            <!-- Kontakt Forma (Formspree integracija aktivna) -->
-            <div class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-zinc-100">
+            <!-- Kontejner za formu / Poruku zahvale -->
+            <div id="form-container" class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-zinc-100 flex flex-col justify-center min-h-[500px]">
                 
-                <form action="https://formspree.io/f/mkoabvbp" method="POST" class="space-y-6">
+                <!-- Aktivna Forma -->
+                <form id="contact-form" action="https://formspree.io/f/xpqerjdy" method="POST" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="flex flex-col">
                             <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Ime i Prezime / Tvrtka</label>
@@ -71,19 +79,84 @@
                         <textarea name="Poruka" rows="4" required class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent resize-none"></textarea>
                     </div>
 
-                    <!-- Skriveno polje za zaštitu od botova -->
                     <input type="text" name="_gotcha" style="display:none">
 
                     <div class="pt-6">
-                        <button type="submit" class="w-full bg-black hover:bg-zinc-800 text-white py-4 rounded-lg text-sm font-bold tracking-widest uppercase transition-colors">
-                            Pošaljite Upit
+                        <button type="submit" id="submit-btn" class="w-full bg-black hover:bg-zinc-800 text-white py-4 rounded-lg text-sm font-bold tracking-widest uppercase transition-colors flex justify-center items-center gap-2">
+                            <span>POŠALJITE UPIT</span>
                         </button>
                     </div>
                 </form>
+
+                <!-- Skrivena Poruka Zahvale (Prikazuje se tek nakon slanja) -->
+                <div id="success-message" class="hidden text-center animate-fade-in p-6">
+                    <div class="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-3">Hvala vam na upitu!</h3>
+                    <p class="text-zinc-500 font-light max-w-sm mx-auto leading-relaxed">
+                        Vaša poruka je uspješno poslana. Naš tim će vas kontaktirati u najkraćem mogućem roku na navedenu email adresu.
+                    </p>
+                </div>
+
+                <!-- Skrivena Poruka Greške (Za svaki slučaj) -->
+                <div id="error-message" class="hidden text-center animate-fade-in p-6">
+                    <h3 class="text-xl font-bold text-red-600 mb-2">Uuups! Došlo je do greške.</h3>
+                    <p class="text-zinc-500 text-sm mb-4">Molimo pokušajte ponovno ili nam pošaljite direktan e-mail na info@statoplast.hr</p>
+                    <button onclick="window.location.reload()" class="text-xs font-bold tracking-wider uppercase text-black underline">Pokušaj ponovno</button>
+                </div>
+
             </div>
 
         </div>
     </main>
+
+    <!-- JavaScript magija za slanje bez osvježavanja stranice -->
+    <script>
+        const form = document.getElementById('contact-form');
+        const formContainer = document.getElementById('form-container');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Zaustavi preusmjeravanje na Formspree stranicu
+            
+            // Promijeni tekst na gumbu dok se šalje
+            submitBtn.innerHTML = '<span>SLANJE U TIJEKU...</span>';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            const formData = new FormData(form);
+
+            // Pošalji podatke Formspree-u asinkrono (AJAX)
+            fetch(form.action, {
+                method: form.method,
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Ako je slanje uspjelo: sakrij formu, prikaži zahvalu
+                    form.classList.add('hidden');
+                    successMessage.classList.remove('hidden');
+                } else {
+                    // Ako Formspree vrati grešku
+                    form.classList.add('hidden');
+                    errorMessage.classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                // Ako se dogodi mrežna greška
+                form.classList.add('hidden');
+                errorMessage.classList.remove('hidden');
+            });
+        });
+    </script>
 
 </body>
 </html>
