@@ -42,18 +42,18 @@
                 </div>
             </div>
 
-            <!-- Kontakt Forma -->
+            <!-- Kontakt Forma (Formspree integracija aktivna) -->
             <div class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-zinc-100">
-                <!-- Form action koristi mailto. Za pravu server formu, potrebno je spojiti na backend (npr. formspree.io ili custom PHP) -->
-                <form action="mailto:info@statoplast.hr" method="POST" enctype="text/plain" class="space-y-6">
+                
+                <form action="https://formspree.io/f/xpqerjdy" method="POST" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="flex flex-col">
                             <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Ime i Prezime / Tvrtka</label>
-                            <input type="text" name="Ime" required class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent">
+                            <input type="text" name="Ime/Tvrtka" required class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent">
                         </div>
                         <div class="flex flex-col">
                             <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Email Adresa</label>
-                            <input type="email" name="Email" required class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent">
+                            <input type="email" name="_replyto" required class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent">
                         </div>
                     </div>
                     
@@ -70,6 +70,9 @@
                         <label class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Vaša poruka</label>
                         <textarea name="Poruka" rows="4" required class="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent resize-none"></textarea>
                     </div>
+
+                    <!-- Skriveno polje za zaštitu od botova -->
+                    <input type="text" name="_gotcha" style="display:none">
 
                     <div class="pt-6">
                         <button type="submit" class="w-full bg-black hover:bg-zinc-800 text-white py-4 rounded-lg text-sm font-bold tracking-widest uppercase transition-colors">
