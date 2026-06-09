@@ -13,8 +13,9 @@
     <header class="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center bg-gradient-to-b from-black/70 to-transparent pointer-events-none">
         <!-- New image logo -->
         <!-- Logo s modernom blago prozirnom bijelom podlogom i zaobljenim rubovima -->
-        <div class="pointer-events-auto cursor-pointer bg-white/80 backdrop-blur-md px-4 py-2 rounded-xl shadow-sm border border-white/20 hover:bg-white transition-colors duration-300"> 
-            <img src="logo.png" alt="Statoplast Logo" class="h-6 w-auto object-contain">
+        <!-- Dodana je klasa "invert" koja crni logo pretvara u bijeli -->
+        <div class="pointer-events-auto cursor-pointer">
+            <img src="logo.png" alt="Statoplast Logo" class="h-8 w-auto object-contain invert">
         </div>
         <nav class="hidden md:flex space-x-8 text-sm font-light tracking-wide pointer-events-auto">
             <a href="#" class="hover:text-gray-300 transition">O NAMA</a>
