@@ -32,7 +32,8 @@
                 <button onclick="switchTab('pivot')" id="btn-pivot" class="tab-btn text-black border-b-2 border-black pb-1 transition-all duration-300">Pivot Vrata</button>
                 <button onclick="switchTab('pergole')" id="btn-pergole" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Pergole</button>
                 <button onclick="switchTab('stolarija')" id="btn-stolarija" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Alu Stolarija</button>
-                <button onclick="switchTab('nadstresnice')" id="btn-nadstresnice" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Nadstrešnice</button>
+                <button onclick="switchTab('ograde')" id="btn-ograde" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Moderne Ograde</button>
+                <button onclick="switchTab('zatvaranje')" id="btn-zatvaranje" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Zatvaranje Nadstrešnica</button>
             </div>
         </div>
     </section>
@@ -51,7 +52,7 @@
                             <div class="w-1.5 h-1.5 rounded-full bg-black mt-2"></div>
                             <div>
                                 <h4 class="font-bold text-sm text-zinc-900">Ekstremne dimenzije</h4>
-                                <p class="text-sm text-zinc-500 mt-1">Izrada u jednom komadu do 4 metra visine bez vidljivih okvira.</p>
+                                <p class="text-sm text-zinc-500 mt-1">Izrada u jednom komadu do 4 metra visine.</p>
                             </div>
                         </div>
                         <div class="flex items-start gap-4 p-4 bg-white rounded-xl border border-zinc-100 shadow-sm">
@@ -74,10 +75,10 @@
                 <div class="lg:col-span-5 flex flex-col justify-center">
                     <span class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4 block">Kroz cijelu godinu</span>
                     <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1]">Bioklimatske<br><span class="font-bold">Pergole.</span></h1>
-                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Pametni sustavi s rotirajućim aluminijskim lamelama koje omogućuju potpunu kontrolu nad sunčevom svjetlošću i cirkulacijom zraka.</p>
+                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Posebne klizne lamele izdvajaju naše pergole od standardnih rješenja. Sustav ne samo da regulira svjetlost, već omogućuje i potpuno pomicanje (uklizavanje) lamela, čime u trenu otvarate cijeli krov prema nebu.</p>
                     <ul class="space-y-3 text-sm text-zinc-700 font-medium mb-8">
+                        <li class="flex items-center gap-3"><span class="text-zinc-300">✓</span> Inovativni klizni sustav otvaranja krova</li>
                         <li class="flex items-center gap-3"><span class="text-zinc-300">✓</span> Integrirana nevidljiva odvodnja vode</li>
-                        <li class="flex items-center gap-3"><span class="text-zinc-300">✓</span> Automatizirani senzori za vjetar i kišu</li>
                         <li class="flex items-center gap-3"><span class="text-zinc-300">✓</span> Opcijska LED rasvjeta i staklene stijene</li>
                     </ul>
                 </div>
@@ -95,12 +96,12 @@
                     <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Bilo da projektirate minimalističku vilu ili opremate obiteljsku kuću standardnim pozicijama, naši prozorski sustavi pružaju vrhunsku estetiku, maksimalnu prozirnost te najvišu razinu toplinske i zvučne izolacije.</p>
                     <div class="grid grid-cols-2 gap-6 mb-8">
                         <div class="p-5 bg-zinc-100 rounded-2xl">
-                            <h5 class="text-2xl font-bold text-black mb-1">0.8</h5>
-                            <p class="text-xs text-zinc-500 uppercase tracking-wider">W/(m²K) Izolacija</p>
+                            <h5 class="text-xl font-bold text-black mb-1">Panoramski<br>Dizajn</h5>
+                            <p class="text-xs text-zinc-500 uppercase tracking-wider mt-2">Elegantni uski profili</p>
                         </div>
                         <div class="p-5 bg-zinc-100 rounded-2xl">
-                            <h5 class="text-2xl font-bold text-black mb-1">100%</h5>
-                            <p class="text-xs text-zinc-500 uppercase tracking-wider">Reciklabilni ALU</p>
+                            <h5 class="text-xl font-bold text-black mb-1">Vrhunska<br>Sigurnost</h5>
+                            <p class="text-xs text-zinc-500 uppercase tracking-wider mt-2">Okov najviše klase</p>
                         </div>
                     </div>
                 </div>
@@ -109,16 +110,29 @@
                 </div>
             </div>
         </div>
-        
-        <div id="tab-nadstresnice" class="tab-content hidden">
+
+        <div id="tab-ograde" class="tab-content hidden">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 <div class="lg:col-span-5 flex flex-col justify-center">
-                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4 block">Trajna zaštita</span>
-                    <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1]">Moderne<br><span class="font-bold">Nadstrešnice.</span></h1>
-                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Custom-made aluminijske i čelične konstrukcije za vozila i ulaze, dizajnirane da izdrže ekstremne vremenske uvjete uz besprijekornu estetiku.</p>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4 block">Sigurnost uz estetiku</span>
+                    <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1]">Moderne<br><span class="font-bold">Ograde.</span></h1>
+                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Aluminijske i staklene ograde koje se savršeno uklapaju u suvremenu arhitekturu. Dizajnirane za terase, balkone i dvorišta, pružaju maksimalnu otpornost na vanjske utjecaje i dugotrajnost bez potrebe za kompliciranim održavanjem.</p>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" class="w-full h-full object-cover hover:scale-105 transition-transform duration-[2s] ease-out">
+                    <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Moderne Ograde" class="w-full h-full object-cover hover:scale-105 transition-transform duration-[2s] ease-out">
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-zatvaranje" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+                <div class="lg:col-span-5 flex flex-col justify-center">
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4 block">Cjelogodišnji boravak</span>
+                    <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1]">Zatvaranje<br><span class="font-bold">Nadstrešnica.</span></h1>
+                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Pretvorite vašu otvorenu nadstrešnicu, terasu ili balkon u funkcionalan zatvoreni prostor. Koristimo premium staklene klizne sustave i fiksne aluminijske pregrade koje vas štite od vjetra i hladnoće, bez da gubite kontakt s okolišem i prirodnu svjetlost.</p>
+                </div>
+                <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1600585154526-990dced4ea0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Zatvaranje Nadstrešnica" class="w-full h-full object-cover hover:scale-105 transition-transform duration-[2s] ease-out">
                 </div>
             </div>
         </div>
