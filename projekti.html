@@ -41,14 +41,14 @@
     </main>
 
     <script>
-        // Vaš Behold JSON link
-        const BEHOLD_API_URL = "https://feeds.behold.so/XHOEpcYGrSPvFmsL5PxR";
+        // Tvoj novi, besplatni izvor podataka s GitHuba
+        const GITHUB_JSON_URL = "https://raw.githubusercontent.com/statoplast/ig-galerija/main/projekti.json";
         const feedContainer = document.getElementById('instafeed');
 
         // Prikaz loading poruke dok se učitava
         feedContainer.innerHTML = '<p class="col-span-full text-center text-zinc-400 py-12 text-sm uppercase tracking-widest animate-pulse">Učitavanje projekata...</p>';
 
-        fetch(BEHOLD_API_URL)
+        fetch(GITHUB_JSON_URL)
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok');
                 return response.json();
@@ -57,22 +57,19 @@
                 // Očisti loading poruku
                 feedContainer.innerHTML = '';
                 
-                // Behold može vratiti direktno niz (array) ili objekt koji u sebi ima "posts"
-                // Ovdje se osiguravamo da uzimamo ispravan niz prije nego primijenimo .slice()
-                const postsArray = Array.isArray(data) ? data : data.posts;
-                
-                if (!postsArray) {
-                    throw new Error('Nije moguće detektirati postove u Behold odgovoru.');
+                // Naša Python skripta na GitHubu sprema podatke kao čisti niz (array)
+                if (!Array.isArray(data)) {
+                    throw new Error('Neispravan format podataka.');
                 }
 
                 // Uzimamo prvih 8 objava
-                const posts = postsArray.slice(0, 8); 
+                const posts = data.slice(0, 8); 
                 
                 posts.forEach((post, index) => {
                     const delay = index * 100;
                     
-                    // Koristimo optimizirani trajni Behold link ako postoji (sizes.medium), u suprotnom fallback na mediaUrl
-                    const mediaUrl = (post.sizes && post.sizes.medium) ? post.sizes.medium.mediaUrl : post.mediaUrl; 
+                    // Vučemo direktne podatke koje smo mi sami obradili na GitHubu
+                    const mediaUrl = post.mediaUrl; 
                     const instagramLink = post.permalink;
 
                     const html = `
@@ -94,3 +91,5 @@
                 feedContainer.innerHTML = `<p class="col-span-full text-center text-zinc-500 py-12 text-sm">Trenutno nije moguće učitati galeriju. <br> <a href="https://instagram.com/statoplast" target="_blank" class="text-blue-600 hover:underline mt-2 inline-block">Pogledajte direktno na Instagramu</a></p>`;
             });
     </script>
+</body>
+</html>
