@@ -20,13 +20,24 @@
 
     <!-- Zaglavlje -->
     <header class="w-full p-6 flex justify-between items-center bg-white/80 backdrop-blur-lg text-zinc-900 sticky top-0 z-50 border-b border-zinc-200 shadow-sm">
+        
+        <!-- Logo pomaknut lijevo -->
+        <a href="/" class="pointer-events-auto cursor-pointer flex items-center">
+            <img src="logo.png" alt="Statoplast Logo" class="h-6 w-auto object-contain">
+        </a>
+        
+        <!-- Dodana navigacija (O nama, Projekti, Kontakt) -->
+        <nav class="hidden md:flex space-x-8 text-xs font-bold tracking-[0.2em] text-zinc-500 uppercase absolute left-1/2 -translate-x-1/2">
+            <a href="/o-nama" class="hover:text-black transition-colors duration-300">O nama</a>
+            <a href="/projekti" class="hover:text-black transition-colors duration-300">Projekti</a>
+            <a href="/kontakt" class="hover:text-black transition-colors duration-300">Kontakt</a>
+        </nav>
+
+        <!-- Povratak -->
         <a href="/" class="text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300 flex items-center gap-2">
             <span>←</span> POVRATAK
         </a>
-        <a href="/" class="pointer-events-auto cursor-pointer absolute left-1/2 -translate-x-1/2 hidden md:block">
-            <img src="logo.png" alt="Statoplast Logo" class="h-6 w-auto object-contain">
-        </a>
-        <div class="text-sm tracking-widest font-bold hidden md:block">MODERNA <span class="font-light text-zinc-400">ARHITEKTURA</span></div>
+        
     </header>
 
     <!-- Tab Navigacija (Sticky) -->
@@ -34,7 +45,8 @@
         <div class="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none py-4">
             <div class="flex space-x-8 text-sm font-semibold tracking-wide justify-start md:justify-center">
                 <button onclick="switchTab('pivot')" id="btn-pivot" class="tab-btn text-black border-b-2 border-black pb-1 transition-all duration-300">Pivot Vrata</button>
-                <button onclick="switchTab('pergole')" id="btn-pergole" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Pergole</button>
+                <!-- Promijenjeno ime taba -->
+                <button onclick="switchTab('pergole')" id="btn-pergole" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Bioklimatske pergole</button>
                 <button onclick="switchTab('stolarija')" id="btn-stolarija" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Alu Stolarija</button>
                 <button onclick="switchTab('ograde')" id="btn-ograde" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Moderne Ograde</button>
                 <button onclick="switchTab('zatvaranje')" id="btn-zatvaranje" class="tab-btn text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300">Zatvaranje Nadstrešnica</button>
@@ -126,7 +138,7 @@
             </div>
         </div>
 
-        <!-- ================= 2. PERGOLE ================= -->
+        <!-- ================= 2. BIOKLIMATSKE PERGOLE ================= -->
         <div id="tab-pergole" class="tab-content hidden space-y-20">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 <div class="lg:col-span-5 flex flex-col justify-center">
