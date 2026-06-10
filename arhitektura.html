@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="slike/pivot_vrata.jpg" alt="Pivot Vrata" class="w-full h-full object-cover">
+                    <img src="slike/pivot_vrata.jpg" alt="Pivot Vrata" class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105">
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
                     </ul>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="slike/bioklimatska_pergola.jpeg" alt="Pergole" class="w-full h-full object-cover">
+                    <img src="slike/bioklimatska_pergola.jpeg" alt="Pergole" class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105">
                 </div>
             </div>
         </div>
@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Alu Stolarija" class="w-full h-full object-cover">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" alt="Alu Stolarija" class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105">
                 </div>
             </div>
         </div>
@@ -117,7 +117,7 @@
                     <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Aluminijske i staklene ograde koje se savršeno uklapaju u suvremenu arhitekturu. Dizajnirane za terase, balkone i dvorišta, pružaju maksimalnu otpornost na vanjske utjecaje i dugotrajnost bez potrebe za kompliciranim održavanjem.</p>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="slike/moderne_ograde.jpeg" alt="Moderne Ograde" class="w-full h-full object-cover">
+                    <img src="slike/moderne_ograde.jpeg" alt="Moderne Ograde" class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105">
                 </div>
             </div>
         </div>
@@ -130,7 +130,7 @@
                     <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Pretvorite vašu otvorenu nadstrešnicu, terasu ili balkon u funkcionalan zatvoreni prostor. Koristimo premium staklene klizne sustave i fiksne aluminijske pregrade koje vas štite od vjetra i hladnoće, bez da gubite kontakt s okolišem i prirodnu svjetlost.</p>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="slike/zatvaranje_nadstresnica.jpeg" alt="Zatvaranje Nadstrešnica" class="w-full h-full object-cover">
+                    <img src="slike/zatvaranje_nadstresnica.jpeg" alt="Zatvaranje Nadstrešnica" class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105">
                 </div>
             </div>
         </div>
@@ -139,24 +139,20 @@
 
     <script>
         function switchTab(tabId) {
-            // Hide all
             document.querySelectorAll('.tab-content').forEach(el => {
                 el.classList.add('hidden');
                 el.classList.remove('animate-fade-up');
             });
-            // Reset buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('text-black', 'border-black');
                 btn.classList.add('text-zinc-400', 'border-transparent');
             });
             
-            // Show active
             const activeContent = document.getElementById('tab-' + tabId);
             activeContent.classList.remove('hidden');
-            void activeContent.offsetWidth; // Trigger reflow for animation
+            void activeContent.offsetWidth; 
             activeContent.classList.add('animate-fade-up');
 
-            // Active button style
             const activeBtn = document.getElementById('btn-' + tabId);
             activeBtn.classList.remove('text-zinc-400', 'border-transparent');
             activeBtn.classList.add('text-black', 'border-black');
