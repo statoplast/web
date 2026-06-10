@@ -19,7 +19,6 @@
         <a href="/" class="text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300 flex items-center gap-2">
             <span>←</span> POVRATAK
         </a>
-        
         <a href="/" class="pointer-events-auto cursor-pointer absolute left-1/2 -translate-x-1/2 hidden md:block">
             <img src="logo.png" alt="Statoplast Logo" class="h-6 w-auto object-contain">
         </a>
@@ -40,6 +39,7 @@
 
     <main class="max-w-7xl mx-auto px-6 py-12 md:py-24">
 
+        <!-- 1. PIVOT VRATA -->
         <div id="tab-pivot" class="tab-content block animate-fade-up">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 <div class="lg:col-span-5 flex flex-col justify-center">
@@ -64,24 +64,31 @@
                     </div>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="https://images.unsplash.com/photo-1596701830638-348600d86665?auto=format&fit=crop&w=1600&q=80" alt="Pivot Vrata" class="w-full h-full object-cover">
+                    <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6" alt="Pivot Vrata" class="w-full h-full object-cover">
                 </div>
             </div>
         </div>
 
+        <!-- 2. PERGOLE -->
         <div id="tab-pergole" class="tab-content hidden">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 <div class="lg:col-span-5 flex flex-col justify-center">
                     <span class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4 block">Kroz cijelu godinu</span>
                     <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1]">Bioklimatske<br><span class="font-bold">Pergole.</span></h1>
                     <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Posebne klizne lamele izdvajaju naše pergole od standardnih rješenja. Sustav ne samo da regulira svjetlost, već omogućuje i potpuno pomicanje (uklizavanje) lamela, čime u trenu otvarate cijeli krov prema nebu.</p>
+                    <ul class="space-y-3 text-sm text-zinc-700 font-medium mb-8">
+                        <li class="flex items-center gap-3"><span class="text-zinc-300">✓</span> Inovativni klizni sustav otvaranja krova</li>
+                        <li class="flex items-center gap-3"><span class="text-zinc-300">✓</span> Integrirana nevidljiva odvodnja vode</li>
+                        <li class="flex items-center gap-3"><span class="text-zinc-300">✓</span> Opcijska LED rasvjeta i staklene stijene</li>
+                    </ul>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="https://images.unsplash.com/photo-1605336069947-f404410a5628?auto=format&fit=crop&w=1600&q=80" alt="Pergole" class="w-full h-full object-cover">
+                    <img src="https://images.unsplash.com/photo-1541888946425-d81bb1924155" alt="Pergole" class="w-full h-full object-cover">
                 </div>
             </div>
         </div>
 
+        <!-- 3. ALU STOLARIJA -->
         <div id="tab-stolarija" class="tab-content hidden">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 <div class="lg:col-span-5 flex flex-col justify-center">
@@ -100,33 +107,35 @@
                     </div>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80" alt="Alu Stolarija" class="w-full h-full object-cover">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9" alt="Alu Stolarija" class="w-full h-full object-cover">
                 </div>
             </div>
         </div>
 
+        <!-- 4. MODERNE OGRADE -->
         <div id="tab-ograde" class="tab-content hidden">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 <div class="lg:col-span-5 flex flex-col justify-center">
                     <span class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4 block">Sigurnost uz estetiku</span>
                     <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1]">Moderne<br><span class="font-bold">Ograde.</span></h1>
-                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Aluminijske i staklene ograde koje se savršeno uklapaju u suvremenu arhitekturu. Dizajnirane za terase, balkone i dvorišta, pružaju maksimalnu otpornost na vanjske utjecaje i dugotrajnost bez potrebe za kompliciranim održavanjem.</p>
+                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Aluminijske i staklene ograde koje se savršeno uklapaju u suvremenu arhitekturu. Dizajnirane za terase, balkone i dvorišta, pružaju maksimalnu otpornost na vanjske utjecaje i dugotrajnost.</p>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="https://images.unsplash.com/photo-1594905190623-01869894e1d3?auto=format&fit=crop&w=1600&q=80" alt="Moderne Ograde" class="w-full h-full object-cover">
+                    <img src="https://images.unsplash.com/photo-1594905190623-01869894e1d3" alt="Moderne Ograde" class="w-full h-full object-cover">
                 </div>
             </div>
         </div>
         
+        <!-- 5. ZATVARANJE NADSTREŠNICA -->
         <div id="tab-zatvaranje" class="tab-content hidden">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
                 <div class="lg:col-span-5 flex flex-col justify-center">
                     <span class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4 block">Cjelogodišnji boravak</span>
                     <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1]">Zatvaranje<br><span class="font-bold">Nadstrešnica.</span></h1>
-                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Pretvorite vašu otvorenu nadstrešnicu, terasu ili balkon u funkcionalan zatvoreni prostor. Koristimo premium staklene klizne sustave i fiksne aluminijske pregrade koje vas štite od vjetra i hladnoće, bez da gubite kontakt s okolišem i prirodnu svjetlost.</p>
+                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Pretvorite vašu otvorenu nadstrešnicu, terasu ili balkon u funkcionalan zatvoreni prostor. Koristimo premium staklene klizne sustave i fiksne aluminijske pregrade koje vas štite od vjetra i hladnoće.</p>
                 </div>
                 <div class="lg:col-span-7 w-full h-[600px] lg:h-[800px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
-                    <img src="https://images.unsplash.com/photo-1505409859467-3a796fd5712e?auto=format&fit=crop&w=1600&q=80" alt="Zatvaranje Nadstrešnica" class="w-full h-full object-cover">
+                    <img src="https://images.unsplash.com/photo-1505409859467-3a796fd5712e" alt="Zatvaranje Nadstrešnica" class="w-full h-full object-cover">
                 </div>
             </div>
         </div>
@@ -143,12 +152,10 @@
                 btn.classList.remove('text-black', 'border-black');
                 btn.classList.add('text-zinc-400', 'border-transparent');
             });
-            
             const activeContent = document.getElementById('tab-' + tabId);
             activeContent.classList.remove('hidden');
-            void activeContent.offsetWidth; 
+            void activeContent.offsetWidth;
             activeContent.classList.add('animate-fade-up');
-
             const activeBtn = document.getElementById('btn-' + tabId);
             activeBtn.classList.remove('text-zinc-400', 'border-transparent');
             activeBtn.classList.add('text-black', 'border-black');
