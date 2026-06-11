@@ -133,7 +133,7 @@
                             </tr>
                             <tr>
                                 <td class="py-4 font-semibold text-zinc-950">Sigurnost i kontrola</td>
-                                <td class="py-4">Standardno automatsko zaključavanje u 5 točaka uz opciju elektromagnetske brave. Upravljanje po želji putem skenera otiska prsta ili bežične digitalne tipkovnice.</td>
+                                <td class="py-4">Standardno automatsko zaključavanje u 5 točaka uz opciju elektromagnetske brave. Upravljanje po želji putem skenera otiska prsta ili digitalne tipkovnice.</td>
                             </tr>
                             <tr>
                                 <td class="py-4 font-semibold text-zinc-950">Pristup</td>
@@ -141,7 +141,7 @@
                             </tr>
                             <tr>
                                 <td class="py-4 font-semibold text-zinc-950">Mehanizam panta</td>
-                                <td class="py-4">Vrhunski pivot sustavi sa stabilnom osi i podesivom brzinom zatvaranja.</td>
+                                <td class="py-4">Vrhunski robusni pivot sustavi sa stabilnom osi i podesivom brzinom zatvaranja.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -155,7 +155,7 @@
                 <div class="lg:col-span-5 flex flex-col justify-center">
                     <span class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4 block">Ugodan boravak na otvorenom</span>
                     <h1 class="text-5xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1]">Bioklimatske<br><span class="font-bold">Pergole.</span></h1>
-                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Naše bioklimatske pergole omogućuju maksimalno iskorištavanje terase ili dvorišta. Naš jedinstveni, vlastito dizajnirani sustav kliznih aluminijskih limova omogućuje potpuno otvaranje krova prema nebu. Svakih 300 mm se jednostavno može otvoriti tako što limovi kližu prema otvorenom dijelu, osiguravajući savršenu regulaciju svjetlosti i prozračnosti u prostoru.</p>
+                    <p class="text-lg text-zinc-500 mb-8 leading-relaxed font-light">Naše bioklimatske pergole omogućuju maksimalno iskorištavanje terase ili dvorišta. Naš jedinstveni, vlastito dizajnirani sustav segmentnih aluminijskih limova omogućuje potpuno otvaranje krova prema nebu. Limovi elegantno kližu i sklapaju se prema otvorenom dijelu konstrukcije, pružajući savršenu regulaciju svjetlosti, sunca i prozračnosti u prostoru.</p>
                     
                     <ul class="space-y-3 text-sm text-zinc-700 font-medium mb-8">
                         <li class="flex items-center gap-3"><span class="text-zinc-900 font-bold">✓</span> Inovativni sustav kliznih limova za potpunu kontrolu otvorenosti</li>
@@ -178,13 +178,22 @@
                     </div>
                 </div>
                 <div class="lg:col-span-6 space-y-6">
-                    <h3 class="text-3xl font-bold tracking-tight">Funkcionalnost i pametno upravljanje</h3>
-                    <p class="text-zinc-500 font-light leading-relaxed">Cjelokupna konstrukcija izrađena je od visokokvalitetnih aluminijskih profila zaštićenih plastifikacijom. Limovi se glatko sklapaju i klize unazad putem provjerenih motoriziranih pogona, što omogućuje brzo prilagođavanje trenutnim vremenskim uvjetima. Upravljanje možete odabrati prema vlastitim željama – putem klasičnog daljinskog upravljača ili putem pametnog sustava preko vašeg mobitela.</p>
+                    <h3 class="text-3xl font-bold tracking-tight">Funkcionalnost i vrhunska izvedba</h3>
+                    <p class="text-zinc-500 font-light leading-relaxed">Cjelokupna konstrukcija izrađena je od visokokvalitetnih aluminijskih profila zaštićenih plastifikacijom. Limovi se glatko sklapaju i klize unazad putem provjerenih motoriziranih pogona, što omogućuje brzo prilagođavanje trenutnim vremenskim uvjetima.</p>
                     
-                    <div class="grid grid-cols-1 gap-4">
-                        <div class="p-4 bg-white rounded-xl border border-zinc-200">
-                            <h5 class="font-bold text-sm text-zinc-900">Prilagođene dimenzije</h5>
-                            <p class="text-xs text-zinc-500 mt-1">Svaka se pergola dimenzionira i planira prema specifičnim uvjetima vaše lokacije i objekta.</p>
+                    <!-- Istaknuti box za upravljanje -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="p-5 bg-white rounded-2xl border border-zinc-200 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <h5 class="font-bold text-sm text-zinc-900 uppercase tracking-wider">Fleksibilno Upravljanje</h5>
+                                <p class="text-xs text-zinc-500 mt-2 leading-relaxed">Prilagodite pergolu vašem životnom stilu. Kao opciju nudimo upravljanje putem klasičnog daljinskog upravljača ili potpuno pametno upravljanje aplikacijom preko mobitela.</p>
+                            </div>
+                        </div>
+                        <div class="p-5 bg-zinc-100 rounded-2xl flex flex-col justify-between">
+                            <div>
+                                <h5 class="font-bold text-sm text-zinc-900 uppercase tracking-wider">Prilagođene dimenzije</h5>
+                                <p class="text-xs text-zinc-500 mt-2 leading-relaxed">Svaka se pergola detaljno dimenzionira i planira prema specifičnim uvjetima i zahtjevima vaše lokacije i objekta.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -301,7 +310,7 @@
 
     </main>
 
-    <!-- Skripta za rad tabova -->
+    <!-- Skripta za rad tabova i pametnih URL linkova -->
     <script>
         function switchTab(tabId) {
             // Sakrij sav sadržaj tabova i makni animaciju
@@ -317,15 +326,35 @@
             
             // Prikaži aktivni sadržaj i ponovno pokreni CSS animaciju
             const activeContent = document.getElementById('tab-' + tabId);
-            activeContent.classList.remove('hidden');
-            void activeContent.offsetWidth; // Trigger reflow za pokretanje animacije
-            activeContent.classList.add('animate-fade-up');
+            if (activeContent) {
+                activeContent.classList.remove('hidden');
+                void activeContent.offsetWidth; // Trigger reflow za pokretanje animacije
+                activeContent.classList.add('animate-fade-up');
+            }
 
             // Aktiviraj kliknuti gumb
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.remove('text-zinc-400', 'border-transparent');
-            activeBtn.classList.add('text-black', 'border-black');
+            if (activeBtn) {
+                activeBtn.classList.remove('text-zinc-400', 'border-transparent');
+                activeBtn.classList.add('text-black', 'border-black');
+            }
+
+            // MIJENJANJE URL LINKA: Ažurira link u pregledniku bez osvježavanja stranice
+            if(history.pushState) {
+                history.pushState(null, null, '#' + tabId);
+            } else {
+                window.location.hash = tabId;
+            }
         }
+
+        // DEEP LINKING: Provjera hash-a u URL-u prilikom učitavanja stranice
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentHash = window.location.hash.replace('#', '');
+            // Ako hash postoji i odgovara nekom od naših tabova, prebaci na njega
+            if (currentHash && document.getElementById('tab-' + currentHash)) {
+                switchTab(currentHash);
+            }
+        });
     </script>
 </body>
 </html>
