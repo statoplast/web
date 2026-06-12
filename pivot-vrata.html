@@ -43,7 +43,7 @@
     </header>
 
     <section class="sticky top-[73px] z-40 bg-zinc-50/95 backdrop-blur-md border-b border-zinc-200">
-        <div class="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none py-4">
+        <div id="secondary-nav" class="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none py-4 transition-all duration-500 ease-out">
             <div class="flex space-x-8 text-sm font-semibold tracking-wide justify-start md:justify-center">
                 <a href="pivot-vrata.html" class="text-black border-b-2 border-black pb-1 transition-all duration-300 inline-block">Pivot Vrata</a>
                 
@@ -145,6 +145,20 @@
             </div>
         </div>
     </main>
+
+    <script>
+        document.addEventListener('scroll', () => {
+            const secondaryNav = document.getElementById('secondary-nav');
+            
+            if (window.scrollY > 50) {
+                secondaryNav.classList.remove('py-4');
+                secondaryNav.classList.add('py-2.5'); // py-2.5 pruža savršen i balansiran omjer skupljanja
+            } else {
+                secondaryNav.classList.remove('py-2.5');
+                secondaryNav.classList.add('py-4');
+            }
+        });
+    </script>
 
 </body>
 </html>
