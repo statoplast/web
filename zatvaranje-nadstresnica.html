@@ -19,29 +19,31 @@
 </head>
 <body class="bg-zinc-50 text-zinc-900 font-sans antialiased selection:bg-zinc-900 selection:text-white">
 
-    <header class="w-full p-6 flex justify-between items-center bg-white/80 backdrop-blur-lg text-zinc-900 sticky top-0 z-50 border-b border-zinc-200 shadow-sm">
-        <a href="/" class="pointer-events-auto cursor-pointer z-10 flex items-center gap-4"> 
-            <img src="logo.png" alt="Statoplast Logo" class="h-6 md:h-8 w-auto object-contain brightness-0">       
-        </a>        
-        <nav class="hidden md:flex items-center space-x-8 text-xs font-bold tracking-[0.2em] absolute left-1/2 -translate-x-1/2">       
-            <a href="/o-nama" class="text-zinc-500 hover:text-black transition-colors duration-300">O NAMA</a>        
-            <a href="/projekti" class="text-zinc-500 hover:text-black transition-colors duration-300">PROJEKTI</a>        
-            <a href="/kontakt" class="text-zinc-500 hover:text-black transition-colors duration-300">KONTAKT</a>   
-        </nav>    
-        <div class="hidden md:flex items-center space-x-3 text-xs font-bold tracking-[0.2em] z-10">       
-            <a href="#" class="text-black">HR</a>        
-            <div class="h-4 w-[1px] bg-zinc-300"></div>        
-            <a href="#" class="text-zinc-400 hover:text-black transition-colors">EN</a>   
-        </div>
-        
-        <a href="/" class="md:hidden text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300 flex items-center gap-2 z-10">        
-            <span>←</span> POVRATAK   
-        </a>
-    </header>
+    <header class="w-full px-6 py-3 md:py-4 flex justify-between items-center bg-white/90 backdrop-blur-md text-zinc-900 border-b border-zinc-200">
+            <a href="/" class="pointer-events-auto cursor-pointer z-10 flex items-center gap-4 py-3 pr-4">
+                <img src="logo.png" alt="Statoplast Logo" class="h-6 md:h-8 w-auto object-contain brightness-0">      
+            </a>        
+            
+            <nav class="hidden md:flex items-center space-x-2 text-xs font-bold tracking-[0.2em] absolute left-1/2 -translate-x-1/2">      
+                <a href="/o-nama" class="text-zinc-500 hover:text-black transition-colors duration-300 py-3 px-3 inline-block">O NAMA</a>        
+                <a href="/projekti" class="text-zinc-500 hover:text-black transition-colors duration-300 py-3 px-3 inline-block">PROJEKTI</a>        
+                <a href="/kontakt" class="text-zinc-500 hover:text-black transition-colors duration-300 py-3 px-3 inline-block">KONTAKT</a>   
+            </nav>    
+            
+            <div class="hidden md:flex items-center text-xs font-bold tracking-[0.2em] z-10">      
+                <a href="#" class="text-black py-3 px-3 block">HR</a>        
+                <div class="h-4 w-[1px] bg-zinc-300 mx-1"></div>        
+                <a href="#" class="text-zinc-400 hover:text-black transition-colors py-3 px-3 block">EN</a>   
+            </div>
+            
+            <a href="/" class="md:hidden text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300 flex items-center gap-2 z-10 py-3 pl-4">        
+                <span>←</span> POVRATAK   
+            </a>
+        </header>
 
-    <section class="sticky top-[73px] z-40 bg-zinc-50/95 backdrop-blur-md border-b border-zinc-200">
-        <div id="secondary-nav" class="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none pt-4 pb-4 transition-[padding-bottom] duration-200 ease-in-out transform translate-z-0">
-            <div class="flex space-x-8 text-sm font-semibold tracking-wide justify-start md:justify-center">
+    <section class="w-full bg-zinc-50/95 backdrop-blur-md border-b border-zinc-200 shadow-sm">
+            <div id="secondary-nav" class="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none py-4">
+                <div class="flex space-x-8 text-sm font-semibold tracking-wide justify-start md:justify-center">
                 <a href="pivot-vrata.html" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Pivot Vrata</a>
                 <a href="bioklimatske-pergole.html" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Bioklimatske pergole</a>
                 <a href="alu-stolarija.html" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Alu Stolarija</a>
@@ -81,27 +83,6 @@
         </div>
 
     </main>
-    <script>
-        let isScrolled = false;
-
-        document.addEventListener('scroll', () => {
-            const secondaryNav = document.getElementById('secondary-nav');
-            
-            if (window.scrollY > 50) {
-                if (!isScrolled) {
-                    secondaryNav.classList.remove('pb-4');
-                    secondaryNav.classList.add('pb-1'); 
-                    isScrolled = true;
-                }
-            } else {
-                if (isScrolled) {
-                    secondaryNav.classList.remove('pb-1');
-                    secondaryNav.classList.add('pb-4');
-                    isScrolled = false;
-                }
-            }
-        });
-    </script>
 
 </body>
 </html>
