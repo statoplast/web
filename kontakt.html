@@ -11,23 +11,52 @@
             to { opacity: 1; transform: scale(1); }
         }
         .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-zinc-50 text-zinc-900 font-sans antialiased">
+<body class="bg-zinc-50 text-zinc-900 font-sans antialiased selection:bg-zinc-900 selection:text-white">
 
-    <!-- Zaglavlje -->
-    <header class="w-full p-6 flex justify-between items-center bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-zinc-200">
-        <a href="/" class="text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300">← POVRATAK</a>
-        <div class="pointer-events-auto cursor-pointer absolute left-1/2 -translate-x-1/2 hidden md:block">
-            <img src="logo.png" alt="Statoplast Logo" class="h-6 w-auto object-contain">
-        </div>
-        <div class="text-sm tracking-widest font-bold hidden md:block">KONTAKTIRAJTE <span class="font-light text-zinc-400">NAS</span></div>
-    </header>
+    <div class="sticky top-0 z-50 flex flex-col w-full">
+        
+        <header class="w-full px-6 py-3 md:py-4 flex justify-between items-center bg-white/90 backdrop-blur-md text-zinc-900 border-b border-zinc-200">
+            <a href="/" class="pointer-events-auto cursor-pointer z-10 flex items-center gap-4 py-3 pr-4">
+                <img src="logo.png" alt="Statoplast Logo" class="h-6 md:h-8 w-auto object-contain brightness-0">      
+            </a>        
+            
+            <nav class="hidden md:flex items-center space-x-2 text-xs font-bold tracking-[0.2em] absolute left-1/2 -translate-x-1/2">      
+                <a href="/o-nama" class="text-zinc-500 hover:text-black transition-colors duration-300 py-3 px-3 inline-block">O NAMA</a>        
+                <a href="/projekti" class="text-zinc-500 hover:text-black transition-colors duration-300 py-3 px-3 inline-block">PROJEKTI</a>        
+                <a href="/kontakt" class="text-black transition-colors duration-300 py-3 px-3 inline-block">KONTAKT</a>   
+            </nav>    
+            
+            <div class="hidden md:flex items-center text-xs font-bold tracking-[0.2em] z-10">      
+                <a href="#" class="text-black py-3 px-3 block">HR</a>        
+                <div class="h-4 w-[1px] bg-zinc-300 mx-1"></div>        
+                <a href="#" class="text-zinc-400 hover:text-black transition-colors py-3 px-3 block">EN</a>   
+            </div>
+            
+            <a href="/" class="md:hidden text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300 flex items-center gap-2 z-10 py-3 pl-4">        
+                <span>←</span> POVRATAK   
+            </a>
+        </header>
+
+        <section class="w-full bg-zinc-50/95 backdrop-blur-md border-b border-zinc-200 shadow-sm">
+            <div id="secondary-nav" class="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none py-4">
+                <div class="flex space-x-8 text-sm font-semibold tracking-wide justify-start md:justify-center">
+                    <a href="pivot-vrata" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Pivot Vrata</a>
+                    <a href="bioklimatske-pergole" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Bioklimatske pergole</a>
+                    <a href="alu-stolarija" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Alu Stolarija</a>
+                    <a href="moderne-ograde" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Moderne Ograde</a>
+                    <a href="zatvaranje-nadstresnica." class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Zatvaranje Nadstrešnica</a>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <main class="max-w-7xl mx-auto px-6 py-16 md:py-24">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             
-            <!-- Kontakt Informacije -->
             <div class="flex flex-col justify-center">
                 <h1 class="text-4xl md:text-6xl font-light tracking-tight mb-6">Tu smo za<br><span class="font-bold">vaše projekte.</span></h1>
                 <p class="text-lg text-zinc-500 mb-12 font-light">Zatražite ponudu, tehničku dokumentaciju ili dogovorite sastanak s našim inženjerskim timom.</p>
@@ -49,10 +78,8 @@
                 </div>
             </div>
 
-            <!-- Kontejner za formu / Poruku zahvale -->
             <div id="form-container" class="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-zinc-100 flex flex-col justify-center min-h-[500px]">
                 
-                <!-- Aktivna Forma -->
                 <form id="contact-form" action="https://formspree.io/f/xpqerjdy" method="POST" class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="flex flex-col">
@@ -88,7 +115,6 @@
                     </div>
                 </form>
 
-                <!-- Skrivena Poruka Zahvale (Prikazuje se tek nakon slanja) -->
                 <div id="success-message" class="hidden text-center animate-fade-in p-6">
                     <div class="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +127,6 @@
                     </p>
                 </div>
 
-                <!-- Skrivena Poruka Greške (Za svaki slučaj) -->
                 <div id="error-message" class="hidden text-center animate-fade-in p-6">
                     <h3 class="text-xl font-bold text-red-600 mb-2">Uuups! Došlo je do greške.</h3>
                     <p class="text-zinc-500 text-sm mb-4">Molimo pokušajte ponovno ili nam pošaljite direktan e-mail na info@statoplast.hr</p>
@@ -113,7 +138,6 @@
         </div>
     </main>
 
-    <!-- JavaScript magija za slanje bez osvježavanja stranice -->
     <script>
         const form = document.getElementById('contact-form');
         const formContainer = document.getElementById('form-container');
@@ -122,16 +146,14 @@
         const submitBtn = document.getElementById('submit-btn');
 
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Zaustavi preusmjeravanje na Formspree stranicu
+            e.preventDefault();
             
-            // Promijeni tekst na gumbu dok se šalje
             submitBtn.innerHTML = '<span>SLANJE U TIJEKU...</span>';
             submitBtn.disabled = true;
             submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
             const formData = new FormData(form);
 
-            // Pošalji podatke Formspree-u asinkrono (AJAX)
             fetch(form.action, {
                 method: form.method,
                 body: formData,
@@ -141,22 +163,18 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // Ako je slanje uspjelo: sakrij formu, prikaži zahvalu
                     form.classList.add('hidden');
                     successMessage.classList.remove('hidden');
                 } else {
-                    // Ako Formspree vrati grešku
                     form.classList.add('hidden');
                     errorMessage.classList.remove('hidden');
                 }
             })
             .catch(error => {
-                // Ako se dogodi mrežna greška
                 form.classList.add('hidden');
                 errorMessage.classList.remove('hidden');
             });
         });
     </script>
-
 </body>
 </html>

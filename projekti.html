@@ -10,17 +10,48 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .scrollbar-none::-webkit-scrollbar { display: none; }
+        .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-zinc-50 text-zinc-900 font-sans antialiased">
+<body class="bg-zinc-50 text-zinc-900 font-sans antialiased selection:bg-zinc-900 selection:text-white">
 
-    <header class="w-full p-6 flex justify-between items-center bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-zinc-200">
-        <a href="/" class="text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300">← POVRATAK</a>
-        <a href="/" class="pointer-events-auto cursor-pointer absolute left-1/2 -translate-x-1/2 hidden md:block">
-            <img src="logo.png" alt="Statoplast Logo" class="h-6 w-auto object-contain">
-        </a>
-        <div class="text-sm tracking-widest font-bold hidden md:block">NAŠI <span class="font-light text-zinc-400">PROJEKTI</span></div>
-    </header>
+    <div class="sticky top-0 z-50 flex flex-col w-full">
+        
+        <header class="w-full px-6 py-3 md:py-4 flex justify-between items-center bg-white/90 backdrop-blur-md text-zinc-900 border-b border-zinc-200">
+            <a href="/" class="pointer-events-auto cursor-pointer z-10 flex items-center gap-4 py-3 pr-4">
+                <img src="logo.png" alt="Statoplast Logo" class="h-6 md:h-8 w-auto object-contain brightness-0">      
+            </a>        
+            
+            <nav class="hidden md:flex items-center space-x-2 text-xs font-bold tracking-[0.2em] absolute left-1/2 -translate-x-1/2">      
+                <a href="/o-nama" class="text-zinc-500 hover:text-black transition-colors duration-300 py-3 px-3 inline-block">O NAMA</a>        
+                <a href="/projekti" class="text-black transition-colors duration-300 py-3 px-3 inline-block">PROJEKTI</a>        
+                <a href="/kontakt" class="text-zinc-500 hover:text-black transition-colors duration-300 py-3 px-3 inline-block">KONTAKT</a>   
+            </nav>    
+            
+            <div class="hidden md:flex items-center text-xs font-bold tracking-[0.2em] z-10">      
+                <a href="#" class="text-black py-3 px-3 block">HR</a>        
+                <div class="h-4 w-[1px] bg-zinc-300 mx-1"></div>        
+                <a href="#" class="text-zinc-400 hover:text-black transition-colors py-3 px-3 block">EN</a>   
+            </div>
+            
+            <a href="/" class="md:hidden text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300 flex items-center gap-2 z-10 py-3 pl-4">        
+                <span>←</span> POVRATAK   
+            </a>
+        </header>
+
+        <section class="w-full bg-zinc-50/95 backdrop-blur-md border-b border-zinc-200 shadow-sm">
+            <div id="secondary-nav" class="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none py-4">
+                <div class="flex space-x-8 text-sm font-semibold tracking-wide justify-start md:justify-center">
+                    <a href="pivot-vrata" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Pivot Vrata</a>
+                    <a href="bioklimatske-pergole" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Bioklimatske pergole</a>
+                    <a href="alu-stolarija" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Alu Stolarija</a>
+                    <a href="moderne-ograde" class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Moderne Ograde</a>
+                    <a href="zatvaranje-nadstresnica." class="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block">Zatvaranje Nadstrešnica</a>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <main class="max-w-7xl mx-auto px-6 py-16 md:py-24">
         
@@ -35,17 +66,14 @@
             </div>
         </div>
 
-        <div id="instafeed" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            </div>
+        <div id="instafeed" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
 
     </main>
 
     <script>
-        // Tvoj novi, besplatni izvor podataka s GitHuba
         const GITHUB_JSON_URL = "https://raw.githubusercontent.com/statoplast/ig-galerija/main/projekti.json";
         const feedContainer = document.getElementById('instafeed');
 
-        // Prikaz loading poruke dok se učitava
         feedContainer.innerHTML = '<p class="col-span-full text-center text-zinc-400 py-12 text-sm uppercase tracking-widest animate-pulse">Učitavanje projekata...</p>';
 
         fetch(GITHUB_JSON_URL)
@@ -54,21 +82,16 @@
                 return response.json();
             })
             .then(data => {
-                // Očisti loading poruku
                 feedContainer.innerHTML = '';
                 
-                // Naša Python skripta na GitHubu sprema podatke kao čisti niz (array)
                 if (!Array.isArray(data)) {
                     throw new Error('Neispravan format podataka.');
                 }
 
-                // Uzimamo prvih 8 objava
                 const posts = data.slice(0, 8); 
                 
                 posts.forEach((post, index) => {
                     const delay = index * 100;
-                    
-                    // Vučemo direktne podatke koje smo mi sami obradili na GitHubu
                     const mediaUrl = post.mediaUrl; 
                     const instagramLink = post.permalink;
 
