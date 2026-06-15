@@ -22,8 +22,8 @@
 
     <div class="sticky top-0 z-50 flex flex-col w-full">
         
-        <header class="w-full px-6 py-3 md:py-4 flex justify-between items-center bg-white/90 backdrop-blur-md text-zinc-900 border-b border-zinc-200">
-            <a href="/" class="pointer-events-auto cursor-pointer z-50 flex items-center gap-4 py-3 pr-4">
+        <header class="w-full px-6 py-3 md:py-4 flex justify-between items-center bg-white/90 backdrop-blur-md text-zinc-900 border-b border-zinc-200 relative z-50">
+            <a href="/" class="pointer-events-auto cursor-pointer flex items-center gap-4 py-3 pr-4">
                 <img src="logo.png" alt="Statoplast Logo" class="h-6 md:h-8 w-auto object-contain brightness-0">      
             </a>        
             
@@ -33,20 +33,18 @@
                 <a href="/kontakt" class="text-zinc-500 hover:text-black transition-colors duration-300 py-3 px-3 inline-block">KONTAKT</a>   
             </nav>    
             
-            <div class="hidden md:flex items-center text-xs font-bold tracking-[0.2em] z-10">      
+            <div class="hidden md:flex items-center text-xs font-bold tracking-[0.2em]">      
                 <a href="#" class="text-black py-3 px-3 block">HR</a>        
                 <div class="h-4 w-[1px] bg-zinc-300 mx-1"></div>        
                 <a href="#" class="text-zinc-400 hover:text-black transition-colors py-3 px-3 block">EN</a>   
             </div>
             
-            <!-- NOVO: Hamburger gumb za svijetlu temu -->
-            <button id="menu-toggle" class="md:hidden pointer-events-auto z-50 focus:outline-none w-10 h-10 relative flex items-center justify-center" aria-label="Izbornik">
+            <button id="menu-toggle" class="md:hidden pointer-events-auto focus:outline-none w-10 h-10 relative flex items-center justify-center" aria-label="Izbornik">
                 <span id="line1" class="absolute w-6 h-[1.5px] bg-zinc-900 transition-all duration-300 transform -translate-y-1"></span>
-                <span id="line2" class="absolute w-4 h-[1.5px] bg-zinc-900 transition-all duration-300 transform translate-y-1 right-2"></span>
+                <span id="line2" class="absolute w-6 h-[1.5px] bg-zinc-900 transition-all duration-300 transform translate-y-1"></span>
             </button>
         </header>
 
-        <!-- NOVO: Svijetli mobilni izbornik preko cijelog ekrana -->
         <div id="mobile-menu" class="fixed inset-0 bg-white/98 backdrop-blur-xl z-40 flex flex-col justify-center items-center space-y-8 transition-all duration-500 invisible opacity-0">
             <nav class="flex flex-col items-center space-y-6 text-sm font-bold tracking-[0.2em]">
                 <a href="o-nama" class="text-zinc-500 hover:text-black text-xl py-2 block transition-colors">O NAMA</a>
@@ -166,7 +164,6 @@
         </div>
     </main>
 
-    <!-- NOVO: JS Skripta za funkcionalnost menija -->
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -181,15 +178,15 @@
                 mobileMenu.classList.remove('visible', 'opacity-100');
                 line1.classList.remove('rotate-45');
                 line1.classList.add('-translate-y-1');
-                line2.classList.remove('-rotate-45', 'w-6', 'left-2');
-                line2.classList.add('translate-y-1', 'w-4', 'right-2');
+                line2.classList.remove('-rotate-45');
+                line2.classList.add('translate-y-1');
             } else {
                 mobileMenu.classList.remove('invisible', 'opacity-0');
                 mobileMenu.classList.add('visible', 'opacity-100');
                 line1.classList.remove('-translate-y-1');
                 line1.classList.add('rotate-45');
-                line2.classList.remove('translate-y-1', 'w-4', 'right-2');
-                line2.classList.add('-rotate-45', 'w-6', 'left-2');
+                line2.classList.remove('translate-y-1');
+                line2.classList.add('-rotate-45');
             }
         });
     </script>
