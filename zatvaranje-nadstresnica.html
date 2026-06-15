@@ -21,7 +21,7 @@
 <body class="bg-zinc-50 text-zinc-900 font-sans antialiased selection:bg-zinc-900 selection:text-white">
 
     <div class="sticky top-0 z-50 flex flex-col w-full">
-        <header class="w-full px-6 py-3 md:py-4 flex justify-between items-center bg-white/90 backdrop-blur-md text-zinc-900 border-b border-zinc-200">
+        <header class="w-full px-6 py-3 md:py-4 flex justify-between items-center bg-white/90 backdrop-blur-md text-zinc-900 border-b border-zinc-200 relative z-50">
             <a href="/" class="pointer-events-auto cursor-pointer z-10 flex items-center gap-4 py-3 pr-4">
                 <img src="logo.png" alt="Statoplast Logo" class="h-6 md:h-8 w-auto object-contain brightness-0">      
             </a>        
@@ -38,10 +38,26 @@
                 <a href="#" class="text-zinc-400 hover:text-black transition-colors py-3 px-3 block">EN</a>   
             </div>
             
-            <a href="/" class="md:hidden text-xs font-bold tracking-[0.2em] text-zinc-500 hover:text-black transition-colors duration-300 flex items-center gap-2 z-10 py-3 pl-4">        
-                <span>←</span> POVRATAK   
-            </a>
+            <button id="menu-toggle" class="md:hidden pointer-events-auto focus:outline-none w-10 h-10 relative flex items-center justify-center" aria-label="Izbornik">
+                <span id="line1" class="absolute w-6 h-[1.5px] bg-zinc-900 transition-all duration-300 transform -translate-y-1"></span>
+                <span id="line2" class="absolute w-6 h-[1.5px] bg-zinc-900 transition-all duration-300 transform translate-y-1"></span>
+            </button>
         </header>
+
+        
+        <div id="mobile-menu" class="fixed inset-0 bg-white/98 backdrop-blur-xl z-40 flex flex-col justify-center items-center space-y-8 transition-all duration-500 invisible opacity-0">   
+            <nav class="flex flex-col items-center space-y-6 text-sm font-bold tracking-[0.2em]">       
+                <a href="o-nama" class="text-zinc-500 hover:text-black text-xl py-2 block transition-colors">O NAMA</a>        
+                <a href="projekti" class="text-zinc-500 hover:text-black text-xl py-2 block transition-colors">PROJEKTI</a>       
+                <a href="kontakt" class="text-zinc-500 hover:text-black text-xl py-2 block transition-colors">KONTAKT</a>    
+            </nav>    
+            <div class="w-12 h-[1px] bg-zinc-200 my-4"></div>   
+            <div class="flex items-center space-x-3 text-xs font-bold tracking-[0.2em]">     
+                <a href="#" class="text-black py-2 px-3 block">HR</a>        
+                <div class="h-4 w-[1px] bg-zinc-300"></div>
+                <a href="#" class="text-zinc-400 hover:text-black transition-colors py-2 px-3 block">EN</a>
+            </div>
+        </div>
 
         <section class="w-full bg-zinc-50/95 backdrop-blur-md border-b border-zinc-200 shadow-sm">
             <div id="secondary-nav" class="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none py-4">
@@ -87,6 +103,32 @@
         </div>
 
     </main>
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.contains('visible');
+            
+            if (isOpen) {
+                mobileMenu.classList.add('invisible', 'opacity-0');
+                mobileMenu.classList.remove('visible', 'opacity-100');
+                line1.classList.remove('rotate-45');
+                line1.classList.add('-translate-y-1');
+                line2.classList.remove('-rotate-45');
+                line2.classList.add('translate-y-1');
+            } else {
+                mobileMenu.classList.remove('invisible', 'opacity-0');
+                mobileMenu.classList.add('visible', 'opacity-100');
+                line1.classList.remove('-translate-y-1');
+                line1.classList.add('rotate-45');
+                line2.classList.remove('translate-y-1');
+                line2.classList.add('-rotate-45');
+            }
+        });
+    </script>
 
 </body>
 </html>
