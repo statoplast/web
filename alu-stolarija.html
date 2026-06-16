@@ -144,6 +144,24 @@
                 line2.classList.add('-rotate-45');
             }
         });
+
+        // NOVA LOGIKA: Automatska animacija lijevo-desno (samo na mobitelima)
+        window.addEventListener('DOMContentLoaded', () => {
+            const secondaryNav = document.getElementById('secondary-nav');
+            
+            // Pokreći samo ako je širina ekrana manja od 768px (mobitel)
+            if (window.innerWidth < 768 && secondaryNav) {
+                setTimeout(() => {
+                    // Glatko skrolaj 120 piksela udesno
+                    secondaryNav.scrollTo({ left: 120, behavior: 'smooth' });
+                    
+                    // Nakon 800 milisekundi vrati glatko natrag na početak (0)
+                    setTimeout(() => {
+                        secondaryNav.scrollTo({ left: 0, behavior: 'smooth' });
+                    }, 800);
+                }, 600); // Mala pauza nakon učitavanja stranice da korisnik uoči pokret
+            }
+        });
     </script>
 </body>
 </html>
