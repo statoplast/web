@@ -102,7 +102,7 @@
                 </div>
                 <div class="lg:col-span-6 space-y-6">
                     <h3 class="text-3xl font-bold tracking-tight">Funkcionalnost i vrhunska izvedba</h3>
-                    <p class="text-zinc-700 leading-relaxed">Cjelokupna konstrukcija izrađena je od visokokvalitetnih aluminijskih profila zaštićenih plastifikacijom. Limovi se glatko sklapaju i klize unazad putem provjerenih motoriziranih pogona, što omogućuje brzo prilagođavanje trenutnim vremenskim uvjetima.</p>
+                    <p class="text-zinc-700 leading-relaxed">Cjelokupna konstrukcija izrađena je od visokokvalitetnih aluminijskih profila zaštićenih plastifikacijom. Limovi se glatko sklapaju i klize unazad putem provjenu mehanizama i motoriziranih pogona, što omogućuje brzo prilagođavanje trenutnim vremenskim uvjetima.</p>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         <div class="p-5 bg-white rounded-2xl border border-zinc-200 shadow-sm flex flex-col justify-between">
@@ -147,6 +147,23 @@
                 line1.classList.add('rotate-45');
                 line2.classList.remove('translate-y-1');
                 line2.classList.add('-rotate-45');
+            }
+        });
+
+        // DODANA LOGIKA: Automatska animacija vodoravnog skrolanja na mobitelu
+        window.addEventListener('DOMContentLoaded', () => {
+            const secondaryNav = document.getElementById('secondary-nav');
+            
+            if (window.innerWidth < 768 && secondaryNav) {
+                setTimeout(() => {
+                    // Pomakni glatko udesno za 120 piksela
+                    secondaryNav.scrollTo({ left: 120, behavior: 'smooth' });
+                    
+                    // Nakon 800ms vrati na početnu poziciju (0)
+                    setTimeout(() => {
+                        secondaryNav.scrollTo({ left: 0, behavior: 'smooth' });
+                    }, 800);
+                }, 600); // Pokreće se kratko nakon što se stranica vizualno učita
             }
         });
     </script>

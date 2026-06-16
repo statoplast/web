@@ -108,6 +108,7 @@
         </div>
         
     </main>
+
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -131,6 +132,23 @@
                 line1.classList.add('rotate-45');
                 line2.classList.remove('translate-y-1');
                 line2.classList.add('-rotate-45');
+            }
+        });
+
+        // DODANA LOGIKA: Automatska animacija vodoravnog skrolanja na mobitelu
+        window.addEventListener('DOMContentLoaded', () => {
+            const secondaryNav = document.getElementById('secondary-nav');
+            
+            if (window.innerWidth < 768 && secondaryNav) {
+                setTimeout(() => {
+                    // Pomakni glatko udesno za 120 piksela
+                    secondaryNav.scrollTo({ left: 120, behavior: 'smooth' });
+                    
+                    // Nakon 800ms vrati na početnu poziciju (0)
+                    setTimeout(() => {
+                        secondaryNav.scrollTo({ left: 0, behavior: 'smooth' });
+                    }, 800);
+                }, 600); // Pokreće se kratko nakon što se stranica vizualno učita
             }
         });
     </script>
