@@ -133,17 +133,16 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
 
         <div className={styles.langWrap}>
           {LANGUAGES.map((lang) => (
-            <a
-              key={lang.code}
-              href="#"
-              aria-label={lang.label}
-              className={`block w-6 h-4 md:w-7 md:h-5 rounded-[2px] overflow-hidden transition-all duration-300 ${
-                lang.code === ACTIVE_LANGUAGE
-                  ? `opacity-100 ${styles.flagActiveRing}`
-                  : "opacity-40 hover:opacity-80"
-              }`}
-            >
-              <lang.Flag className="w-full h-full object-cover" />
+            <a key={lang.code} href="#" aria-label={lang.label} className="block p-2 -m-2">
+              <span
+                className={`block w-6 h-4 md:w-7 md:h-5 rounded-[2px] overflow-hidden transition-all duration-300 ${
+                  lang.code === ACTIVE_LANGUAGE
+                    ? `opacity-100 ${styles.flagActiveRing}`
+                    : "opacity-40 hover:opacity-80"
+                }`}
+              >
+                <lang.Flag className="w-full h-full object-cover" />
+              </span>
             </a>
           ))}
         </div>
@@ -190,17 +189,16 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
         <div className={`w-12 h-[1px] my-4 ${styles.mobileDivider}`}></div>
         <div className="flex items-center gap-3">
           {LANGUAGES.map((lang) => (
-            <a
-              key={lang.code}
-              href="#"
-              aria-label={lang.label}
-              className={`block w-8 h-6 rounded-[2px] overflow-hidden transition-all duration-300 ${
-                lang.code === ACTIVE_LANGUAGE
-                  ? `opacity-100 ${styles.flagActiveRing}`
-                  : "opacity-40 hover:opacity-80"
-              }`}
-            >
-              <lang.Flag className="w-full h-full object-cover" />
+            <a key={lang.code} href="#" aria-label={lang.label} className="block p-2.5 -m-2.5">
+              <span
+                className={`block w-8 h-6 rounded-[2px] overflow-hidden transition-all duration-300 ${
+                  lang.code === ACTIVE_LANGUAGE
+                    ? `opacity-100 ${styles.flagActiveRing}`
+                    : "opacity-40 hover:opacity-80"
+                }`}
+              >
+                <lang.Flag className="w-full h-full object-cover" />
+              </span>
             </a>
           ))}
         </div>

@@ -1,9 +1,54 @@
+const SHIELD_COLS = 5;
+const SHIELD_ROWS = 4;
+const SHIELD_X = 23;
+const SHIELD_Y = 11;
+const SHIELD_W = 14;
+const SHIELD_H = 18;
+const CELL_W = SHIELD_W / SHIELD_COLS;
+const CELL_H = SHIELD_H / SHIELD_ROWS;
+
 export function FlagHR({ className }: { className?: string }) {
+  const cells = [];
+  for (let row = 0; row < SHIELD_ROWS; row++) {
+    for (let col = 0; col < SHIELD_COLS; col++) {
+      const isRed = (row + col) % 2 === 0;
+      cells.push(
+        <rect
+          key={`${row}-${col}`}
+          x={SHIELD_X + col * CELL_W}
+          y={SHIELD_Y + row * CELL_H}
+          width={CELL_W}
+          height={CELL_H}
+          fill={isRed ? "#FF0000" : "#FFFFFF"}
+        />
+      );
+    }
+  }
+
   return (
     <svg viewBox="0 0 60 40" className={className} aria-hidden="true">
       <rect width="60" height="13.33" fill="#FF0000" />
       <rect y="13.33" width="60" height="13.33" fill="#FFFFFF" />
       <rect y="26.67" width="60" height="13.33" fill="#171796" />
+      <rect
+        x={SHIELD_X}
+        y={SHIELD_Y}
+        width={SHIELD_W}
+        height={SHIELD_H}
+        fill="#FFFFFF"
+        stroke="#FFFFFF"
+        strokeWidth="1"
+      />
+      {cells}
+      <rect
+        x={SHIELD_X}
+        y={SHIELD_Y}
+        width={SHIELD_W}
+        height={SHIELD_H}
+        fill="none"
+        stroke="#171796"
+        strokeWidth="0.6"
+      />
     </svg>
   );
 }
