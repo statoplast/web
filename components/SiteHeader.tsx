@@ -22,11 +22,30 @@ const LANGUAGES = [
 
 const ACTIVE_LANGUAGE = "HR";
 
+function HomeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M3 11.5 12 4l9 7.5" />
+      <path d="M5.5 9.5V20a1 1 0 0 0 1 1H10v-6h4v6h3.5a1 1 0 0 0 1-1V9.5" />
+    </svg>
+  );
+}
+
 const VARIANT_STYLES: Record<
   SiteHeaderVariant,
   {
     header: string;
     logo: string;
+    homeIcon: string;
     nav: string;
     navLink: string;
     navLinkActive: string;
@@ -44,6 +63,7 @@ const VARIANT_STYLES: Record<
     header:
       "fixed top-0 left-0 w-full z-50 px-6 md:px-8 py-3 md:py-4 flex justify-between items-center bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-none",
     logo: "h-8 md:h-10 w-auto object-contain brightness-0 invert",
+    homeIcon: "text-zinc-300 hover:text-white",
     nav: "hidden md:flex items-center space-x-2 text-xs font-bold tracking-[0.2em] pointer-events-auto absolute left-1/2 -translate-x-1/2",
     navLink: "transition-colors duration-300 py-3 px-4 inline-block",
     navLinkActive: "text-white",
@@ -61,6 +81,7 @@ const VARIANT_STYLES: Record<
     header:
       "w-full px-6 py-3 md:py-4 flex justify-between items-center bg-white/90 backdrop-blur-md text-zinc-900 border-b border-zinc-200 relative z-50",
     logo: "h-6 md:h-8 w-auto object-contain brightness-0",
+    homeIcon: "text-zinc-500 hover:text-black",
     nav: "hidden md:flex items-center space-x-2 text-xs font-bold tracking-[0.2em] absolute left-1/2 -translate-x-1/2",
     navLink: "transition-colors duration-300 py-3 px-3 inline-block",
     navLinkActive: "text-black",
@@ -78,6 +99,7 @@ const VARIANT_STYLES: Record<
     header:
       "w-full p-6 flex justify-between items-center bg-slate-900/80 backdrop-blur-md relative z-50 border-b border-slate-800",
     logo: "h-6 md:h-8 w-auto object-contain brightness-0 invert",
+    homeIcon: "text-slate-400 hover:text-white",
     nav: "hidden md:flex items-center space-x-8 text-xs font-bold tracking-[0.2em] absolute left-1/2 -translate-x-1/2",
     navLink: "transition-colors duration-300",
     navLinkActive: "text-white",
@@ -103,19 +125,29 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
   return (
     <>
       <header className={styles.header}>
-        <Link
-          href="/"
-          className="pointer-events-auto cursor-pointer z-50 flex items-center gap-4 py-3 pr-4"
-        >
-          <Image
-            src="/logo.png"
-            alt="Statoplast Logo"
-            width={286}
-            height={67}
-            className={styles.logo}
-            priority
-          />
-        </Link>
+        <div className="flex items-center gap-3 md:gap-4">
+          <Link
+            href="/"
+            aria-label="Početna"
+            className={`pointer-events-auto p-2 -m-2 transition-colors duration-300 ${styles.homeIcon}`}
+          >
+            <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
+          </Link>
+
+          <Link
+            href="/"
+            className="pointer-events-auto cursor-pointer z-50 flex items-center gap-4 py-3 pr-4"
+          >
+            <Image
+              src="/logo.png"
+              alt="Statoplast Logo"
+              width={286}
+              height={67}
+              className={styles.logo}
+              priority
+            />
+          </Link>
+        </div>
 
         <nav className={styles.nav}>
           {NAV_LINKS.map((link) => (
