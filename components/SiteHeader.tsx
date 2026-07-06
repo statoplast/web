@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FlagDE, FlagEN, FlagHR } from "./Flags";
 
 export type SiteHeaderVariant = "transparent" | "light" | "industrial";
 
@@ -12,6 +13,14 @@ const NAV_LINKS = [
   { href: "/projekti", label: "PROJEKTI" },
   { href: "/kontakt", label: "KONTAKT" },
 ];
+
+const LANGUAGES = [
+  { code: "HR", label: "Hrvatski", Flag: FlagHR },
+  { code: "EN", label: "English", Flag: FlagEN },
+  { code: "DE", label: "Deutsch", Flag: FlagDE },
+];
+
+const ACTIVE_LANGUAGE = "HR";
 
 const VARIANT_STYLES: Record<
   SiteHeaderVariant,
@@ -23,9 +32,7 @@ const VARIANT_STYLES: Record<
     navLinkActive: string;
     navLinkInactive: string;
     langWrap: string;
-    langActive: string;
-    langInactive: string;
-    langDivider: string;
+    flagActiveRing: string;
     hamburgerWrap: string;
     hamburgerLine: string;
     mobileMenu: string;
@@ -41,11 +48,8 @@ const VARIANT_STYLES: Record<
     navLink: "transition-colors duration-300 py-3 px-4 inline-block",
     navLinkActive: "text-white",
     navLinkInactive: "text-zinc-300 hover:text-white",
-    langWrap:
-      "hidden md:flex items-center text-xs font-bold tracking-[0.2em] pointer-events-auto z-10",
-    langActive: "text-white py-3 px-3 block",
-    langInactive: "text-zinc-500 hover:text-zinc-300 transition-colors py-3 px-3 block",
-    langDivider: "h-4 w-[1px] bg-white/30 mx-1",
+    langWrap: "hidden md:flex items-center gap-2 pointer-events-auto z-10",
+    flagActiveRing: "ring-2 ring-white",
     hamburgerWrap:
       "md:hidden pointer-events-auto text-white z-50 focus:outline-none w-10 h-10 relative flex items-center justify-center",
     hamburgerLine: "bg-white",
@@ -61,10 +65,8 @@ const VARIANT_STYLES: Record<
     navLink: "transition-colors duration-300 py-3 px-3 inline-block",
     navLinkActive: "text-black",
     navLinkInactive: "text-zinc-500 hover:text-black",
-    langWrap: "hidden md:flex items-center text-xs font-bold tracking-[0.2em] z-10",
-    langActive: "text-black py-3 px-3 block",
-    langInactive: "text-zinc-400 hover:text-black transition-colors py-3 px-3 block",
-    langDivider: "h-4 w-[1px] bg-zinc-300 mx-1",
+    langWrap: "hidden md:flex items-center gap-2 z-10",
+    flagActiveRing: "ring-2 ring-zinc-900",
     hamburgerWrap:
       "md:hidden pointer-events-auto focus:outline-none w-10 h-10 relative flex items-center justify-center",
     hamburgerLine: "bg-zinc-900",
@@ -80,10 +82,8 @@ const VARIANT_STYLES: Record<
     navLink: "transition-colors duration-300",
     navLinkActive: "text-white",
     navLinkInactive: "text-slate-300 hover:text-white",
-    langWrap: "hidden md:flex items-center space-x-3 text-xs font-bold tracking-[0.2em] z-10",
-    langActive: "text-white",
-    langInactive: "text-slate-500 hover:text-slate-300 transition-colors",
-    langDivider: "h-4 w-[1px] bg-slate-600",
+    langWrap: "hidden md:flex items-center gap-2 z-10",
+    flagActiveRing: "ring-2 ring-white",
     hamburgerWrap:
       "md:hidden pointer-events-auto focus:outline-none w-10 h-10 relative flex items-center justify-center z-50",
     hamburgerLine: "bg-slate-300",
@@ -132,13 +132,20 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
         </nav>
 
         <div className={styles.langWrap}>
-          <a href="#" className={styles.langActive}>
-            HR
-          </a>
-          <div className={styles.langDivider}></div>
-          <a href="#" className={styles.langInactive}>
-            EN
-          </a>
+          {LANGUAGES.map((lang) => (
+            <a
+              key={lang.code}
+              href="#"
+              aria-label={lang.label}
+              className={`block w-6 h-4 md:w-7 md:h-5 rounded-[2px] overflow-hidden transition-all duration-300 ${
+                lang.code === ACTIVE_LANGUAGE
+                  ? `opacity-100 ${styles.flagActiveRing}`
+                  : "opacity-40 hover:opacity-80"
+              }`}
+            >
+              <lang.Flag className="w-full h-full object-cover" />
+            </a>
+          ))}
         </div>
 
         <button
@@ -181,14 +188,21 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
           ))}
         </nav>
         <div className={`w-12 h-[1px] my-4 ${styles.mobileDivider}`}></div>
-        <div className="flex items-center space-x-3 text-xs font-bold tracking-[0.2em]">
-          <a href="#" className={`${styles.langActive} px-3`}>
-            HR
-          </a>
-          <div className={`h-4 w-[1px] ${styles.langDivider}`}></div>
-          <a href="#" className={`${styles.langInactive} px-3`}>
-            EN
-          </a>
+        <div className="flex items-center gap-3">
+          {LANGUAGES.map((lang) => (
+            <a
+              key={lang.code}
+              href="#"
+              aria-label={lang.label}
+              className={`block w-8 h-6 rounded-[2px] overflow-hidden transition-all duration-300 ${
+                lang.code === ACTIVE_LANGUAGE
+                  ? `opacity-100 ${styles.flagActiveRing}`
+                  : "opacity-40 hover:opacity-80"
+              }`}
+            >
+              <lang.Flag className="w-full h-full object-cover" />
+            </a>
+          ))}
         </div>
       </div>
     </>
