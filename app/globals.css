@@ -2,6 +2,10 @@
 @source "../app";
 @source "../components";
 
+html {
+  scrollbar-gutter: stable;
+}
+
 @layer utilities {
   .scrollbar-none {
     scrollbar-width: none;
