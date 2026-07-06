@@ -53,7 +53,7 @@ export default function SecondaryNav({ variant }: { variant: SecondaryNavVariant
   }
 
   return (
-    <section className="sticky top-[73px] z-40 bg-slate-900/95 backdrop-blur-md pt-6 pb-0 border-b border-slate-800 shadow-xl">
+    <section className="relative z-40 bg-slate-900/95 backdrop-blur-md pt-6 pb-0 border-b border-slate-800 shadow-xl">
       <div
         id="secondary-nav"
         className="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none"

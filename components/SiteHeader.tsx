@@ -76,7 +76,7 @@ const VARIANT_STYLES: Record<
   },
   industrial: {
     header:
-      "w-full p-6 flex justify-between items-center bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-800",
+      "w-full p-6 flex justify-between items-center bg-slate-900/80 backdrop-blur-md relative z-50 border-b border-slate-800",
     logo: "h-6 md:h-8 w-auto object-contain brightness-0 invert",
     nav: "hidden md:flex items-center space-x-8 text-xs font-bold tracking-[0.2em] absolute left-1/2 -translate-x-1/2",
     navLink: "transition-colors duration-300",

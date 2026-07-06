@@ -12,9 +12,11 @@ export const metadata: Metadata = {
 export default function OrmariPage() {
   return (
     <div className="bg-[#1a2a40] text-slate-300 font-sans antialiased selection:bg-blue-600 selection:text-white">
-      <SiteHeader variant="industrial" />
+      <div className="sticky top-0 z-50 flex flex-col w-full">
+        <SiteHeader variant="industrial" />
 
-      <SecondaryNav variant="industrial" />
+        <SecondaryNav variant="industrial" />
+      </div>
 
       <main className="max-w-7xl mx-auto px-6 py-12 md:py-20 animate-slide-in">
         <div>
