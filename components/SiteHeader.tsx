@@ -125,31 +125,28 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
   return (
     <>
       <header className={styles.header}>
-        <div className="flex items-center gap-3 md:gap-4">
+        <Link
+          href="/"
+          className="pointer-events-auto cursor-pointer z-50 flex items-center gap-4 py-3 pr-4"
+        >
+          <Image
+            src="/logo.png"
+            alt="Statoplast Logo"
+            width={286}
+            height={67}
+            className={styles.logo}
+            priority
+          />
+        </Link>
+
+        <nav className={styles.nav}>
           <Link
             href="/"
             aria-label="Početna"
-            className={`pointer-events-auto p-2 -m-2 transition-colors duration-300 ${styles.homeIcon}`}
+            className={`p-2 -m-2 mr-1 transition-colors duration-300 ${styles.homeIcon}`}
           >
-            <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
+            <HomeIcon className="w-4 h-4" />
           </Link>
-
-          <Link
-            href="/"
-            className="pointer-events-auto cursor-pointer z-50 flex items-center gap-4 py-3 pr-4"
-          >
-            <Image
-              src="/logo.png"
-              alt="Statoplast Logo"
-              width={286}
-              height={67}
-              className={styles.logo}
-              priority
-            />
-          </Link>
-        </div>
-
-        <nav className={styles.nav}>
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -207,6 +204,14 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
         } ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
       >
         <nav className="flex flex-col items-center space-y-6 text-sm font-bold tracking-[0.2em]">
+          <Link
+            href="/"
+            onClick={() => setIsOpen(false)}
+            aria-label="Početna"
+            className={`${styles.mobileLink} py-2 transition-colors`}
+          >
+            <HomeIcon className="w-6 h-6" />
+          </Link>
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
