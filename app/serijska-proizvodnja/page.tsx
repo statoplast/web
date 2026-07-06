@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import SecondaryNav from "@/components/SecondaryNav";
 
 export const metadata: Metadata = {
-  title: "Statoplast | Industrijske Usluge",
+  title: "Serijska Proizvodnja Metalnih Komponenti | Statoplast",
   description:
     "Pouzdana serijska proizvodnja metalnih komponenti. Statoplast je vaš strateški B2B outsourcing partner za cjelovitu izradu i montažu. Pošaljite nacrt!",
 };
@@ -13,50 +14,7 @@ export default function SerijskaProizvodnjaPage() {
     <div className="bg-[#1a2a40] text-slate-300 font-sans antialiased selection:bg-blue-600 selection:text-white">
       <SiteHeader variant="industrial" />
 
-      <section className="sticky top-[73px] z-40 bg-slate-900/95 backdrop-blur-md pt-6 pb-0 border-b border-slate-800 shadow-xl">
-        <div
-          id="secondary-nav"
-          className="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none"
-        >
-          <div className="flex space-x-10 md:space-x-12">
-            <Link
-              href="/plastifikacija-metala"
-              className="relative pb-4 text-sm font-medium text-slate-500 hover:text-white tracking-wide transition-all inline-block"
-            >
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 rounded-t-sm opacity-0 transition-opacity"></span>
-              Plastifikacija Metala
-            </Link>
-            <Link
-              href="/lasersko-rezanje"
-              className="relative pb-4 text-sm font-medium text-slate-500 hover:text-white tracking-wide transition-all inline-block"
-            >
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 rounded-t-sm opacity-0 transition-opacity"></span>
-              Lasersko Rezanje
-            </Link>
-            <Link
-              href="/cnc-obrada"
-              className="relative pb-4 text-sm font-medium text-slate-500 hover:text-white tracking-wide transition-all inline-block"
-            >
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 rounded-t-sm opacity-0 transition-opacity"></span>
-              CNC Obrada
-            </Link>
-            <Link
-              href="/ormari"
-              className="relative pb-4 text-sm font-medium text-slate-500 hover:text-white tracking-wide transition-all inline-block"
-            >
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 rounded-t-sm opacity-0 transition-opacity"></span>
-              Metalni i Elektro Ormari
-            </Link>
-            <Link
-              href="/serijska-proizvodnja"
-              className="relative pb-4 text-sm font-bold text-white tracking-wide transition-all inline-block"
-            >
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 rounded-t-sm opacity-100 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-opacity"></span>
-              Serijska Proizvodnja
-            </Link>
-          </div>
-        </div>
-      </section>
+      <SecondaryNav variant="industrial" />
 
       <main className="max-w-7xl mx-auto px-6 py-12 md:py-20 animate-slide-in">
         <div>

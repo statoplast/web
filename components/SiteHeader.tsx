@@ -110,8 +110,8 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
           <Image
             src="/logo.png"
             alt="Statoplast Logo"
-            width={120}
-            height={40}
+            width={286}
+            height={67}
             className={styles.logo}
             priority
           />
@@ -144,7 +144,9 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
         <button
           onClick={() => setIsOpen((v) => !v)}
           className={styles.hamburgerWrap}
-          aria-label="Izbornik"
+          aria-label={isOpen ? "Zatvori izbornik" : "Otvori izbornik"}
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
         >
           <span
             className={`absolute w-6 h-[1.5px] transition-all duration-300 transform ${
@@ -160,6 +162,8 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
       </header>
 
       <div
+        id="mobile-menu"
+        aria-hidden={!isOpen}
         className={`fixed inset-0 backdrop-blur-xl z-40 flex flex-col justify-center items-center space-y-8 transition-all duration-500 ${
           styles.mobileMenu
         } ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}

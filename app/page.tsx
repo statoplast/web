@@ -7,6 +7,8 @@ export default function HomePage() {
       <SiteHeader variant="transparent" />
 
       <main className="relative flex flex-col md:flex-row h-[100dvh] w-full">
+        <h1 className="sr-only">Statoplast | Moderna Arhitektura i Industrijska obrada metala</h1>
+
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 hidden md:flex items-center justify-center w-16 h-16 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-white/50 text-xs font-bold tracking-widest animate-pulse-slow">
           ILI
         </div>

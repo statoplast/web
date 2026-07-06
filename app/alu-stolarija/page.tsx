@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import SecondaryNav from "@/components/SecondaryNav";
 
 export const metadata: Metadata = {
   title: "Kvalitetna ALU Stolarija i Prozori | Statoplast",
@@ -14,45 +14,7 @@ export default function AluStolarijaPage() {
       <div className="sticky top-0 z-50 flex flex-col w-full">
         <SiteHeader variant="light" />
 
-        <section className="w-full bg-zinc-50/95 backdrop-blur-md border-b border-zinc-200 shadow-sm">
-          <div
-            id="secondary-nav"
-            className="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none py-4"
-          >
-            <div className="flex space-x-8 text-sm font-semibold tracking-wide justify-start md:justify-center">
-              <Link
-                href="/pivot-vrata"
-                className="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block"
-              >
-                Pivot Vrata
-              </Link>
-              <Link
-                href="/bioklimatske-pergole"
-                className="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block"
-              >
-                Bioklimatske pergole
-              </Link>
-              <Link
-                href="/alu-stolarija"
-                className="text-black border-b-2 border-black pb-1 transition-all duration-300 inline-block"
-              >
-                Alu Stolarija
-              </Link>
-              <Link
-                href="/moderne-ograde"
-                className="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block"
-              >
-                Moderne Ograde
-              </Link>
-              <Link
-                href="/zatvaranje-nadstresnica"
-                className="text-zinc-400 border-b-2 border-transparent hover:text-black transition-all duration-300 pb-1 inline-block"
-              >
-                Zatvaranje Nadstrešnica
-              </Link>
-            </div>
-          </div>
-        </section>
+        <SecondaryNav variant="light" />
       </div>
 
       <main className="max-w-7xl mx-auto px-6 pt-6 pb-12 md:pt-10 md:pb-24 space-y-24">
