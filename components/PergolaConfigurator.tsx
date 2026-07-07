@@ -7,9 +7,12 @@ import { OrbitControls, ContactShadows, Grid } from "@react-three/drei";
 
 const FRAME_COLOR = "#1c1c1f";
 const SLAT_COLOR = "#232326";
-const PILLAR_SIZE = 0.12;
-const BEAM_HEIGHT = 0.15;
-const BEAM_DEPTH = 0.12;
+// EN AW-6060 200x100x4 aluminum profile, used for both pillars and perimeter
+// beams per the technical drawing (2026-03-VŽ-01).
+const PILLAR_WIDTH = 0.1;
+const PILLAR_DEPTH = 0.2;
+const BEAM_HEIGHT = 0.2;
+const BEAM_DEPTH = 0.1;
 const WALL_THICKNESS = 0.3;
 
 type MountType = "freestanding" | "single-wall" | "l-corner" | "corner-touch";
@@ -64,7 +67,7 @@ function getPillarPositions(widthM: number, depthM: number, pillarCount: number)
 }
 
 function getSlatXPositions(widthM: number) {
-  const spacing = 0.2;
+  const spacing = 0.17;
   const count = Math.max(6, Math.round(widthM / spacing));
   const usableWidth = widthM - 0.3;
   return Array.from(
@@ -218,7 +221,7 @@ function PergolaModel({
 
       {pillarPositions.map(([x, z], i) => (
         <mesh key={i} position={[x, heightM / 2, z]} castShadow receiveShadow>
-          <boxGeometry args={[PILLAR_SIZE, heightM, PILLAR_SIZE]} />
+          <boxGeometry args={[PILLAR_WIDTH, heightM, PILLAR_DEPTH]} />
           <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
         </mesh>
       ))}
