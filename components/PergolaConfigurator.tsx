@@ -13,7 +13,10 @@ const PILLAR_DEPTH = 0.2;
 const BEAM_HEIGHT = 0.2;
 const BEAM_DEPTH = 0.1;
 const WALL_THICKNESS = 0.3;
-const MAX_SPAN = 3; // max unsupported distance between two pillars, in meters
+// Max unsupported distance between two pillars, in meters. E.g. up to 5000mm
+// needs only 2 pillars (the two ends); 5001mm-10000mm needs 3; 10001mm-15000mm
+// needs 4, and so on every additional 5m.
+const MAX_SPAN = 5;
 const SKY_COLOR = "#cbd5e1";
 
 type MountType = "freestanding" | "single-wall" | "l-corner" | "corner-touch";
