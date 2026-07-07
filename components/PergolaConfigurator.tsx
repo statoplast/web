@@ -158,9 +158,18 @@ const MODULE_GAP = 0.03;
 const BASE_PITCH = 0.3;
 const BASE_SOLID = 0.17;
 const PATTERN_LIFT = 0.025; // the sliding sheet sits this much higher than the fixed comb
-const SLIDE_MIN = -9; // cm - fully open
-const SLIDE_MAX = 4; // cm - fully closed
-const MAX_SLIDE = 0.09; // matches the slider's range, so the sheet always fully covers the roof
+// Both layers share one fixed grid, anchored at the pergola's own center
+// (z=0), rather than a grid re-based on each side's edge - so the phase
+// between the two layers is a fixed, calculable relationship instead of an
+// accident of depth/overhang math. On this grid, slide=0 is "the beginning":
+// the perforated half of the sliding sheet sits centered exactly over the
+// gap in the fixed comb below it (fully open). Sliding by exactly half a
+// pitch (150mm) moves the perforated half onto the solid comb instead,
+// meaning the sheet's own solid half now covers the comb's gap (fully
+// closed).
+const SLIDE_MIN = 0; // cm - fully open (the unshifted, "beginning" position)
+const SLIDE_MAX = (BASE_PITCH / 2) * 100; // cm - fully closed, exactly half a pitch away
+const MAX_SLIDE = BASE_PITCH / 2; // meters - matches SLIDE_MAX, so the sheet always fully covers the roof
 const PANEL_THICKNESS = 0.03;
 const END_CAP_LENGTH = 0.15; // 100-200mm cover cap hiding the sliding sheet's cut edge
 const END_CAP_LIFT = 0.06; // sits 60mm above the base comb, covering both roof layers
@@ -176,6 +185,20 @@ function getModuleXRanges(widthM: number) {
   });
 }
 
+// X position of the boundary between each pair of adjacent sliding modules -
+// "the other side": a connecting beam here runs the other way (spanning the
+// depth), complementing the width-spanning beams at the middle of each
+// pillar bay.
+function getModuleBoundaries(moduleRanges: { centerX: number; width: number }[]) {
+  const boundaries: number[] = [];
+  for (let i = 0; i < moduleRanges.length - 1; i++) {
+    const a = moduleRanges[i];
+    const b = moduleRanges[i + 1];
+    boundaries.push(((a.centerX + a.width / 2) + (b.centerX - b.width / 2)) / 2);
+  }
+  return boundaries;
+}
+
 // Fixed lower comb: a full-size (170mm) solid rung every 300mm, leaving a
 // gap between each. Never shrinks to fit - if there's leftover room at the
 // end, one more full-size rung is placed flush against the boundary,
@@ -184,14 +207,18 @@ function getBaseRungs(depthM: number): number[] {
   const usableDepth = depthM - 0.1;
   const start = -usableDepth / 2;
   const end = usableDepth / 2;
+  // anchored to the absolute grid (rung k occupies [k*BASE_PITCH, k*BASE_PITCH+BASE_SOLID]),
+  // not re-based on this depth's own edge - any rung overlapping the visible
+  // window is included; clipping (applied where this is rendered) trims the
+  // overhanging bit at the boundary rather than this function resizing it.
+  const kStart = Math.floor(start / BASE_PITCH) - 1;
+  const kEnd = Math.ceil(end / BASE_PITCH) + 1;
   const rungs: number[] = [];
-  let z = start;
-  while (z + BASE_PITCH <= end + 0.001) {
-    rungs.push(z + BASE_SOLID / 2);
-    z += BASE_PITCH;
-  }
-  if (z < end - 0.01) {
-    rungs.push(end - BASE_SOLID / 2);
+  for (let k = kStart; k <= kEnd; k++) {
+    const rungStart = k * BASE_PITCH;
+    const rungEnd = rungStart + BASE_SOLID;
+    if (rungEnd < start || rungStart > end) continue;
+    rungs.push(rungStart + BASE_SOLID / 2);
   }
   return rungs;
 }
@@ -305,17 +332,24 @@ function BaseRung({
   z,
   y,
   color,
+  clippingPlanes,
 }: {
   centerX: number;
   moduleWidth: number;
   z: number;
   y: number;
   color: ColorOption;
+  clippingPlanes: THREE.Plane[];
 }) {
   return (
     <mesh position={[centerX, y, z]} castShadow receiveShadow>
       <boxGeometry args={[moduleWidth, PANEL_THICKNESS, BASE_SOLID]} />
-      <meshStandardMaterial color={color.frame} metalness={0.3} roughness={0.5} />
+      <meshStandardMaterial
+        color={color.frame}
+        metalness={0.3}
+        roughness={0.5}
+        clippingPlanes={clippingPlanes}
+      />
     </mesh>
   );
 }
@@ -379,9 +413,19 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
     const holeWidth = (usableWidth - holeGapX * (holeCount - 1)) / holeCount;
     const holeDepth = perforatedLength * 0.7;
 
-    let z = -totalLength / 2 + BASE_SOLID;
-    while (z + perforatedLength <= totalLength / 2) {
-      const cz = z + perforatedLength / 2;
+    // anchored to the SAME absolute grid as the fixed comb (cycle k occupies
+    // [k*BASE_PITCH, (k+1)*BASE_PITCH), solid lead-in then perforated half) -
+    // not re-based on this sheet's own edge, so the phase between the two
+    // layers is a fixed, predictable relationship rather than depending on
+    // depth/overhang.
+    const kStart = Math.floor(-totalLength / 2 / BASE_PITCH) - 1;
+    const kEnd = Math.ceil(totalLength / 2 / BASE_PITCH) + 1;
+    for (let k = kStart; k <= kEnd; k++) {
+      const cycleStart = k * BASE_PITCH;
+      const perfStart = cycleStart + BASE_SOLID;
+      const perfEnd = cycleStart + BASE_PITCH;
+      if (perfStart < -totalLength / 2 || perfEnd > totalLength / 2) continue;
+      const cz = perfStart + perforatedLength / 2;
       for (let i = 0; i < holeCount; i++) {
         const hx = -usableWidth / 2 + holeWidth / 2 + i * (holeWidth + holeGapX);
         const hole = new THREE.Path();
@@ -393,8 +437,7 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
         shape.holes.push(hole);
       }
       // mark the boundary between this panel and the next as a visible seam
-      seamZs.push(z + BASE_PITCH);
-      z += BASE_PITCH;
+      seamZs.push(perfEnd);
     }
 
     const geometry = new THREE.ExtrudeGeometry(shape, {
@@ -490,6 +533,7 @@ function PergolaModel({
     ];
   }, [depthM]);
   const middleBeamSpans = useMemo(() => getMiddleBeamSpans(pillarPositions), [pillarPositions]);
+  const moduleBoundaries = useMemo(() => getModuleBoundaries(moduleRanges), [moduleRanges]);
 
   return (
     <group>
@@ -549,7 +593,15 @@ function PergolaModel({
       {moduleRanges.map(({ centerX, width: moduleW }, m) => (
         <group key={m}>
           {baseRungZs.map((z, r) => (
-            <BaseRung key={r} centerX={centerX} moduleWidth={moduleW} z={z} y={roofY} color={color} />
+            <BaseRung
+              key={r}
+              centerX={centerX}
+              moduleWidth={moduleW}
+              z={z}
+              y={roofY}
+              color={color}
+              clippingPlanes={roofClipPlanes}
+            />
           ))}
           <PatternedSheet
             centerX={centerX}
@@ -581,6 +633,20 @@ function PergolaModel({
           receiveShadow
         >
           <boxGeometry args={[x2 - x1, MID_BEAM_HEIGHT, MID_BEAM_DEPTH]} />
+          <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
+        </mesh>
+      ))}
+
+      {/* the other orientation: a 150x50 beam spanning the depth at the
+          middle of each pair of adjacent sliding modules */}
+      {moduleBoundaries.map((x, i) => (
+        <mesh
+          key={i}
+          position={[x, heightM + BEAM_HEIGHT - MID_BEAM_HEIGHT / 2, 0]}
+          castShadow
+          receiveShadow
+        >
+          <boxGeometry args={[MID_BEAM_DEPTH, MID_BEAM_HEIGHT, depthM - 2 * BEAM_DEPTH]} />
           <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
         </mesh>
       ))}
