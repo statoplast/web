@@ -97,11 +97,11 @@ const VARIANT_STYLES: Record<
   },
   industrial: {
     header:
-      "w-full p-6 flex justify-between items-center bg-slate-900/80 backdrop-blur-md relative z-50 border-b border-slate-800",
+      "w-full px-6 py-3 md:py-4 flex justify-between items-center bg-slate-900/80 backdrop-blur-md relative z-50 border-b border-slate-800",
     logo: "h-6 md:h-8 w-auto object-contain brightness-0 invert",
     homeIcon: "text-slate-400 hover:text-white",
-    nav: "hidden md:flex items-center space-x-8 text-xs font-bold tracking-[0.2em] absolute left-1/2 -translate-x-1/2",
-    navLink: "transition-colors duration-300",
+    nav: "hidden md:flex items-center space-x-2 text-xs font-bold tracking-[0.2em] absolute left-1/2 -translate-x-1/2",
+    navLink: "transition-colors duration-300 py-3 px-3 inline-block",
     navLinkActive: "text-white",
     navLinkInactive: "text-slate-300 hover:text-white",
     langWrap: "hidden md:flex items-center gap-2 z-10",
