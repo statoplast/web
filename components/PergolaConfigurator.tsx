@@ -310,6 +310,7 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
     const usableDepth = depthM - 0.1;
     const totalLength = usableDepth + 2 * MAX_SLIDE + 0.1;
     const perforatedLength = BASE_PITCH - BASE_SOLID;
+    const seamZs: number[] = [];
 
     const shape = new THREE.Shape();
     shape.moveTo(-moduleWidth / 2, -totalLength / 2);
@@ -338,6 +339,8 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
         hole.closePath();
         shape.holes.push(hole);
       }
+      // mark the boundary between this panel and the next as a visible seam
+      seamZs.push(z + BASE_PITCH);
       z += BASE_PITCH;
     }
 
@@ -346,7 +349,7 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
       bevelEnabled: false,
     });
     geometry.center();
-    return geometry;
+    return { geometry, totalLength, seamZs };
   }, [moduleWidth, depthM]);
 }
 
@@ -357,6 +360,7 @@ function PatternedSheet({
   y,
   slideOffset,
   color,
+  clippingPlanes,
 }: {
   centerX: number;
   moduleWidth: number;
@@ -364,18 +368,35 @@ function PatternedSheet({
   y: number;
   slideOffset: number;
   color: ColorOption;
+  clippingPlanes: THREE.Plane[];
 }) {
-  const geometry = usePatternedSheetGeometry(moduleWidth, depthM);
+  const { geometry, seamZs } = usePatternedSheetGeometry(moduleWidth, depthM);
   return (
-    <mesh
-      position={[centerX, y, slideOffset]}
-      rotation={[Math.PI / 2, 0, 0]}
-      geometry={geometry}
-      castShadow
-      receiveShadow
-    >
-      <meshStandardMaterial color={color.slat} metalness={0.3} roughness={0.5} side={THREE.DoubleSide} />
-    </mesh>
+    <group position={[centerX, y, slideOffset]} rotation={[Math.PI / 2, 0, 0]}>
+      <mesh geometry={geometry} castShadow receiveShadow>
+        <meshStandardMaterial
+          color={color.slat}
+          metalness={0.3}
+          roughness={0.5}
+          side={THREE.DoubleSide}
+          clippingPlanes={clippingPlanes}
+        />
+      </mesh>
+      {/* raised seam ridges every 300mm - visible via real shading/shadow
+          rather than a flat decal, so the connected sheet still reads as
+          individual panels, not one seamless piece */}
+      {seamZs.map((z, i) => (
+        <mesh key={i} position={[0, z, -(PANEL_THICKNESS / 2 + 0.004)]} castShadow>
+          <boxGeometry args={[moduleWidth * 0.97, 0.02, 0.008]} />
+          <meshStandardMaterial
+            color="#9a9a9e"
+            metalness={0.6}
+            roughness={0.3}
+            clippingPlanes={clippingPlanes}
+          />
+        </mesh>
+      ))}
+    </group>
   );
 }
 
@@ -403,9 +424,18 @@ function PergolaModel({
   );
   const moduleRanges = useMemo(() => getModuleXRanges(widthM), [widthM]);
   const baseRungZs = useMemo(() => getBaseRungs(depthM), [depthM]);
-  // 50mm (25% of the 200mm beam) below the beam's top surface, so the roof
-  // sits recessed inside the frame instead of perched above it.
-  const roofY = heightM + BEAM_HEIGHT - 0.05;
+  // 80mm below the beam's top surface, so the roof sits recessed inside the
+  // frame instead of perched above it.
+  const roofY = heightM + BEAM_HEIGHT - 0.08;
+  // hard-clip the sliding sheet so it can never visibly extend past the
+  // frame's inner boundary, no matter how far it's slid
+  const roofClipPlanes = useMemo(() => {
+    const half = (depthM - 0.1) / 2;
+    return [
+      new THREE.Plane(new THREE.Vector3(0, 0, -1), half),
+      new THREE.Plane(new THREE.Vector3(0, 0, 1), half),
+    ];
+  }, [depthM]);
 
   return (
     <group>
@@ -474,6 +504,7 @@ function PergolaModel({
             y={roofY + PATTERN_LIFT}
             slideOffset={slideOffset}
             color={color}
+            clippingPlanes={roofClipPlanes}
           />
         </group>
       ))}
@@ -605,7 +636,11 @@ export default function PergolaConfigurator() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
       <div className="lg:col-span-8 h-[400px] md:h-[550px] rounded-3xl overflow-hidden bg-zinc-100 border border-zinc-200">
-        <Canvas shadows camera={{ position: [7, 5, 9], fov: 45 }}>
+        <Canvas
+          shadows
+          gl={{ localClippingEnabled: true }}
+          camera={{ position: [7, 5, 9], fov: 45 }}
+        >
           <Scene
             widthM={widthM}
             depthM={depthM}
