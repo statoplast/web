@@ -13,6 +13,7 @@ const BEAM_HEIGHT = 0.2;
 const BEAM_DEPTH = 0.1;
 const WALL_THICKNESS = 0.3;
 const MAX_SPAN = 3; // max unsupported distance between two pillars, in meters
+const SKY_COLOR = "#cbd5e1";
 
 type MountType = "freestanding" | "single-wall" | "l-corner" | "corner-touch";
 
@@ -148,33 +149,26 @@ function getModuleXRanges(widthM: number) {
 
 type Rung = { z: number; thickness: number; patterned: boolean };
 
-// Rungs keep a fixed ~310mm pitch (matching the real assembly) regardless of
-// depth - we don't stretch/compress the spacing to fit a round number.
-// Whatever distance is left over at the end gets one filler rung sized to
-// cover exactly that remainder, instead of resizing every other rung.
+// Rungs keep a fixed ~310mm pitch and full size (matching the real assembly)
+// regardless of depth - we never shrink a rung to fit. Once another full-size
+// rung would overshoot the end, the last rung is still placed at full size,
+// flush against the end boundary - it simply overlaps the previous rung by
+// whatever's left over, the same way the real sliding panels close the run.
 function getRungs(depthM: number): Rung[] {
   const usableDepth = depthM - 0.1;
   const start = -usableDepth / 2;
   const end = usableDepth / 2;
+  const thickness = RUNG_SPACING - RUNG_GAP;
   const rungs: Rung[] = [];
   let z = start;
   let index = 0;
   while (z + RUNG_SPACING <= end + 0.001) {
-    rungs.push({
-      z: z + RUNG_SPACING / 2,
-      thickness: RUNG_SPACING - RUNG_GAP,
-      patterned: index % 2 === 1,
-    });
+    rungs.push({ z: z + RUNG_SPACING / 2, thickness, patterned: index % 2 === 1 });
     z += RUNG_SPACING;
     index++;
   }
-  const remainder = end - z;
-  if (remainder > 0.08) {
-    rungs.push({
-      z: z + remainder / 2,
-      thickness: remainder - RUNG_GAP,
-      patterned: index % 2 === 1,
-    });
+  if (z < end - 0.01) {
+    rungs.push({ z: end - thickness / 2, thickness, patterned: index % 2 === 1 });
   }
   return rungs;
 }
@@ -308,18 +302,27 @@ function RoofRung({
     );
   }
 
-  // perforated "Gornji Pattern Kvadratni" look: 3 slotted segments with gaps
-  const segments = 3;
-  const gap = 0.03;
-  const segWidth = (moduleWidth - gap * (segments - 1)) / segments;
+  // perforated "Gornji Pattern Kvadratni" look: one continuous sheet (no
+  // gaps) with 3 rectangular holes punched through it, per the drawing.
+  const holeCount = 3;
+  const sideMargin = moduleWidth * 0.1;
+  const usableWidth = moduleWidth - sideMargin * 2;
+  const holeGap = usableWidth * 0.08;
+  const holeWidth = (usableWidth - holeGap * (holeCount - 1)) / holeCount;
+  const holeDepth = thickness * 0.75;
+
   return (
     <group>
-      {Array.from({ length: segments }, (_, i) => {
-        const segX = centerX - moduleWidth / 2 + segWidth / 2 + i * (segWidth + gap);
+      <mesh position={[centerX, y, z]} castShadow receiveShadow>
+        <boxGeometry args={[moduleWidth, 0.03, thickness]} />
+        <meshStandardMaterial color={color.slat} metalness={0.3} roughness={0.5} />
+      </mesh>
+      {Array.from({ length: holeCount }, (_, i) => {
+        const holeX = centerX - usableWidth / 2 + holeWidth / 2 + i * (holeWidth + holeGap);
         return (
-          <mesh key={i} position={[segX, y, z]} castShadow receiveShadow>
-            <boxGeometry args={[segWidth, 0.03, thickness]} />
-            <meshStandardMaterial color={color.slat} metalness={0.3} roughness={0.5} />
+          <mesh key={i} position={[holeX, y, z]}>
+            <boxGeometry args={[holeWidth, 0.05, holeDepth]} />
+            <meshBasicMaterial color={SKY_COLOR} />
           </mesh>
         );
       })}
@@ -440,8 +443,8 @@ function Scene({
 }) {
   return (
     <>
-      <color attach="background" args={["#cbd5e1"]} />
-      <fog attach="fog" args={["#cbd5e1", 18, 30]} />
+      <color attach="background" args={[SKY_COLOR]} />
+      <fog attach="fog" args={[SKY_COLOR, 18, 30]} />
       <ambientLight intensity={1.1} />
       <hemisphereLight args={["#ffffff", "#8a8a8a", 0.9]} />
       <directionalLight
