@@ -10,16 +10,27 @@ const SLAT_COLOR = "#71717a";
 const PILLAR_SIZE = 0.12;
 const BEAM_HEIGHT = 0.15;
 const BEAM_DEPTH = 0.12;
+const WALL_MOUNT_THRESHOLD = 4;
+
+function isWallMounted(pillarCount: number) {
+  return pillarCount < WALL_MOUNT_THRESHOLD;
+}
 
 function getPillarPositions(widthM: number, depthM: number, pillarCount: number) {
-  const perSide = Math.max(2, Math.round(pillarCount / 2));
-  const xs =
-    perSide === 2
+  const xsFor = (count: number) =>
+    count === 2
       ? [-widthM / 2, widthM / 2]
-      : Array.from({ length: perSide }, (_, i) => -widthM / 2 + i * (widthM / (perSide - 1)));
+      : Array.from({ length: count }, (_, i) => -widthM / 2 + i * (widthM / (count - 1)));
 
+  if (isWallMounted(pillarCount)) {
+    // fewer than 4 pillars: only the edge facing the camera is freestanding,
+    // the far edge attaches directly to the house wall instead
+    return xsFor(Math.max(2, pillarCount)).map((x) => [x, depthM / 2] as [number, number]);
+  }
+
+  const perSide = Math.max(2, Math.round(pillarCount / 2));
   const positions: [number, number][] = [];
-  for (const x of xs) {
+  for (const x of xsFor(perSide)) {
     positions.push([x, -depthM / 2]);
     positions.push([x, depthM / 2]);
   }
@@ -33,6 +44,42 @@ function getSlatXPositions(widthM: number) {
   return Array.from(
     { length: count },
     (_, i) => -usableWidth / 2 + i * (usableWidth / (count - 1))
+  );
+}
+
+function HouseWall({
+  widthM,
+  depthM,
+  heightM,
+}: {
+  widthM: number;
+  depthM: number;
+  heightM: number;
+}) {
+  const wallThickness = 0.3;
+  const wallHeight = heightM + 1.4;
+  const wallZ = -(depthM / 2 + wallThickness / 2);
+  const faceZ = wallZ + wallThickness / 2 + 0.01;
+
+  return (
+    <group>
+      <mesh position={[0, wallHeight / 2, wallZ]} castShadow receiveShadow>
+        <boxGeometry args={[widthM + 1, wallHeight, wallThickness]} />
+        <meshStandardMaterial color="#e2ded3" roughness={0.9} />
+      </mesh>
+      <mesh position={[0, wallHeight + 0.08, wallZ]} castShadow>
+        <boxGeometry args={[widthM + 1.3, 0.16, wallThickness + 0.2]} />
+        <meshStandardMaterial color="#4b4b4b" roughness={0.8} />
+      </mesh>
+      <mesh position={[-widthM / 4, 1.05, faceZ]}>
+        <boxGeometry args={[0.9, 2.1, 0.02]} />
+        <meshStandardMaterial color="#3f3f46" roughness={0.6} />
+      </mesh>
+      <mesh position={[widthM / 4, wallHeight * 0.6, faceZ]}>
+        <boxGeometry args={[1.1, 1.1, 0.02]} />
+        <meshStandardMaterial color="#9fbfd8" roughness={0.2} metalness={0.3} />
+      </mesh>
+    </group>
   );
 }
 
@@ -55,6 +102,10 @@ function PergolaModel({
 
   return (
     <group>
+      {isWallMounted(pillarCount) && (
+        <HouseWall widthM={widthM} depthM={depthM} heightM={heightM} />
+      )}
+
       {pillarPositions.map(([x, z], i) => (
         <mesh key={i} position={[x, heightM / 2, z]} castShadow receiveShadow>
           <boxGeometry args={[PILLAR_SIZE, heightM, PILLAR_SIZE]} />
@@ -237,12 +288,18 @@ export default function PergolaConfigurator() {
           <Field
             label="Broj stupova"
             value={pillars}
-            min={4}
+            min={2}
             max={12}
             step={2}
             unit=""
             onChange={setPillars}
           />
+          {isWallMounted(pillars) && (
+            <p className="text-xs text-zinc-500 leading-relaxed -mt-4">
+              Manje od 4 stupa: pergola se s druge strane oslanja na zid kuće ili drugog objekta,
+              umjesto na dodatne stupove.
+            </p>
+          )}
         </div>
 
         <div className="mt-8 pt-6 border-t border-zinc-200 space-y-4">
