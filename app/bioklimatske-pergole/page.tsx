@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SecondaryNav from "@/components/SecondaryNav";
 
@@ -52,6 +53,14 @@ export default function BioklimatskePergolePage() {
                   rasvjete za večernji ugođaj
                 </li>
               </ul>
+
+              <Link
+                href="/bioklimatske-pergole/konfigurator"
+                className="group inline-flex items-center gap-3 self-start bg-zinc-900 hover:bg-black text-white px-6 py-3.5 rounded-lg text-xs font-bold tracking-widest uppercase transition-colors"
+              >
+                Isprobajte 3D konfigurator
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </Link>
             </div>
             <div className="lg:col-span-7 w-full h-[500px] lg:h-[700px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
               {/* eslint-disable-next-line @next/next/no-img-element */}

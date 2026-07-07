@@ -1,12 +1,18 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import SiteHeader from "@/components/SiteHeader";
 
 type Status = "idle" | "sending" | "success" | "error";
 
 export default function KontaktClient() {
   const [status, setStatus] = useState<Status>("idle");
+  const [prefilledMessage, setPrefilledMessage] = useState("");
+
+  useEffect(() => {
+    const poruka = new URLSearchParams(window.location.search).get("poruka");
+    if (poruka) setPrefilledMessage(poruka);
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -141,9 +147,11 @@ export default function KontaktClient() {
                     Vaša poruka
                   </label>
                   <textarea
+                    key={prefilledMessage}
                     name="Poruka"
                     rows={4}
                     required
+                    defaultValue={prefilledMessage}
                     className="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent resize-none"
                   ></textarea>
                 </div>
