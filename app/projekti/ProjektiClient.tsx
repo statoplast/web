@@ -23,7 +23,7 @@ export default function ProjektiClient() {
       })
       .then((data) => {
         if (!Array.isArray(data)) throw new Error("Neispravan format podataka.");
-        setPosts(data.slice(0, 8));
+        setPosts(data);
       })
       .catch((err) => {
         console.error("Greška pri učitavanju Instagram feeda:", err);
@@ -93,7 +93,7 @@ export default function ProjektiClient() {
               target="_blank"
               rel="noopener noreferrer"
               className="group relative aspect-square overflow-hidden rounded-xl bg-zinc-200 block opacity-0"
-              style={{ animation: `fadeIn 0.6s ease forwards ${index * 100}ms` }}
+              style={{ animation: `fadeIn 0.6s ease forwards ${(index % 8) * 100}ms` }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
