@@ -5,41 +5,67 @@ import Link from "next/link";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, ContactShadows, Grid } from "@react-three/drei";
 
-const FRAME_COLOR = "#52525b";
-const SLAT_COLOR = "#71717a";
+const FRAME_COLOR = "#1c1c1f";
+const SLAT_COLOR = "#232326";
 const PILLAR_SIZE = 0.12;
 const BEAM_HEIGHT = 0.15;
 const BEAM_DEPTH = 0.12;
-const WALL_MOUNT_THRESHOLD = 4;
+const WALL_THICKNESS = 0.3;
 
-function isWallMounted(pillarCount: number) {
-  return pillarCount < WALL_MOUNT_THRESHOLD;
+type MountType = "freestanding" | "single-wall" | "l-corner" | "corner-touch";
+
+function getMountType(pillarCount: number): MountType {
+  if (pillarCount >= 4) return "freestanding";
+  if (pillarCount === 3) return "corner-touch";
+  if (pillarCount === 2) return "single-wall";
+  return "l-corner";
+}
+
+function xsFor(widthM: number, count: number) {
+  return count === 2
+    ? [-widthM / 2, widthM / 2]
+    : Array.from({ length: count }, (_, i) => -widthM / 2 + i * (widthM / (count - 1)));
 }
 
 function getPillarPositions(widthM: number, depthM: number, pillarCount: number) {
-  const xsFor = (count: number) =>
-    count === 2
-      ? [-widthM / 2, widthM / 2]
-      : Array.from({ length: count }, (_, i) => -widthM / 2 + i * (widthM / (count - 1)));
+  const left = -widthM / 2;
+  const right = widthM / 2;
+  const front = depthM / 2;
+  const back = -depthM / 2;
+  const mount = getMountType(pillarCount);
 
-  if (isWallMounted(pillarCount)) {
-    // fewer than 4 pillars: only the edge facing the camera is freestanding,
-    // the far edge attaches directly to the house wall instead
-    return xsFor(Math.max(2, pillarCount)).map((x) => [x, depthM / 2] as [number, number]);
+  switch (mount) {
+    case "single-wall":
+      // house wall spans the back edge, both pillars on the open edge facing the camera
+      return [
+        [left, front],
+        [right, front],
+      ] as [number, number][];
+    case "l-corner":
+      // two house walls meet at the back-left corner, one pillar at the opposite corner
+      return [[right, front]] as [number, number][];
+    case "corner-touch":
+      // house touches only the back-left corner, pillars at the other three corners
+      return [
+        [right, back],
+        [left, front],
+        [right, front],
+      ] as [number, number][];
+    default: {
+      const perSide = Math.max(2, Math.round(pillarCount / 2));
+      const positions: [number, number][] = [];
+      for (const x of xsFor(widthM, perSide)) {
+        positions.push([x, back]);
+        positions.push([x, front]);
+      }
+      return positions;
+    }
   }
-
-  const perSide = Math.max(2, Math.round(pillarCount / 2));
-  const positions: [number, number][] = [];
-  for (const x of xsFor(perSide)) {
-    positions.push([x, -depthM / 2]);
-    positions.push([x, depthM / 2]);
-  }
-  return positions;
 }
 
 function getSlatXPositions(widthM: number) {
-  const spacing = 0.22;
-  const count = Math.max(5, Math.round(widthM / spacing));
+  const spacing = 0.2;
+  const count = Math.max(6, Math.round(widthM / spacing));
   const usableWidth = widthM - 0.3;
   return Array.from(
     { length: count },
@@ -47,40 +73,118 @@ function getSlatXPositions(widthM: number) {
   );
 }
 
-function HouseWall({
+function getRailZPositions(depthM: number, modules: number) {
+  return Array.from(
+    { length: modules - 1 },
+    (_, i) => -depthM / 2 + (i + 1) * (depthM / modules)
+  );
+}
+
+function WallPanel({
+  length,
+  heightM,
+  center,
+  axis,
+  withOpenings,
+}: {
+  length: number;
+  heightM: number;
+  center: [number, number];
+  axis: "x" | "z";
+  withOpenings?: boolean;
+}) {
+  const wallHeight = heightM + 1.4;
+  const size: [number, number, number] =
+    axis === "x" ? [length, wallHeight, WALL_THICKNESS] : [WALL_THICKNESS, wallHeight, length];
+  const capSize: [number, number, number] =
+    axis === "x"
+      ? [length + 0.3, 0.16, WALL_THICKNESS + 0.2]
+      : [WALL_THICKNESS + 0.2, 0.16, length + 0.3];
+
+  return (
+    <group position={[center[0], 0, center[1]]}>
+      <mesh position={[0, wallHeight / 2, 0]} castShadow receiveShadow>
+        <boxGeometry args={size} />
+        <meshStandardMaterial color="#e2ded3" roughness={0.9} />
+      </mesh>
+      <mesh position={[0, wallHeight + 0.08, 0]} castShadow>
+        <boxGeometry args={capSize} />
+        <meshStandardMaterial color="#4b4b4b" roughness={0.8} />
+      </mesh>
+      {withOpenings && axis === "x" && (
+        <>
+          <mesh position={[-length / 4, 1.05, WALL_THICKNESS / 2 + 0.01]}>
+            <boxGeometry args={[0.9, 2.1, 0.02]} />
+            <meshStandardMaterial color="#3f3f46" roughness={0.6} />
+          </mesh>
+          <mesh position={[length / 4, wallHeight * 0.6, WALL_THICKNESS / 2 + 0.01]}>
+            <boxGeometry args={[1.1, 1.1, 0.02]} />
+            <meshStandardMaterial color="#9fbfd8" roughness={0.2} metalness={0.3} />
+          </mesh>
+        </>
+      )}
+    </group>
+  );
+}
+
+function HouseStructure({
+  mount,
   widthM,
   depthM,
   heightM,
 }: {
+  mount: MountType;
   widthM: number;
   depthM: number;
   heightM: number;
 }) {
-  const wallThickness = 0.3;
-  const wallHeight = heightM + 1.4;
-  const wallZ = -(depthM / 2 + wallThickness / 2);
-  const faceZ = wallZ + wallThickness / 2 + 0.01;
+  const left = -widthM / 2;
+  const back = -depthM / 2;
+  const backWallZ = back - WALL_THICKNESS / 2;
+  const leftWallX = left - WALL_THICKNESS / 2;
 
-  return (
-    <group>
-      <mesh position={[0, wallHeight / 2, wallZ]} castShadow receiveShadow>
-        <boxGeometry args={[widthM + 1, wallHeight, wallThickness]} />
+  if (mount === "single-wall") {
+    return (
+      <WallPanel
+        length={widthM + 1}
+        heightM={heightM}
+        center={[0, backWallZ]}
+        axis="x"
+        withOpenings
+      />
+    );
+  }
+
+  if (mount === "l-corner") {
+    return (
+      <>
+        <WallPanel
+          length={widthM + 0.5}
+          heightM={heightM}
+          center={[0, backWallZ]}
+          axis="x"
+          withOpenings
+        />
+        <WallPanel length={depthM + 0.5} heightM={heightM} center={[leftWallX, 0]} axis="z" />
+      </>
+    );
+  }
+
+  if (mount === "corner-touch") {
+    const cornerHeight = heightM + 0.3;
+    return (
+      <mesh
+        position={[left - 0.4, cornerHeight / 2, back - 0.4]}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[0.4, cornerHeight, 0.4]} />
         <meshStandardMaterial color="#e2ded3" roughness={0.9} />
       </mesh>
-      <mesh position={[0, wallHeight + 0.08, wallZ]} castShadow>
-        <boxGeometry args={[widthM + 1.3, 0.16, wallThickness + 0.2]} />
-        <meshStandardMaterial color="#4b4b4b" roughness={0.8} />
-      </mesh>
-      <mesh position={[-widthM / 4, 1.05, faceZ]}>
-        <boxGeometry args={[0.9, 2.1, 0.02]} />
-        <meshStandardMaterial color="#3f3f46" roughness={0.6} />
-      </mesh>
-      <mesh position={[widthM / 4, wallHeight * 0.6, faceZ]}>
-        <boxGeometry args={[1.1, 1.1, 0.02]} />
-        <meshStandardMaterial color="#9fbfd8" roughness={0.2} metalness={0.3} />
-      </mesh>
-    </group>
-  );
+    );
+  }
+
+  return null;
 }
 
 function PergolaModel({
@@ -94,52 +198,61 @@ function PergolaModel({
   heightM: number;
   pillarCount: number;
 }) {
+  const mount = getMountType(pillarCount);
   const pillarPositions = useMemo(
     () => getPillarPositions(widthM, depthM, pillarCount),
     [widthM, depthM, pillarCount]
   );
   const slatXPositions = useMemo(() => getSlatXPositions(widthM), [widthM]);
+  const railZPositions = useMemo(
+    () => getRailZPositions(depthM, Math.max(2, Math.min(5, Math.round(depthM / 1.3)))),
+    [depthM]
+  );
+  const roofY = heightM + BEAM_HEIGHT + 0.02;
 
   return (
     <group>
-      {isWallMounted(pillarCount) && (
-        <HouseWall widthM={widthM} depthM={depthM} heightM={heightM} />
+      {mount !== "freestanding" && (
+        <HouseStructure mount={mount} widthM={widthM} depthM={depthM} heightM={heightM} />
       )}
 
       {pillarPositions.map(([x, z], i) => (
         <mesh key={i} position={[x, heightM / 2, z]} castShadow receiveShadow>
           <boxGeometry args={[PILLAR_SIZE, heightM, PILLAR_SIZE]} />
-          <meshStandardMaterial color={FRAME_COLOR} metalness={0.25} roughness={0.55} />
+          <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
         </mesh>
       ))}
 
       <mesh position={[0, heightM + BEAM_HEIGHT / 2, -depthM / 2]} castShadow receiveShadow>
         <boxGeometry args={[widthM, BEAM_HEIGHT, BEAM_DEPTH]} />
-        <meshStandardMaterial color={FRAME_COLOR} metalness={0.25} roughness={0.55} />
+        <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
       </mesh>
       <mesh position={[0, heightM + BEAM_HEIGHT / 2, depthM / 2]} castShadow receiveShadow>
         <boxGeometry args={[widthM, BEAM_HEIGHT, BEAM_DEPTH]} />
-        <meshStandardMaterial color={FRAME_COLOR} metalness={0.25} roughness={0.55} />
+        <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
       </mesh>
       <mesh position={[-widthM / 2, heightM + BEAM_HEIGHT / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM]} />
-        <meshStandardMaterial color={FRAME_COLOR} metalness={0.25} roughness={0.55} />
+        <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
       </mesh>
       <mesh position={[widthM / 2, heightM + BEAM_HEIGHT / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM]} />
-        <meshStandardMaterial color={FRAME_COLOR} metalness={0.25} roughness={0.55} />
+        <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
       </mesh>
 
+      {/* flat sliding roof lamellas, laid closed and flush */}
       {slatXPositions.map((x, i) => (
-        <mesh
-          key={i}
-          position={[x, heightM + BEAM_HEIGHT + 0.1, 0]}
-          rotation={[Math.PI / 7, 0, 0]}
-          castShadow
-          receiveShadow
-        >
-          <boxGeometry args={[0.16, 0.02, depthM + 0.1]} />
-          <meshStandardMaterial color={SLAT_COLOR} metalness={0.2} roughness={0.6} />
+        <mesh key={i} position={[x, roofY, 0]} castShadow receiveShadow>
+          <boxGeometry args={[0.16, 0.03, depthM + 0.1]} />
+          <meshStandardMaterial color={SLAT_COLOR} metalness={0.3} roughness={0.5} />
+        </mesh>
+      ))}
+
+      {/* rails dividing the roof into sliding panel modules */}
+      {railZPositions.map((z, i) => (
+        <mesh key={i} position={[0, roofY + 0.02, z]} castShadow receiveShadow>
+          <boxGeometry args={[widthM, 0.06, 0.08]} />
+          <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
         </mesh>
       ))}
     </group>
@@ -165,7 +278,7 @@ function Scene({
       <hemisphereLight args={["#ffffff", "#8a8a8a", 0.9]} />
       <directionalLight
         position={[6, 9, 5]}
-        intensity={2.2}
+        intensity={2.4}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
@@ -235,6 +348,16 @@ function Field({
   );
 }
 
+const MOUNT_DESCRIPTIONS: Record<MountType, string> = {
+  "l-corner":
+    "1 stup: pergola se oslanja na dva zida kuće koja se spajaju pod pravim kutom (L-oblik), a samo suprotni ugao pridržava jedan stup.",
+  "single-wall":
+    "2 stupa: pergola se s jedne strane cijelom dužinom oslanja na zid kuće, a s druge strane stoji na dva stupa.",
+  "corner-touch":
+    "3 stupa: pergola dodiruje kuću samo u jednom uglu (npr. na spoju dva krila objekta), dok su preostala tri ugla poduprta stupovima.",
+  freestanding: "",
+};
+
 export default function PergolaConfigurator() {
   const [width, setWidth] = useState(400);
   const [depth, setDepth] = useState(300);
@@ -245,6 +368,7 @@ export default function PergolaConfigurator() {
   const depthM = depth / 100;
   const heightM = height / 100;
   const area = (widthM * depthM).toFixed(1);
+  const mount = getMountType(pillars);
 
   const inquiryMessage = `Zanima me ponuda za bioklimatsku pergolu s dimenzijama ${width}cm (širina) x ${depth}cm (dubina) x ${height}cm (visina), s ${pillars} stupova.`;
 
@@ -288,16 +412,15 @@ export default function PergolaConfigurator() {
           <Field
             label="Broj stupova"
             value={pillars}
-            min={2}
+            min={1}
             max={12}
-            step={2}
+            step={1}
             unit=""
             onChange={setPillars}
           />
-          {isWallMounted(pillars) && (
+          {MOUNT_DESCRIPTIONS[mount] && (
             <p className="text-xs text-zinc-500 leading-relaxed -mt-4">
-              Manje od 4 stupa: pergola se s druge strane oslanja na zid kuće ili drugog objekta,
-              umjesto na dodatne stupove.
+              {MOUNT_DESCRIPTIONS[mount]}
             </p>
           )}
         </div>
