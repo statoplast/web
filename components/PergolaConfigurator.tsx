@@ -129,13 +129,29 @@ function insetPillarPosition(
   return [nx, nz];
 }
 
-function getSlatXPositions(widthM: number) {
-  const spacing = 0.16;
-  const count = Math.max(8, Math.round(widthM / spacing));
-  const usableWidth = widthM - 0.3;
+// A real sliding roof panel module is ~1m wide and made of ~300mm-deep rungs
+// (alternating solid and perforated sheet metal segments) per the SKL-04
+// assembly drawing - not continuous depth-spanning boards.
+const MODULE_WIDTH = 1.0;
+const MODULE_GAP = 0.03;
+const RUNG_SPACING = 0.31;
+const RUNG_GAP = 0.02;
+
+function getModuleXRanges(widthM: number) {
+  const moduleCount = Math.max(1, Math.round(widthM / MODULE_WIDTH));
+  const moduleWidth = (widthM - MODULE_GAP * (moduleCount - 1)) / moduleCount;
+  return Array.from({ length: moduleCount }, (_, i) => {
+    const startX = -widthM / 2 + i * (moduleWidth + MODULE_GAP);
+    return { centerX: startX + moduleWidth / 2, width: moduleWidth };
+  });
+}
+
+function getRungZPositions(depthM: number) {
+  const count = Math.max(3, Math.round(depthM / RUNG_SPACING));
+  const usableDepth = depthM - 0.1;
   return Array.from(
     { length: count },
-    (_, i) => -usableWidth / 2 + i * (usableWidth / (count - 1))
+    (_, i) => -usableDepth / 2 + i * (usableDepth / (count - 1))
   );
 }
 
@@ -262,8 +278,9 @@ function PergolaModel({
       ),
     [widthM, depthM, mount]
   );
-  const slatXPositions = useMemo(() => getSlatXPositions(widthM), [widthM]);
-  const roofY = heightM + BEAM_HEIGHT + 0.015;
+  const moduleRanges = useMemo(() => getModuleXRanges(widthM), [widthM]);
+  const rungZPositions = useMemo(() => getRungZPositions(depthM), [depthM]);
+  const roofY = heightM + BEAM_HEIGHT + 0.02;
 
   return (
     <group>
@@ -286,22 +303,31 @@ function PergolaModel({
         <boxGeometry args={[widthM, BEAM_HEIGHT, BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
+      {/* side beams are shortened to fit snugly between the front/back beams
+          instead of overlapping through them at the corners */}
       <mesh position={[-widthM / 2, heightM + BEAM_HEIGHT / 2, 0]} castShadow receiveShadow>
-        <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM]} />
+        <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM - 2 * BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
       <mesh position={[widthM / 2, heightM + BEAM_HEIGHT / 2, 0]} castShadow receiveShadow>
-        <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM]} />
+        <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM - 2 * BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
 
-      {/* flat sliding roof lamellas, laid closed and flush, spanning the full depth */}
-      {slatXPositions.map((x, i) => (
-        <mesh key={i} position={[x, roofY, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.14, 0.025, depthM + 0.1]} />
-          <meshStandardMaterial color={color.slat} metalness={0.3} roughness={0.5} />
-        </mesh>
-      ))}
+      {/* sliding roof: each module is a row of ~300mm rungs spanning the
+          module's width, matching the SKL-04 sliding-panel assembly */}
+      {moduleRanges.map(({ centerX, width: moduleW }, m) =>
+        rungZPositions.map((z, r) => (
+          <mesh key={`${m}-${r}`} position={[centerX, roofY, z]} castShadow receiveShadow>
+            <boxGeometry args={[moduleW, 0.03, RUNG_SPACING - RUNG_GAP]} />
+            <meshStandardMaterial
+              color={r % 2 === 0 ? color.slat : color.frame}
+              metalness={0.3}
+              roughness={0.5}
+            />
+          </mesh>
+        ))
+      )}
     </group>
   );
 }
