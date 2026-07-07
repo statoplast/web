@@ -117,6 +117,21 @@ function getPillarPositions(widthM: number, depthM: number, mount: MountType) {
   }
 }
 
+// One 150x50 connecting beam per "field" - the bay between each pair of
+// adjacent pillar columns - spanning the depth at the middle. Derived
+// directly from the actual pillar X positions, so it works for every mount
+// type and automatically adds a beam for every extra bay on wide pergolas.
+function getMiddleBeamSpans(pillarPositions: [number, number][]): [number, number][] {
+  const xs = Array.from(new Set(pillarPositions.map((p) => Math.round(p[0] * 1000) / 1000))).sort(
+    (a, b) => a - b
+  );
+  const spans: [number, number][] = [];
+  for (let i = 0; i < xs.length - 1; i++) {
+    spans.push([xs[i], xs[i + 1]]);
+  }
+  return spans;
+}
+
 function insetPillarPosition(
   [x, z]: [number, number],
   widthM: number,
@@ -143,8 +158,14 @@ const MODULE_GAP = 0.03;
 const BASE_PITCH = 0.3;
 const BASE_SOLID = 0.17;
 const PATTERN_LIFT = 0.025; // the sliding sheet sits this much higher than the fixed comb
-const MAX_SLIDE = 0.15; // matches the slider's range, so the sheet always fully covers the roof
+const SLIDE_MIN = -9; // cm - fully open
+const SLIDE_MAX = 4; // cm - fully closed
+const MAX_SLIDE = 0.09; // matches the slider's range, so the sheet always fully covers the roof
 const PANEL_THICKNESS = 0.03;
+const END_CAP_LENGTH = 0.15; // 100-200mm cover cap hiding the sliding sheet's cut edge
+const END_CAP_LIFT = 0.06; // sits 60mm above the base comb, covering both roof layers
+const MID_BEAM_HEIGHT = 0.15; // 150x50 connecting beam per middle "field"
+const MID_BEAM_DEPTH = 0.05;
 
 function getModuleXRanges(widthM: number) {
   const moduleCount = Math.max(1, Math.round(widthM / MODULE_WIDTH));
@@ -299,6 +320,38 @@ function BaseRung({
   );
 }
 
+// Cover cap hiding the sliding sheet's clipped edge at each end, so the
+// mechanism disappears behind a finished trim piece instead of visibly
+// cutting off - matching the "Lim2-Poklopac" cover parts on the drawing.
+function EndCaps({
+  centerX,
+  moduleWidth,
+  depthM,
+  y,
+  color,
+}: {
+  centerX: number;
+  moduleWidth: number;
+  depthM: number;
+  y: number;
+  color: ColorOption;
+}) {
+  const usableDepth = depthM - 0.1;
+  const capZ = usableDepth / 2 - END_CAP_LENGTH / 2;
+  return (
+    <>
+      <mesh position={[centerX, y, capZ]} castShadow receiveShadow>
+        <boxGeometry args={[moduleWidth, PANEL_THICKNESS, END_CAP_LENGTH]} />
+        <meshStandardMaterial color={color.frame} metalness={0.3} roughness={0.5} />
+      </mesh>
+      <mesh position={[centerX, y, -capZ]} castShadow receiveShadow>
+        <boxGeometry args={[moduleWidth, PANEL_THICKNESS, END_CAP_LENGTH]} />
+        <meshStandardMaterial color={color.frame} metalness={0.3} roughness={0.5} />
+      </mesh>
+    </>
+  );
+}
+
 // The sliding upper sheet: ONE connected, continuous piece per module - not
 // separate pieces with gaps - built by repeating a [solid half][perforated
 // half] cycle (per the "Gornji Pattern Kvadratni" drawing, where only part
@@ -436,6 +489,7 @@ function PergolaModel({
       new THREE.Plane(new THREE.Vector3(0, 0, 1), half),
     ];
   }, [depthM]);
+  const middleBeamSpans = useMemo(() => getMiddleBeamSpans(pillarPositions), [pillarPositions]);
 
   return (
     <group>
@@ -506,7 +560,29 @@ function PergolaModel({
             color={color}
             clippingPlanes={roofClipPlanes}
           />
+          <EndCaps
+            centerX={centerX}
+            moduleWidth={moduleW}
+            depthM={depthM}
+            y={roofY + END_CAP_LIFT}
+            color={color}
+          />
         </group>
+      ))}
+
+      {/* 150x50 connecting beam across the middle of each field (bay between
+          adjacent pillar columns), tying the roof structure to the frame -
+          matching the "Spoj-Greda 150x50" connector on the drawing. */}
+      {middleBeamSpans.map(([x1, x2], i) => (
+        <mesh
+          key={i}
+          position={[(x1 + x2) / 2, heightM + BEAM_HEIGHT - MID_BEAM_HEIGHT / 2, 0]}
+          castShadow
+          receiveShadow
+        >
+          <boxGeometry args={[x2 - x1, MID_BEAM_HEIGHT, MID_BEAM_DEPTH]} />
+          <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
+        </mesh>
       ))}
     </group>
   );
@@ -736,8 +812,8 @@ export default function PergolaConfigurator() {
             <Field
               label="Pomak kliznih panela"
               value={slidePosition}
-              min={-15}
-              max={15}
+              min={SLIDE_MIN}
+              max={SLIDE_MAX}
               step={1}
               unit="cm"
               onChange={setSlidePosition}
