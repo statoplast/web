@@ -96,8 +96,14 @@ function getPillarPositions(widthM: number, depthM: number, mount: MountType) {
 
   switch (mount) {
     case "single-wall":
-      // back edge (BL-BR) is a house wall; only the open front edge needs pillars
-      return pillarsAlongEdge(FL, FR);
+      // back edge (BL-BR) is a house wall; front, left, and right edges are
+      // all open, so each also gets intermediate pillars if it runs longer
+      // than MAX_SPAN (this is what was missing for large "Dubina" values)
+      return dedupe([
+        ...pillarsAlongEdge(FL, FR),
+        ...pillarsAlongEdge(FL, BL, false, true),
+        ...pillarsAlongEdge(FR, BR, false, true),
+      ]);
     case "l-corner":
       // back and left walls meet at BL; front and right edges are open,
       // their wall-side ends are already supported by the walls
@@ -106,30 +112,22 @@ function getPillarPositions(widthM: number, depthM: number, mount: MountType) {
         ...pillarsAlongEdge(FR, BR, false, true),
       ]);
     case "corner-touch":
-      // house touches only the BL corner; the other three sides are open
+      // house touches only the BL corner; the other three edges are open
       return dedupe([
         ...pillarsAlongEdge(FL, FR),
         ...pillarsAlongEdge(FR, BR),
         ...pillarsAlongEdge(BL, BR, true, false),
+        ...pillarsAlongEdge(FL, BL, false, true),
       ]);
     default:
-      return dedupe([...pillarsAlongEdge(FL, FR), ...pillarsAlongEdge(BL, BR)]);
+      // freestanding: all four edges are open
+      return dedupe([
+        ...pillarsAlongEdge(FL, FR),
+        ...pillarsAlongEdge(BL, BR),
+        ...pillarsAlongEdge(FL, BL),
+        ...pillarsAlongEdge(FR, BR),
+      ]);
   }
-}
-
-// One 150x50 connecting beam per "field" - the bay between each pair of
-// adjacent pillar columns - spanning the depth at the middle. Derived
-// directly from the actual pillar X positions, so it works for every mount
-// type and automatically adds a beam for every extra bay on wide pergolas.
-function getMiddleBeamSpans(pillarPositions: [number, number][]): [number, number][] {
-  const xs = Array.from(new Set(pillarPositions.map((p) => Math.round(p[0] * 1000) / 1000))).sort(
-    (a, b) => a - b
-  );
-  const spans: [number, number][] = [];
-  for (let i = 0; i < xs.length - 1; i++) {
-    spans.push([xs[i], xs[i + 1]]);
-  }
-  return spans;
 }
 
 function insetPillarPosition(
@@ -532,7 +530,6 @@ function PergolaModel({
       new THREE.Plane(new THREE.Vector3(0, 0, 1), half),
     ];
   }, [depthM]);
-  const middleBeamSpans = useMemo(() => getMiddleBeamSpans(pillarPositions), [pillarPositions]);
   const moduleBoundaries = useMemo(() => getModuleBoundaries(moduleRanges), [moduleRanges]);
 
   return (
@@ -622,23 +619,9 @@ function PergolaModel({
         </group>
       ))}
 
-      {/* 150x50 connecting beam across the middle of each field (bay between
-          adjacent pillar columns), tying the roof structure to the frame -
-          matching the "Spoj-Greda 150x50" connector on the drawing. */}
-      {middleBeamSpans.map(([x1, x2], i) => (
-        <mesh
-          key={i}
-          position={[(x1 + x2) / 2, heightM + BEAM_HEIGHT - MID_BEAM_HEIGHT / 2, 0]}
-          castShadow
-          receiveShadow
-        >
-          <boxGeometry args={[x2 - x1, MID_BEAM_HEIGHT, MID_BEAM_DEPTH]} />
-          <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
-        </mesh>
-      ))}
-
-      {/* the other orientation: a 150x50 beam spanning the depth at the
-          middle of each pair of adjacent sliding modules */}
+      {/* 150x50 connecting beam spanning the depth at the middle of each
+          pair of adjacent sliding modules - matching the "Spoj-Greda
+          150x50" connector on the drawing. */}
       {moduleBoundaries.map((x, i) => (
         <mesh
           key={i}
