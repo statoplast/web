@@ -131,17 +131,20 @@ function insetPillarPosition(
   return [nx, nz];
 }
 
-// A real sliding roof panel module is ~1m wide, made of two interleaved
-// rung types per the SKL-04 assembly: solid "Donji Puni" rungs (~170mm,
-// fixed) and perforated "Gornji Pattern" rungs (~300mm, slide over them to
-// close the roof).
+// A real sliding roof module is ~1m wide with two layers per the SKL-04
+// assembly: a FIXED lower comb of solid "Donji Puni" rungs (~170mm) with
+// gaps between them, and a single CONNECTED, SLIDING upper sheet of
+// "Gornji Pattern" segments (~300mm pitch, half solid / half perforated)
+// that slides over the comb. Depending on where it's slid to, the solid
+// half of the sheet covers the comb's gaps (closed) or the perforated half
+// lines up with them (open).
 const MODULE_WIDTH = 1.0;
 const MODULE_GAP = 0.03;
-const NONPATTERN_PITCH = 0.17;
-const PATTERN_PITCH = 0.3;
-const RUNG_GAP = 0.02;
-const PATTERN_LIFT = 0.025; // patterned rungs sit this much higher than solid ones
-const ROOF_RECESS = 0.05; // roof sits this much lower, inside the frame instead of above it
+const BASE_PITCH = 0.3;
+const BASE_SOLID = 0.17;
+const PATTERN_LIFT = 0.025; // the sliding sheet sits this much higher than the fixed comb
+const MAX_SLIDE = 0.15; // matches the slider's range, so the sheet always fully covers the roof
+const PANEL_THICKNESS = 0.03;
 
 function getModuleXRanges(widthM: number) {
   const moduleCount = Math.max(1, Math.round(widthM / MODULE_WIDTH));
@@ -152,29 +155,22 @@ function getModuleXRanges(widthM: number) {
   });
 }
 
-type Rung = { z: number; thickness: number; patterned: boolean };
-
-// Rungs alternate solid (170mm) and perforated (300mm) at full size - we
-// never shrink a rung to fit. Once another full-size rung would overshoot
-// the end, we stop the alternating run and always close with one full-size
-// SOLID rung flush against the end boundary (never a patterned one), simply
-// overlapping the previous rung by whatever's left over.
-function getRungs(depthM: number): Rung[] {
+// Fixed lower comb: a full-size (170mm) solid rung every 300mm, leaving a
+// gap between each. Never shrinks to fit - if there's leftover room at the
+// end, one more full-size rung is placed flush against the boundary,
+// overlapping the previous one rather than being resized.
+function getBaseRungs(depthM: number): number[] {
   const usableDepth = depthM - 0.1;
   const start = -usableDepth / 2;
   const end = usableDepth / 2;
-  const rungs: Rung[] = [];
+  const rungs: number[] = [];
   let z = start;
-  let patterned = false;
-  while (true) {
-    const pitch = patterned ? PATTERN_PITCH : NONPATTERN_PITCH;
-    if (z + pitch > end + 0.001) break;
-    rungs.push({ z: z + pitch / 2, thickness: pitch - RUNG_GAP, patterned });
-    z += pitch;
-    patterned = !patterned;
+  while (z + BASE_PITCH <= end + 0.001) {
+    rungs.push(z + BASE_SOLID / 2);
+    z += BASE_PITCH;
   }
   if (z < end - 0.01) {
-    rungs.push({ z: end - NONPATTERN_PITCH / 2, thickness: NONPATTERN_PITCH - RUNG_GAP, patterned: false });
+    rungs.push(end - BASE_SOLID / 2);
   }
   return rungs;
 }
@@ -282,36 +278,67 @@ function HouseStructure({
   return null;
 }
 
-const PANEL_THICKNESS = 0.03;
+function BaseRung({
+  centerX,
+  moduleWidth,
+  z,
+  y,
+  color,
+}: {
+  centerX: number;
+  moduleWidth: number;
+  z: number;
+  y: number;
+  color: ColorOption;
+}) {
+  return (
+    <mesh position={[centerX, y, z]} castShadow receiveShadow>
+      <boxGeometry args={[moduleWidth, PANEL_THICKNESS, BASE_SOLID]} />
+      <meshStandardMaterial color={color.frame} metalness={0.3} roughness={0.5} />
+    </mesh>
+  );
+}
 
-// True through-holes (not a color trick): a flat shape with 3 rectangular
-// holes cut into it, extruded into a thin panel. Genuinely see-through from
-// any angle, matching the "Gornji Pattern Kvadratni" cutout drawing.
-function usePatternedPanelGeometry(moduleWidth: number, depth: number) {
+// The sliding upper sheet: ONE connected, continuous piece per module - not
+// separate pieces with gaps - built by repeating a [solid half][perforated
+// half] cycle (per the "Gornji Pattern Kvadratni" drawing, where only part
+// of each panel is cut) along its whole length, then cutting 3 real
+// through-holes into every perforated half. It's made longer than the roof
+// itself so that sliding it within MAX_SLIDE never exposes a bare edge.
+function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
   return useMemo(() => {
+    const usableDepth = depthM - 0.1;
+    const totalLength = usableDepth + 2 * MAX_SLIDE + 0.1;
+    const perforatedLength = BASE_PITCH - BASE_SOLID;
+
+    const shape = new THREE.Shape();
+    shape.moveTo(-moduleWidth / 2, -totalLength / 2);
+    shape.lineTo(moduleWidth / 2, -totalLength / 2);
+    shape.lineTo(moduleWidth / 2, totalLength / 2);
+    shape.lineTo(-moduleWidth / 2, totalLength / 2);
+    shape.closePath();
+
     const holeCount = 3;
     const sideMargin = moduleWidth * 0.1;
     const usableWidth = moduleWidth - sideMargin * 2;
-    const holeGap = usableWidth * 0.08;
-    const holeWidth = (usableWidth - holeGap * (holeCount - 1)) / holeCount;
-    const holeDepth = depth * 0.7;
+    const holeGapX = usableWidth * 0.08;
+    const holeWidth = (usableWidth - holeGapX * (holeCount - 1)) / holeCount;
+    const holeDepth = perforatedLength * 0.7;
 
-    const shape = new THREE.Shape();
-    shape.moveTo(-moduleWidth / 2, -depth / 2);
-    shape.lineTo(moduleWidth / 2, -depth / 2);
-    shape.lineTo(moduleWidth / 2, depth / 2);
-    shape.lineTo(-moduleWidth / 2, depth / 2);
-    shape.closePath();
-
-    for (let i = 0; i < holeCount; i++) {
-      const hx = -usableWidth / 2 + holeWidth / 2 + i * (holeWidth + holeGap);
-      const hole = new THREE.Path();
-      hole.moveTo(hx - holeWidth / 2, -holeDepth / 2);
-      hole.lineTo(hx + holeWidth / 2, -holeDepth / 2);
-      hole.lineTo(hx + holeWidth / 2, holeDepth / 2);
-      hole.lineTo(hx - holeWidth / 2, holeDepth / 2);
-      hole.closePath();
-      shape.holes.push(hole);
+    let z = -totalLength / 2 + BASE_SOLID;
+    while (z + perforatedLength <= totalLength / 2) {
+      const cz = z + perforatedLength / 2;
+      for (let i = 0; i < holeCount; i++) {
+        const hx = -usableWidth / 2 + holeWidth / 2 + i * (holeWidth + holeGapX);
+        const hole = new THREE.Path();
+        hole.moveTo(hx - holeWidth / 2, cz - holeDepth / 2);
+        hole.lineTo(hx + holeWidth / 2, cz - holeDepth / 2);
+        hole.lineTo(hx + holeWidth / 2, cz + holeDepth / 2);
+        hole.lineTo(hx - holeWidth / 2, cz + holeDepth / 2);
+        hole.closePath();
+        shape.holes.push(hole);
+      }
+      z += BASE_PITCH;
     }
 
     const geometry = new THREE.ExtrudeGeometry(shape, {
@@ -320,42 +347,30 @@ function usePatternedPanelGeometry(moduleWidth: number, depth: number) {
     });
     geometry.center();
     return geometry;
-  }, [moduleWidth, depth]);
+  }, [moduleWidth, depthM]);
 }
 
-function RoofRung({
+function PatternedSheet({
   centerX,
   moduleWidth,
-  z,
-  thickness,
+  depthM,
   y,
-  patterned,
+  slideOffset,
   color,
 }: {
   centerX: number;
   moduleWidth: number;
-  z: number;
-  thickness: number;
+  depthM: number;
   y: number;
-  patterned: boolean;
+  slideOffset: number;
   color: ColorOption;
 }) {
-  const patternedGeometry = usePatternedPanelGeometry(moduleWidth, thickness);
-
-  if (!patterned) {
-    return (
-      <mesh position={[centerX, y, z]} castShadow receiveShadow>
-        <boxGeometry args={[moduleWidth, PANEL_THICKNESS, thickness]} />
-        <meshStandardMaterial color={color.frame} metalness={0.3} roughness={0.5} />
-      </mesh>
-    );
-  }
-
+  const geometry = usePatternedSheetGeometry(moduleWidth, depthM);
   return (
     <mesh
-      position={[centerX, y, z]}
+      position={[centerX, y, slideOffset]}
       rotation={[Math.PI / 2, 0, 0]}
-      geometry={patternedGeometry}
+      geometry={geometry}
       castShadow
       receiveShadow
     >
@@ -387,9 +402,10 @@ function PergolaModel({
     [widthM, depthM, mount]
   );
   const moduleRanges = useMemo(() => getModuleXRanges(widthM), [widthM]);
-  const rungs = useMemo(() => getRungs(depthM), [depthM]);
-  // recessed inside the frame's height instead of perched above it
-  const roofY = heightM + BEAM_HEIGHT + 0.02 - ROOF_RECESS;
+  const baseRungZs = useMemo(() => getBaseRungs(depthM), [depthM]);
+  // 50mm (25% of the 200mm beam) below the beam's top surface, so the roof
+  // sits recessed inside the frame instead of perched above it.
+  const roofY = heightM + BEAM_HEIGHT - 0.05;
 
   return (
     <group>
@@ -443,24 +459,24 @@ function PergolaModel({
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
 
-      {/* sliding roof: each module is a row of fixed-pitch rungs spanning the
-          module's width, matching the SKL-04 sliding-panel assembly. Every
-          second rung shows the perforated "Gornji Pattern" look (3 slotted
-          segments) from the drawing; the rest are solid "Donji Puni" rungs. */}
-      {moduleRanges.map(({ centerX, width: moduleW }, m) =>
-        rungs.map((rung, r) => (
-          <RoofRung
-            key={`${m}-${r}`}
+      {/* sliding roof: a fixed lower comb of solid rungs (with gaps) per
+          module, plus one connected sliding sheet per module on top that
+          opens/closes the gaps as it moves - matching the SKL-04 assembly. */}
+      {moduleRanges.map(({ centerX, width: moduleW }, m) => (
+        <group key={m}>
+          {baseRungZs.map((z, r) => (
+            <BaseRung key={r} centerX={centerX} moduleWidth={moduleW} z={z} y={roofY} color={color} />
+          ))}
+          <PatternedSheet
             centerX={centerX}
             moduleWidth={moduleW}
-            z={rung.patterned ? rung.z + slideOffset : rung.z}
-            thickness={rung.thickness}
-            y={rung.patterned ? roofY + PATTERN_LIFT : roofY}
-            patterned={rung.patterned}
+            depthM={depthM}
+            y={roofY + PATTERN_LIFT}
+            slideOffset={slideOffset}
             color={color}
           />
-        ))
-      )}
+        </group>
+      ))}
     </group>
   );
 }
