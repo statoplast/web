@@ -146,13 +146,37 @@ function getModuleXRanges(widthM: number) {
   });
 }
 
-function getRungZPositions(depthM: number) {
-  const count = Math.max(3, Math.round(depthM / RUNG_SPACING));
+type Rung = { z: number; thickness: number; patterned: boolean };
+
+// Rungs keep a fixed ~310mm pitch (matching the real assembly) regardless of
+// depth - we don't stretch/compress the spacing to fit a round number.
+// Whatever distance is left over at the end gets one filler rung sized to
+// cover exactly that remainder, instead of resizing every other rung.
+function getRungs(depthM: number): Rung[] {
   const usableDepth = depthM - 0.1;
-  return Array.from(
-    { length: count },
-    (_, i) => -usableDepth / 2 + i * (usableDepth / (count - 1))
-  );
+  const start = -usableDepth / 2;
+  const end = usableDepth / 2;
+  const rungs: Rung[] = [];
+  let z = start;
+  let index = 0;
+  while (z + RUNG_SPACING <= end + 0.001) {
+    rungs.push({
+      z: z + RUNG_SPACING / 2,
+      thickness: RUNG_SPACING - RUNG_GAP,
+      patterned: index % 2 === 1,
+    });
+    z += RUNG_SPACING;
+    index++;
+  }
+  const remainder = end - z;
+  if (remainder > 0.08) {
+    rungs.push({
+      z: z + remainder / 2,
+      thickness: remainder - RUNG_GAP,
+      patterned: index % 2 === 1,
+    });
+  }
+  return rungs;
 }
 
 function WallPanel({
@@ -258,6 +282,51 @@ function HouseStructure({
   return null;
 }
 
+function RoofRung({
+  centerX,
+  moduleWidth,
+  z,
+  thickness,
+  y,
+  patterned,
+  color,
+}: {
+  centerX: number;
+  moduleWidth: number;
+  z: number;
+  thickness: number;
+  y: number;
+  patterned: boolean;
+  color: ColorOption;
+}) {
+  if (!patterned) {
+    return (
+      <mesh position={[centerX, y, z]} castShadow receiveShadow>
+        <boxGeometry args={[moduleWidth, 0.03, thickness]} />
+        <meshStandardMaterial color={color.frame} metalness={0.3} roughness={0.5} />
+      </mesh>
+    );
+  }
+
+  // perforated "Gornji Pattern Kvadratni" look: 3 slotted segments with gaps
+  const segments = 3;
+  const gap = 0.03;
+  const segWidth = (moduleWidth - gap * (segments - 1)) / segments;
+  return (
+    <group>
+      {Array.from({ length: segments }, (_, i) => {
+        const segX = centerX - moduleWidth / 2 + segWidth / 2 + i * (segWidth + gap);
+        return (
+          <mesh key={i} position={[segX, y, z]} castShadow receiveShadow>
+            <boxGeometry args={[segWidth, 0.03, thickness]} />
+            <meshStandardMaterial color={color.slat} metalness={0.3} roughness={0.5} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
 function PergolaModel({
   widthM,
   depthM,
@@ -279,7 +348,7 @@ function PergolaModel({
     [widthM, depthM, mount]
   );
   const moduleRanges = useMemo(() => getModuleXRanges(widthM), [widthM]);
-  const rungZPositions = useMemo(() => getRungZPositions(depthM), [depthM]);
+  const rungs = useMemo(() => getRungs(depthM), [depthM]);
   const roofY = heightM + BEAM_HEIGHT + 0.02;
 
   return (
@@ -295,37 +364,61 @@ function PergolaModel({
         </mesh>
       ))}
 
-      <mesh position={[0, heightM + BEAM_HEIGHT / 2, -depthM / 2]} castShadow receiveShadow>
+      {/* Front/back beams span the full nominal width, with their OUTER face
+          (not their center) sitting exactly on the widthM/depthM boundary -
+          matching where the pillars' outer faces sit. Side beams are inset by
+          the same amount and shortened to fit snugly between the inner faces
+          of the front/back beams, so every corner butts flush with no
+          overlap and no gap. */}
+      <mesh
+        position={[0, heightM + BEAM_HEIGHT / 2, depthM / 2 - BEAM_DEPTH / 2]}
+        castShadow
+        receiveShadow
+      >
         <boxGeometry args={[widthM, BEAM_HEIGHT, BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
-      <mesh position={[0, heightM + BEAM_HEIGHT / 2, depthM / 2]} castShadow receiveShadow>
+      <mesh
+        position={[0, heightM + BEAM_HEIGHT / 2, -(depthM / 2 - BEAM_DEPTH / 2)]}
+        castShadow
+        receiveShadow
+      >
         <boxGeometry args={[widthM, BEAM_HEIGHT, BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
-      {/* side beams are shortened to fit snugly between the front/back beams
-          instead of overlapping through them at the corners */}
-      <mesh position={[-widthM / 2, heightM + BEAM_HEIGHT / 2, 0]} castShadow receiveShadow>
+      <mesh
+        position={[-(widthM / 2 - BEAM_DEPTH / 2), heightM + BEAM_HEIGHT / 2, 0]}
+        castShadow
+        receiveShadow
+      >
         <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM - 2 * BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
-      <mesh position={[widthM / 2, heightM + BEAM_HEIGHT / 2, 0]} castShadow receiveShadow>
+      <mesh
+        position={[widthM / 2 - BEAM_DEPTH / 2, heightM + BEAM_HEIGHT / 2, 0]}
+        castShadow
+        receiveShadow
+      >
         <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM - 2 * BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
 
-      {/* sliding roof: each module is a row of ~300mm rungs spanning the
-          module's width, matching the SKL-04 sliding-panel assembly */}
+      {/* sliding roof: each module is a row of fixed-pitch rungs spanning the
+          module's width, matching the SKL-04 sliding-panel assembly. Every
+          second rung shows the perforated "Gornji Pattern" look (3 slotted
+          segments) from the drawing; the rest are solid "Donji Puni" rungs. */}
       {moduleRanges.map(({ centerX, width: moduleW }, m) =>
-        rungZPositions.map((z, r) => (
-          <mesh key={`${m}-${r}`} position={[centerX, roofY, z]} castShadow receiveShadow>
-            <boxGeometry args={[moduleW, 0.03, RUNG_SPACING - RUNG_GAP]} />
-            <meshStandardMaterial
-              color={r % 2 === 0 ? color.slat : color.frame}
-              metalness={0.3}
-              roughness={0.5}
-            />
-          </mesh>
+        rungs.map((rung, r) => (
+          <RoofRung
+            key={`${m}-${r}`}
+            centerX={centerX}
+            moduleWidth={moduleW}
+            z={rung.z}
+            thickness={rung.thickness}
+            y={roofY}
+            patterned={rung.patterned}
+            color={color}
+          />
         ))
       )}
     </group>
