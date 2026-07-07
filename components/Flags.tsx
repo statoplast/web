@@ -1,9 +1,9 @@
 const SHIELD_COLS = 5;
-const SHIELD_ROWS = 4;
-const SHIELD_X = 23;
-const SHIELD_Y = 11;
-const SHIELD_W = 14;
-const SHIELD_H = 18;
+const SHIELD_ROWS = 5;
+const SHIELD_X = 24;
+const SHIELD_Y = 14;
+const SHIELD_W = 12;
+const SHIELD_H = 12;
 const CELL_W = SHIELD_W / SHIELD_COLS;
 const CELL_H = SHIELD_H / SHIELD_ROWS;
 
@@ -30,6 +30,15 @@ export function FlagHR({ className }: { className?: string }) {
       <rect width="60" height="13.33" fill="#FF0000" />
       <rect y="13.33" width="60" height="13.33" fill="#FFFFFF" />
       <rect y="26.67" width="60" height="13.33" fill="#171796" />
+
+      {/* simplified crown above the shield, hinting at the five historic shields */}
+      <path
+        d="M22.5 13 Q23 9 26 9.5 Q26.5 7.5 28.5 8 Q29.5 6 30 6 Q30.5 6 31.5 8 Q33.5 7.5 34 9.5 Q37 9 37.5 13 Z"
+        fill="#D4AF37"
+        stroke="#8a6d1f"
+        strokeWidth="0.4"
+      />
+
       <rect
         x={SHIELD_X}
         y={SHIELD_Y}
