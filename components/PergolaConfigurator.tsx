@@ -5,8 +5,6 @@ import Link from "next/link";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, ContactShadows, Grid } from "@react-three/drei";
 
-const FRAME_COLOR = "#1c1c1f";
-const SLAT_COLOR = "#232326";
 // EN AW-6060 200x100x4 aluminum profile, used for both pillars and perimeter
 // beams per the technical drawing (2026-03-VŽ-01).
 const PILLAR_WIDTH = 0.1;
@@ -14,72 +12,130 @@ const PILLAR_DEPTH = 0.2;
 const BEAM_HEIGHT = 0.2;
 const BEAM_DEPTH = 0.1;
 const WALL_THICKNESS = 0.3;
+const MAX_SPAN = 3; // max unsupported distance between two pillars, in meters
 
 type MountType = "freestanding" | "single-wall" | "l-corner" | "corner-touch";
 
-function getMountType(pillarCount: number): MountType {
-  if (pillarCount >= 4) return "freestanding";
-  if (pillarCount === 3) return "corner-touch";
-  if (pillarCount === 2) return "single-wall";
-  return "l-corner";
+type ColorOption = {
+  id: string;
+  label: string;
+  frame: string;
+  slat: string;
+  swatch: string;
+};
+
+const COLOR_OPTIONS: ColorOption[] = [
+  { id: "antracit", label: "Antracit", frame: "#3a3c3f", slat: "#484b4f", swatch: "#3a3c3f" },
+  { id: "crna", label: "Crna mat", frame: "#1c1c1f", slat: "#26262a", swatch: "#1c1c1f" },
+  { id: "bijela", label: "Bijela", frame: "#f2f2ef", slat: "#e6e6e2", swatch: "#f2f2ef" },
+  { id: "bronca", label: "Bronca", frame: "#453329", slat: "#54402f", swatch: "#453329" },
+  { id: "srebrna", label: "Srebrna", frame: "#b7bbbe", slat: "#a5a9ac", swatch: "#b7bbbe" },
+];
+
+const MOUNT_OPTIONS: { id: MountType; label: string; description: string }[] = [
+  {
+    id: "freestanding",
+    label: "Samostojeća",
+    description: "Pergola stoji slobodno, poduprta stupovima sa svih strana.",
+  },
+  {
+    id: "single-wall",
+    label: "Uza zid",
+    description: "Jedna cijela strana oslonjena je na zid kuće, nasuprotna strana stoji na stupovima.",
+  },
+  {
+    id: "l-corner",
+    label: "U kutu (L-oblik)",
+    description: "Dva zida kuće spajaju se pod pravim kutom, a suprotni ugao pridržavaju stupovi.",
+  },
+  {
+    id: "corner-touch",
+    label: "Dodiruje kut",
+    description: "Pergola dodiruje kuću samo u jednom uglu, dok su preostali uglovi poduprti stupovima.",
+  },
+];
+
+function dedupe(points: [number, number][]) {
+  const seen = new Map<string, [number, number]>();
+  for (const p of points) {
+    const key = `${p[0].toFixed(3)}:${p[1].toFixed(3)}`;
+    if (!seen.has(key)) seen.set(key, p);
+  }
+  return Array.from(seen.values());
 }
 
-function xsFor(widthM: number, count: number) {
-  return count === 2
-    ? [-widthM / 2, widthM / 2]
-    : Array.from({ length: count }, (_, i) => -widthM / 2 + i * (widthM / (count - 1)));
+function pillarsAlongEdge(
+  from: [number, number],
+  to: [number, number],
+  excludeFrom = false,
+  excludeTo = false
+) {
+  const length = Math.hypot(to[0] - from[0], to[1] - from[1]);
+  const count = Math.max(2, Math.ceil(length / MAX_SPAN) + 1);
+  const points: [number, number][] = [];
+  for (let i = 0; i < count; i++) {
+    if (i === 0 && excludeFrom) continue;
+    if (i === count - 1 && excludeTo) continue;
+    const t = i / (count - 1);
+    points.push([from[0] + (to[0] - from[0]) * t, from[1] + (to[1] - from[1]) * t]);
+  }
+  return points;
 }
 
-function getPillarPositions(widthM: number, depthM: number, pillarCount: number) {
+function getPillarPositions(widthM: number, depthM: number, mount: MountType) {
   const left = -widthM / 2;
   const right = widthM / 2;
   const front = depthM / 2;
   const back = -depthM / 2;
-  const mount = getMountType(pillarCount);
+  const FL: [number, number] = [left, front];
+  const FR: [number, number] = [right, front];
+  const BL: [number, number] = [left, back];
+  const BR: [number, number] = [right, back];
 
   switch (mount) {
     case "single-wall":
-      // house wall spans the back edge, both pillars on the open edge facing the camera
-      return [
-        [left, front],
-        [right, front],
-      ] as [number, number][];
+      // back edge (BL-BR) is a house wall; only the open front edge needs pillars
+      return pillarsAlongEdge(FL, FR);
     case "l-corner":
-      // two house walls meet at the back-left corner, one pillar at the opposite corner
-      return [[right, front]] as [number, number][];
+      // back and left walls meet at BL; front and right edges are open,
+      // their wall-side ends are already supported by the walls
+      return dedupe([
+        ...pillarsAlongEdge(FL, FR, true, false),
+        ...pillarsAlongEdge(FR, BR, false, true),
+      ]);
     case "corner-touch":
-      // house touches only the back-left corner, pillars at the other three corners
-      return [
-        [right, back],
-        [left, front],
-        [right, front],
-      ] as [number, number][];
-    default: {
-      const perSide = Math.max(2, Math.round(pillarCount / 2));
-      const positions: [number, number][] = [];
-      for (const x of xsFor(widthM, perSide)) {
-        positions.push([x, back]);
-        positions.push([x, front]);
-      }
-      return positions;
-    }
+      // house touches only the BL corner; the other three sides are open
+      return dedupe([
+        ...pillarsAlongEdge(FL, FR),
+        ...pillarsAlongEdge(FR, BR),
+        ...pillarsAlongEdge(BL, BR, true, false),
+      ]);
+    default:
+      return dedupe([...pillarsAlongEdge(FL, FR), ...pillarsAlongEdge(BL, BR)]);
   }
 }
 
+function insetPillarPosition(
+  [x, z]: [number, number],
+  widthM: number,
+  depthM: number
+): [number, number] {
+  const halfW = widthM / 2;
+  const halfD = depthM / 2;
+  const insetX = PILLAR_WIDTH / 2;
+  const insetZ = PILLAR_DEPTH / 2;
+  const nx = Math.abs(x - halfW) < 0.01 ? x - insetX : Math.abs(x + halfW) < 0.01 ? x + insetX : x;
+  const nz = Math.abs(z - halfD) < 0.01 ? z - insetZ : Math.abs(z + halfD) < 0.01 ? z + insetZ : z;
+  return [nx, nz];
+}
+
 function getSlatXPositions(widthM: number) {
-  const spacing = 0.17;
-  const count = Math.max(6, Math.round(widthM / spacing));
+  const spacing = 0.16;
+  const count = Math.max(8, Math.round(widthM / spacing));
   const usableWidth = widthM - 0.3;
   return Array.from(
     { length: count },
     (_, i) => -usableWidth / 2 + i * (usableWidth / (count - 1))
-  );
-}
-
-function getRailZPositions(depthM: number, modules: number) {
-  return Array.from(
-    { length: modules - 1 },
-    (_, i) => -depthM / 2 + (i + 1) * (depthM / modules)
   );
 }
 
@@ -176,11 +232,7 @@ function HouseStructure({
   if (mount === "corner-touch") {
     const cornerHeight = heightM + 0.3;
     return (
-      <mesh
-        position={[left - 0.4, cornerHeight / 2, back - 0.4]}
-        castShadow
-        receiveShadow
-      >
+      <mesh position={[left - 0.4, cornerHeight / 2, back - 0.4]} castShadow receiveShadow>
         <boxGeometry args={[0.4, cornerHeight, 0.4]} />
         <meshStandardMaterial color="#e2ded3" roughness={0.9} />
       </mesh>
@@ -194,24 +246,24 @@ function PergolaModel({
   widthM,
   depthM,
   heightM,
-  pillarCount,
+  mount,
+  color,
 }: {
   widthM: number;
   depthM: number;
   heightM: number;
-  pillarCount: number;
+  mount: MountType;
+  color: ColorOption;
 }) {
-  const mount = getMountType(pillarCount);
   const pillarPositions = useMemo(
-    () => getPillarPositions(widthM, depthM, pillarCount),
-    [widthM, depthM, pillarCount]
+    () =>
+      getPillarPositions(widthM, depthM, mount).map((p) =>
+        insetPillarPosition(p, widthM, depthM)
+      ),
+    [widthM, depthM, mount]
   );
   const slatXPositions = useMemo(() => getSlatXPositions(widthM), [widthM]);
-  const railZPositions = useMemo(
-    () => getRailZPositions(depthM, Math.max(2, Math.min(5, Math.round(depthM / 1.3)))),
-    [depthM]
-  );
-  const roofY = heightM + BEAM_HEIGHT + 0.02;
+  const roofY = heightM + BEAM_HEIGHT + 0.015;
 
   return (
     <group>
@@ -222,40 +274,32 @@ function PergolaModel({
       {pillarPositions.map(([x, z], i) => (
         <mesh key={i} position={[x, heightM / 2, z]} castShadow receiveShadow>
           <boxGeometry args={[PILLAR_WIDTH, heightM, PILLAR_DEPTH]} />
-          <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
+          <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
         </mesh>
       ))}
 
       <mesh position={[0, heightM + BEAM_HEIGHT / 2, -depthM / 2]} castShadow receiveShadow>
         <boxGeometry args={[widthM, BEAM_HEIGHT, BEAM_DEPTH]} />
-        <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
+        <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
       <mesh position={[0, heightM + BEAM_HEIGHT / 2, depthM / 2]} castShadow receiveShadow>
         <boxGeometry args={[widthM, BEAM_HEIGHT, BEAM_DEPTH]} />
-        <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
+        <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
       <mesh position={[-widthM / 2, heightM + BEAM_HEIGHT / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM]} />
-        <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
+        <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
       <mesh position={[widthM / 2, heightM + BEAM_HEIGHT / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM]} />
-        <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
+        <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
 
-      {/* flat sliding roof lamellas, laid closed and flush */}
+      {/* flat sliding roof lamellas, laid closed and flush, spanning the full depth */}
       {slatXPositions.map((x, i) => (
         <mesh key={i} position={[x, roofY, 0]} castShadow receiveShadow>
-          <boxGeometry args={[0.16, 0.03, depthM + 0.1]} />
-          <meshStandardMaterial color={SLAT_COLOR} metalness={0.3} roughness={0.5} />
-        </mesh>
-      ))}
-
-      {/* rails dividing the roof into sliding panel modules */}
-      {railZPositions.map((z, i) => (
-        <mesh key={i} position={[0, roofY + 0.02, z]} castShadow receiveShadow>
-          <boxGeometry args={[widthM, 0.06, 0.08]} />
-          <meshStandardMaterial color={FRAME_COLOR} metalness={0.35} roughness={0.45} />
+          <boxGeometry args={[0.14, 0.025, depthM + 0.1]} />
+          <meshStandardMaterial color={color.slat} metalness={0.3} roughness={0.5} />
         </mesh>
       ))}
     </group>
@@ -266,12 +310,14 @@ function Scene({
   widthM,
   depthM,
   heightM,
-  pillarCount,
+  mount,
+  color,
 }: {
   widthM: number;
   depthM: number;
   heightM: number;
-  pillarCount: number;
+  mount: MountType;
+  color: ColorOption;
 }) {
   return (
     <>
@@ -287,7 +333,7 @@ function Scene({
         shadow-mapSize-height={1024}
       />
 
-      <PergolaModel widthM={widthM} depthM={depthM} heightM={heightM} pillarCount={pillarCount} />
+      <PergolaModel widthM={widthM} depthM={depthM} heightM={heightM} mount={mount} color={color} />
 
       <Grid
         args={[30, 30]}
@@ -351,35 +397,31 @@ function Field({
   );
 }
 
-const MOUNT_DESCRIPTIONS: Record<MountType, string> = {
-  "l-corner":
-    "1 stup: pergola se oslanja na dva zida kuće koja se spajaju pod pravim kutom (L-oblik), a samo suprotni ugao pridržava jedan stup.",
-  "single-wall":
-    "2 stupa: pergola se s jedne strane cijelom dužinom oslanja na zid kuće, a s druge strane stoji na dva stupa.",
-  "corner-touch":
-    "3 stupa: pergola dodiruje kuću samo u jednom uglu (npr. na spoju dva krila objekta), dok su preostala tri ugla poduprta stupovima.",
-  freestanding: "",
-};
-
 export default function PergolaConfigurator() {
   const [width, setWidth] = useState(400);
   const [depth, setDepth] = useState(300);
   const [height, setHeight] = useState(250);
-  const [pillars, setPillars] = useState(4);
+  const [mount, setMount] = useState<MountType>("freestanding");
+  const [colorId, setColorId] = useState(COLOR_OPTIONS[0].id);
 
   const widthM = width / 100;
   const depthM = depth / 100;
   const heightM = height / 100;
   const area = (widthM * depthM).toFixed(1);
-  const mount = getMountType(pillars);
+  const color = COLOR_OPTIONS.find((c) => c.id === colorId) ?? COLOR_OPTIONS[0];
+  const pillarCount = useMemo(
+    () => getPillarPositions(widthM, depthM, mount).length,
+    [widthM, depthM, mount]
+  );
+  const mountOption = MOUNT_OPTIONS.find((m) => m.id === mount)!;
 
-  const inquiryMessage = `Zanima me ponuda za bioklimatsku pergolu s dimenzijama ${width}cm (širina) x ${depth}cm (dubina) x ${height}cm (visina), s ${pillars} stupova.`;
+  const inquiryMessage = `Zanima me ponuda za bioklimatsku pergolu s dimenzijama ${width}cm (širina) x ${depth}cm (dubina) x ${height}cm (visina). Način oslanjanja: ${mountOption.label} (${pillarCount} stupova). Boja: ${color.label}.`;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
       <div className="lg:col-span-8 h-[400px] md:h-[550px] rounded-3xl overflow-hidden bg-zinc-100 border border-zinc-200">
         <Canvas shadows camera={{ position: [7, 5, 9], fov: 45 }}>
-          <Scene widthM={widthM} depthM={depthM} heightM={heightM} pillarCount={pillars} />
+          <Scene widthM={widthM} depthM={depthM} heightM={heightM} mount={mount} color={color} />
         </Canvas>
       </div>
 
@@ -412,20 +454,56 @@ export default function PergolaConfigurator() {
             unit="cm"
             onChange={setHeight}
           />
-          <Field
-            label="Broj stupova"
-            value={pillars}
-            min={1}
-            max={12}
-            step={1}
-            unit=""
-            onChange={setPillars}
-          />
-          {MOUNT_DESCRIPTIONS[mount] && (
-            <p className="text-xs text-zinc-500 leading-relaxed -mt-4">
-              {MOUNT_DESCRIPTIONS[mount]}
+
+          <div>
+            <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
+              Način oslanjanja
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {MOUNT_OPTIONS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => setMount(option.id)}
+                  className={`text-left px-3 py-2.5 rounded-lg border text-xs font-semibold transition-colors ${
+                    mount === option.id
+                      ? "bg-zinc-900 text-white border-zinc-900"
+                      : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-400"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-zinc-500 leading-relaxed mt-3">
+              {mountOption.description} Potrebno stupova pri ovim dimenzijama:{" "}
+              <span className="font-bold text-zinc-700">{pillarCount}</span>. Broj stupova
+              automatski raste s većim dimenzijama pergole.
             </p>
-          )}
+          </div>
+
+          <div>
+            <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
+              Boja konstrukcije
+            </label>
+            <div className="flex items-center gap-3">
+              {COLOR_OPTIONS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => setColorId(option.id)}
+                  aria-label={option.label}
+                  title={option.label}
+                  className={`w-8 h-8 rounded-full border-2 transition-all ${
+                    colorId === option.id
+                      ? "border-zinc-900 scale-110"
+                      : "border-zinc-200 hover:border-zinc-400"
+                  }`}
+                  style={{ backgroundColor: option.swatch }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="mt-8 pt-6 border-t border-zinc-200 space-y-4">
