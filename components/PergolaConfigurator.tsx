@@ -69,11 +69,12 @@ const MOUNT_OPTIONS: { id: MountType; label: string; description: string }[] = [
   },
 ];
 
-type PatternType = "rectangles" | "squares";
+type PatternType = "rectangles" | "squares" | "triangles";
 
 const PATTERN_OPTIONS: { id: PatternType; label: string }[] = [
   { id: "rectangles", label: "3 pravokutnika" },
   { id: "squares", label: "Mreža kvadrata" },
+  { id: "triangles", label: "Cik-cak trokuti" },
 ];
 
 function dedupe(points: [number, number][]) {
@@ -461,10 +462,36 @@ function addRectHole(shape: THREE.Shape, hx: number, cz: number, w: number, d: n
   shape.holes.push(hole);
 }
 
+// One triangle of a zigzag row: base along the bottom (pointing up) or along
+// the top (pointing down), alternating cell to cell to read as a continuous
+// triangle-wave cut.
+function addTriHole(
+  shape: THREE.Shape,
+  hx: number,
+  cz: number,
+  w: number,
+  h: number,
+  pointUp: boolean
+) {
+  const hole = new THREE.Path();
+  if (pointUp) {
+    hole.moveTo(hx - w / 2, cz - h / 2);
+    hole.lineTo(hx + w / 2, cz - h / 2);
+    hole.lineTo(hx, cz + h / 2);
+  } else {
+    hole.moveTo(hx - w / 2, cz + h / 2);
+    hole.lineTo(hx + w / 2, cz + h / 2);
+    hole.lineTo(hx, cz - h / 2);
+  }
+  hole.closePath();
+  shape.holes.push(hole);
+}
+
 // Cuts one perforated cell's worth of holes into `shape`, centered at `cz` -
-// either the "3 pravokutnika" wide-rectangle look (current SKL-04 build) or
-// the "Mreža kvadrata" 2-row grid of small squares (the alternate "Gornji
-// Pattern Kvadratni" drawing).
+// the "3 pravokutnika" wide-rectangle look (current SKL-04 build), the
+// "Mreža kvadrata" 2-row grid of small squares, or "Cik-cak trokuti", a row
+// of alternating up/down triangles (the alternate "Gornji Pattern"
+// drawings).
 function addPatternCell(
   shape: THREE.Shape,
   pattern: PatternType,
@@ -472,9 +499,9 @@ function addPatternCell(
   cz: number,
   perforatedLength: number
 ) {
-  // squares uses a much tighter side margin than rectangles - its grid
-  // should read as filling almost the whole panel width, not just a
-  // centered block with big bare strips on either side.
+  // rectangles keeps a wider centered margin; squares and triangles use a
+  // much tighter one so their grid fills almost the whole panel width
+  // instead of leaving big bare strips on either side.
   const sideMargin = moduleWidth * (pattern === "rectangles" ? 0.1 : 0.03);
   const usableWidth = moduleWidth - sideMargin * 2;
 
@@ -488,6 +515,18 @@ function addPatternCell(
     for (let i = 0; i < holeCount; i++) {
       const hx = -usableWidth / 2 + holeWidth / 2 + i * (holeWidth + holeGapX);
       addRectHole(shape, hx, cz, holeWidth, holeDepth);
+    }
+    return;
+  }
+
+  if (pattern === "triangles") {
+    const triCount = 7;
+    const triGap = (usableWidth / triCount) * 0.12;
+    const triWidth = (usableWidth - triGap * (triCount - 1)) / triCount;
+    const triHeight = perforatedLength * 0.9;
+    for (let i = 0; i < triCount; i++) {
+      const hx = -usableWidth / 2 + triWidth / 2 + i * (triWidth + triGap);
+      addTriHole(shape, hx, cz, triWidth, triHeight, i % 2 === 0);
     }
     return;
   }
@@ -1019,14 +1058,14 @@ export default function PergolaConfigurator() {
             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
               Uzorak prorezanih panela
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {PATTERN_OPTIONS.map((option) => (
                 <button
                   key={option.id}
                   type="button"
                   onClick={() => setPatternId(option.id)}
                   aria-label={option.label}
-                  className={`flex flex-col items-center gap-2 px-3 py-3 rounded-lg border transition-colors ${
+                  className={`flex flex-col items-center gap-2 px-2 py-3 rounded-lg border transition-colors ${
                     patternId === option.id
                       ? "bg-zinc-900 border-zinc-900"
                       : "bg-white border-zinc-200 hover:border-zinc-400"
@@ -1044,6 +1083,14 @@ export default function PergolaConfigurator() {
                         <rect x="3" y="6" width="16" height="16" rx="1" />
                         <rect x="24" y="6" width="16" height="16" rx="1" />
                         <rect x="45" y="6" width="16" height="16" rx="1" />
+                      </>
+                    ) : option.id === "triangles" ? (
+                      <>
+                        <polygon points="2,22 12,22 7,6" />
+                        <polygon points="14,6 24,6 19,22" />
+                        <polygon points="26,22 36,22 31,6" />
+                        <polygon points="38,6 48,6 43,22" />
+                        <polygon points="50,22 60,22 55,6" />
                       </>
                     ) : (
                       Array.from({ length: 18 }, (_, i) => {
@@ -1063,7 +1110,7 @@ export default function PergolaConfigurator() {
                     )}
                   </svg>
                   <span
-                    className={`text-xs font-semibold ${
+                    className={`text-xs font-semibold text-center ${
                       patternId === option.id ? "text-white" : "text-zinc-600"
                     }`}
                   >
