@@ -465,9 +465,9 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
     shape.closePath();
 
     const holeCount = 3;
-    const sideMargin = moduleWidth * 0.1;
+    const sideMargin = moduleWidth * 0.06;
     const usableWidth = moduleWidth - sideMargin * 2;
-    const holeGapX = usableWidth * 0.08;
+    const holeGapX = usableWidth * 0.05;
     const holeWidth = (usableWidth - holeGapX * (holeCount - 1)) / holeCount;
     const holeDepth = perforatedLength * 0.7;
 
