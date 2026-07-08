@@ -465,11 +465,13 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
     shape.closePath();
 
     const holeCount = 3;
-    const sideMargin = moduleWidth * 0.06;
+    const sideMargin = moduleWidth * 0.1;
     const usableWidth = moduleWidth - sideMargin * 2;
-    const holeGapX = usableWidth * 0.05;
+    const holeGapX = usableWidth * 0.08;
     const holeWidth = (usableWidth - holeGapX * (holeCount - 1)) / holeCount;
-    const holeDepth = perforatedLength * 0.7;
+    // widened ~32mm over the base 70% fraction, on the shorter (depth) side
+    // of the hole - clamped so it never eats into the solid lead-in strip
+    const holeDepth = Math.min(perforatedLength * 0.7 + 0.032, perforatedLength - 0.006);
 
     // anchored to the SAME absolute grid as the fixed comb (cycle k occupies
     // [k*BASE_PITCH, (k+1)*BASE_PITCH), solid lead-in then perforated half) -
