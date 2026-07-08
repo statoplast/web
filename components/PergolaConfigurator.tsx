@@ -472,7 +472,10 @@ function addPatternCell(
   cz: number,
   perforatedLength: number
 ) {
-  const sideMargin = moduleWidth * 0.1;
+  // squares uses a much tighter side margin than rectangles - its grid
+  // should read as filling almost the whole panel width, not just a
+  // centered block with big bare strips on either side.
+  const sideMargin = moduleWidth * (pattern === "rectangles" ? 0.1 : 0.03);
   const usableWidth = moduleWidth - sideMargin * 2;
 
   if (pattern === "rectangles") {
