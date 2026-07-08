@@ -612,35 +612,22 @@ function PergolaModel({
           the same amount and shortened to fit snugly between the inner faces
           of the front/back beams, so every corner butts flush with no
           overlap and no gap. */}
-      <mesh
-        position={[0, heightM + BEAM_HEIGHT / 2, depthM / 2 - BEAM_DEPTH / 2]}
-        castShadow
-        receiveShadow
-      >
+      <mesh position={[0, heightM + BEAM_HEIGHT / 2, depthM / 2 - BEAM_DEPTH / 2]} castShadow>
         <boxGeometry args={[widthM, BEAM_HEIGHT, BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
       <mesh
         position={[0, heightM + BEAM_HEIGHT / 2, -(depthM / 2 - BEAM_DEPTH / 2)]}
         castShadow
-        receiveShadow
       >
         <boxGeometry args={[widthM, BEAM_HEIGHT, BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
-      <mesh
-        position={[-(widthM / 2 - BEAM_DEPTH / 2), heightM + BEAM_HEIGHT / 2, 0]}
-        castShadow
-        receiveShadow
-      >
+      <mesh position={[-(widthM / 2 - BEAM_DEPTH / 2), heightM + BEAM_HEIGHT / 2, 0]} castShadow>
         <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM - 2 * BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
-      <mesh
-        position={[widthM / 2 - BEAM_DEPTH / 2, heightM + BEAM_HEIGHT / 2, 0]}
-        castShadow
-        receiveShadow
-      >
+      <mesh position={[widthM / 2 - BEAM_DEPTH / 2, heightM + BEAM_HEIGHT / 2, 0]} castShadow>
         <boxGeometry args={[BEAM_DEPTH, BEAM_HEIGHT, depthM - 2 * BEAM_DEPTH]} />
         <meshStandardMaterial color={color.frame} metalness={0.35} roughness={0.45} />
       </mesh>
