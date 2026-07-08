@@ -462,29 +462,45 @@ function addRectHole(shape: THREE.Shape, hx: number, cz: number, w: number, d: n
   shape.holes.push(hole);
 }
 
-// One triangle of a zigzag row: base along the bottom (pointing up) or along
-// the top (pointing down), alternating cell to cell to read as a continuous
-// triangle-wave cut.
-function addTriHole(
-  shape: THREE.Shape,
-  hx: number,
-  cz: number,
-  w: number,
-  h: number,
-  pointUp: boolean
-) {
-  const hole = new THREE.Path();
-  if (pointUp) {
-    hole.moveTo(hx - w / 2, cz - h / 2);
-    hole.lineTo(hx + w / 2, cz - h / 2);
-    hole.lineTo(hx, cz + h / 2);
-  } else {
-    hole.moveTo(hx - w / 2, cz + h / 2);
-    hole.lineTo(hx + w / 2, cz + h / 2);
-    hole.lineTo(hx, cz - h / 2);
+// Hand-traced from the reference drawing: a fixed, irregular sequence of
+// 10 cut shapes (not a generated/repeating formula) - triangles of varying
+// width and lean, two kite-shaped quads, a small floating notch, a diamond,
+// and a tiny sliver at the very end. Each entry is [weight, points], where
+// weight is that shape's share of the row's total width and points are
+// local coordinates within its own slot: x in [0,1] (left to right), y in
+// [0,1] (0 = bottom edge, 1 = top edge).
+const ZIGZAG_SHAPES: { weight: number; points: [number, number][] }[] = [
+  { weight: 0.09, points: [[0, 0], [1, 0], [0.15, 1]] },
+  { weight: 0.2, points: [[0, 0], [0.1, 0.55], [0.55, 1], [1, 0]] },
+  { weight: 0.06, points: [[0.1, 1], [0.9, 1], [0.5, 0.35]] },
+  { weight: 0.16, points: [[0, 0], [1, 0], [0.5, 1]] },
+  { weight: 0.1, points: [[0, 1], [1, 1], [0.5, 0]] },
+  { weight: 0.11, points: [[0, 0], [1, 0], [0.35, 1]] },
+  { weight: 0.12, points: [[0.5, 0], [1, 0.5], [0.5, 1], [0, 0.5]] },
+  { weight: 0.1, points: [[0, 0], [1, 0], [0.6, 1]] },
+  { weight: 0.07, points: [[0.15, 0], [0.85, 0], [1, 0.5], [0.5, 1], [0, 0.5]] },
+  { weight: 0.03, points: [[0.2, 0], [0.8, 0], [0.5, 1]] },
+];
+
+function addZigzagHoles(shape: THREE.Shape, usableWidth: number, cz: number, height: number) {
+  const totalWeight = ZIGZAG_SHAPES.reduce((s, z) => s + z.weight, 0);
+  const gapFrac = 0.015;
+  const gapTotal = gapFrac * usableWidth * (ZIGZAG_SHAPES.length - 1);
+  const availWidth = usableWidth - gapTotal;
+  let cursorX = -usableWidth / 2;
+  for (const s of ZIGZAG_SHAPES) {
+    const w = (s.weight / totalWeight) * availWidth;
+    const hole = new THREE.Path();
+    s.points.forEach(([px, py], i) => {
+      const x = cursorX + px * w;
+      const y = cz - height / 2 + py * height;
+      if (i === 0) hole.moveTo(x, y);
+      else hole.lineTo(x, y);
+    });
+    hole.closePath();
+    shape.holes.push(hole);
+    cursorX += w + gapFrac * usableWidth;
   }
-  hole.closePath();
-  shape.holes.push(hole);
 }
 
 // Cuts one perforated cell's worth of holes into `shape`, centered at `cz` -
@@ -520,14 +536,7 @@ function addPatternCell(
   }
 
   if (pattern === "triangles") {
-    const triCount = 7;
-    const triGap = (usableWidth / triCount) * 0.12;
-    const triWidth = (usableWidth - triGap * (triCount - 1)) / triCount;
-    const triHeight = perforatedLength * 0.9;
-    for (let i = 0; i < triCount; i++) {
-      const hx = -usableWidth / 2 + triWidth / 2 + i * (triWidth + triGap);
-      addTriHole(shape, hx, cz, triWidth, triHeight, i % 2 === 0);
-    }
+    addZigzagHoles(shape, usableWidth, cz, perforatedLength * 0.9);
     return;
   }
 
