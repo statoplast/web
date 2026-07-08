@@ -69,6 +69,13 @@ const MOUNT_OPTIONS: { id: MountType; label: string; description: string }[] = [
   },
 ];
 
+type PatternType = "rectangles" | "squares";
+
+const PATTERN_OPTIONS: { id: PatternType; label: string }[] = [
+  { id: "rectangles", label: "3 pravokutnika" },
+  { id: "squares", label: "Mreža kvadrata" },
+];
+
 function dedupe(points: [number, number][]) {
   const seen = new Map<string, [number, number]>();
   for (const p of points) {
@@ -444,13 +451,67 @@ function EndCaps({
   );
 }
 
+function addRectHole(shape: THREE.Shape, hx: number, cz: number, w: number, d: number) {
+  const hole = new THREE.Path();
+  hole.moveTo(hx - w / 2, cz - d / 2);
+  hole.lineTo(hx + w / 2, cz - d / 2);
+  hole.lineTo(hx + w / 2, cz + d / 2);
+  hole.lineTo(hx - w / 2, cz + d / 2);
+  hole.closePath();
+  shape.holes.push(hole);
+}
+
+// Cuts one perforated cell's worth of holes into `shape`, centered at `cz` -
+// either the "3 pravokutnika" wide-rectangle look (current SKL-04 build) or
+// the "Mreža kvadrata" 2-row grid of small squares (the alternate "Gornji
+// Pattern Kvadratni" drawing).
+function addPatternCell(
+  shape: THREE.Shape,
+  pattern: PatternType,
+  moduleWidth: number,
+  cz: number,
+  perforatedLength: number
+) {
+  const sideMargin = moduleWidth * 0.1;
+  const usableWidth = moduleWidth - sideMargin * 2;
+
+  if (pattern === "rectangles") {
+    const holeCount = 3;
+    const holeGapX = usableWidth * 0.08;
+    const holeWidth = (usableWidth - holeGapX * (holeCount - 1)) / holeCount;
+    // widened ~32mm over the base 70% fraction, on the shorter (depth) side
+    // of the hole - clamped so it never eats into the solid lead-in strip
+    const holeDepth = Math.min(perforatedLength * 0.7 + 0.032, perforatedLength - 0.006);
+    for (let i = 0; i < holeCount; i++) {
+      const hx = -usableWidth / 2 + holeWidth / 2 + i * (holeWidth + holeGapX);
+      addRectHole(shape, hx, cz, holeWidth, holeDepth);
+    }
+    return;
+  }
+
+  // squares: 2 rows, each square's gap is 30% of its own size, and the row
+  // height is solved so 2 rows + 1 gap exactly fill the perforated band.
+  const rowHeight = perforatedLength / 2.3;
+  const rowGap = perforatedLength - rowHeight * 2;
+  const squareGap = rowHeight * 0.3;
+  const squareCount = Math.max(3, Math.round((usableWidth + squareGap) / (rowHeight + squareGap)));
+  const actualGap = squareCount > 1 ? (usableWidth - squareCount * rowHeight) / (squareCount - 1) : 0;
+  for (let row = 0; row < 2; row++) {
+    const rz = cz - perforatedLength / 2 + rowHeight / 2 + row * (rowHeight + rowGap);
+    for (let i = 0; i < squareCount; i++) {
+      const hx = -usableWidth / 2 + rowHeight / 2 + i * (rowHeight + actualGap);
+      addRectHole(shape, hx, rz, rowHeight, rowHeight);
+    }
+  }
+}
+
 // The sliding upper sheet: ONE connected, continuous piece per module - not
 // separate pieces with gaps - built by repeating a [solid half][perforated
 // half] cycle (per the "Gornji Pattern Kvadratni" drawing, where only part
-// of each panel is cut) along its whole length, then cutting 3 real
-// through-holes into every perforated half. It's made longer than the roof
+// of each panel is cut) along its whole length, then cutting the chosen
+// hole pattern into every perforated half. It's made longer than the roof
 // itself so that sliding it within MAX_SLIDE never exposes a bare edge.
-function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
+function usePatternedSheetGeometry(moduleWidth: number, depthM: number, pattern: PatternType) {
   return useMemo(() => {
     const usableDepth = depthM - 0.1;
     const totalLength = usableDepth + 2 * MAX_SLIDE + 0.1;
@@ -463,15 +524,6 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
     shape.lineTo(moduleWidth / 2, totalLength / 2);
     shape.lineTo(-moduleWidth / 2, totalLength / 2);
     shape.closePath();
-
-    const holeCount = 3;
-    const sideMargin = moduleWidth * 0.1;
-    const usableWidth = moduleWidth - sideMargin * 2;
-    const holeGapX = usableWidth * 0.08;
-    const holeWidth = (usableWidth - holeGapX * (holeCount - 1)) / holeCount;
-    // widened ~32mm over the base 70% fraction, on the shorter (depth) side
-    // of the hole - clamped so it never eats into the solid lead-in strip
-    const holeDepth = Math.min(perforatedLength * 0.7 + 0.032, perforatedLength - 0.006);
 
     // anchored to the SAME absolute grid as the fixed comb (cycle k occupies
     // [k*BASE_PITCH, (k+1)*BASE_PITCH), solid lead-in then perforated half) -
@@ -486,16 +538,7 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
       const perfEnd = cycleStart + BASE_PITCH;
       if (perfStart < -totalLength / 2 || perfEnd > totalLength / 2) continue;
       const cz = perfStart + perforatedLength / 2;
-      for (let i = 0; i < holeCount; i++) {
-        const hx = -usableWidth / 2 + holeWidth / 2 + i * (holeWidth + holeGapX);
-        const hole = new THREE.Path();
-        hole.moveTo(hx - holeWidth / 2, cz - holeDepth / 2);
-        hole.lineTo(hx + holeWidth / 2, cz - holeDepth / 2);
-        hole.lineTo(hx + holeWidth / 2, cz + holeDepth / 2);
-        hole.lineTo(hx - holeWidth / 2, cz + holeDepth / 2);
-        hole.closePath();
-        shape.holes.push(hole);
-      }
+      addPatternCell(shape, pattern, moduleWidth, cz, perforatedLength);
       // mark the boundary between this panel and the next as a visible seam
       seamZs.push(perfEnd);
     }
@@ -506,7 +549,7 @@ function usePatternedSheetGeometry(moduleWidth: number, depthM: number) {
     });
     geometry.center();
     return { geometry, totalLength, seamZs };
-  }, [moduleWidth, depthM]);
+  }, [moduleWidth, depthM, pattern]);
 }
 
 function PatternedSheet({
@@ -516,6 +559,7 @@ function PatternedSheet({
   y,
   slideOffset,
   color,
+  pattern,
   clippingPlanes,
 }: {
   centerX: number;
@@ -524,9 +568,10 @@ function PatternedSheet({
   y: number;
   slideOffset: number;
   color: ColorOption;
+  pattern: PatternType;
   clippingPlanes: THREE.Plane[];
 }) {
-  const { geometry, seamZs } = usePatternedSheetGeometry(moduleWidth, depthM);
+  const { geometry, seamZs } = usePatternedSheetGeometry(moduleWidth, depthM, pattern);
   return (
     <group position={[centerX, y, slideOffset]} rotation={[Math.PI / 2, 0, 0]}>
       <mesh geometry={geometry} castShadow receiveShadow>
@@ -562,6 +607,7 @@ function PergolaModel({
   heightM,
   mount,
   color,
+  pattern,
   slideOffset,
 }: {
   widthM: number;
@@ -569,6 +615,7 @@ function PergolaModel({
   heightM: number;
   mount: MountType;
   color: ColorOption;
+  pattern: PatternType;
   slideOffset: number;
 }) {
   const pillarPositions = useMemo(
@@ -657,6 +704,7 @@ function PergolaModel({
             y={roofY + PATTERN_LIFT}
             slideOffset={slideOffset}
             color={color}
+            pattern={pattern}
             clippingPlanes={roofClipPlanes}
           />
           <EndCaps
@@ -693,6 +741,7 @@ function Scene({
   heightM,
   mount,
   color,
+  pattern,
   slideOffset,
 }: {
   widthM: number;
@@ -700,6 +749,7 @@ function Scene({
   heightM: number;
   mount: MountType;
   color: ColorOption;
+  pattern: PatternType;
   slideOffset: number;
 }) {
   return (
@@ -730,6 +780,7 @@ function Scene({
         heightM={heightM}
         mount={mount}
         color={color}
+        pattern={pattern}
         slideOffset={slideOffset}
       />
 
@@ -801,6 +852,7 @@ export default function PergolaConfigurator() {
   const [height, setHeight] = useState(250);
   const [mount, setMount] = useState<MountType>("freestanding");
   const [colorId, setColorId] = useState(COLOR_OPTIONS[0].id);
+  const [patternId, setPatternId] = useState<PatternType>(PATTERN_OPTIONS[0].id);
   const [slidePosition, setSlidePosition] = useState(0);
 
   // The 3D rebuild (especially the extruded roof geometry) is expensive
@@ -841,6 +893,7 @@ export default function PergolaConfigurator() {
               heightM={heightM}
               mount={mount}
               color={color}
+              pattern={patternId}
               slideOffset={deferredSlidePosition / 100}
             />
           </Canvas>
@@ -957,6 +1010,65 @@ export default function PergolaConfigurator() {
                 vašem izboru.
               </p>
             )}
+          </div>
+
+          <div>
+            <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
+              Uzorak prorezanih panela
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {PATTERN_OPTIONS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => setPatternId(option.id)}
+                  aria-label={option.label}
+                  className={`flex flex-col items-center gap-2 px-3 py-3 rounded-lg border transition-colors ${
+                    patternId === option.id
+                      ? "bg-zinc-900 border-zinc-900"
+                      : "bg-white border-zinc-200 hover:border-zinc-400"
+                  }`}
+                >
+                  <svg
+                    viewBox="0 0 64 28"
+                    className="w-full h-6"
+                    fill="none"
+                    stroke={patternId === option.id ? "#ffffff" : "#71717a"}
+                    strokeWidth="2"
+                  >
+                    {option.id === "rectangles" ? (
+                      <>
+                        <rect x="3" y="6" width="16" height="16" rx="1" />
+                        <rect x="24" y="6" width="16" height="16" rx="1" />
+                        <rect x="45" y="6" width="16" height="16" rx="1" />
+                      </>
+                    ) : (
+                      Array.from({ length: 18 }, (_, i) => {
+                        const col = i % 9;
+                        const row = Math.floor(i / 9);
+                        return (
+                          <rect
+                            key={i}
+                            x={2 + col * 7}
+                            y={row === 0 ? 4 : 16}
+                            width="5"
+                            height="8"
+                            rx="0.5"
+                          />
+                        );
+                      })
+                    )}
+                  </svg>
+                  <span
+                    className={`text-xs font-semibold ${
+                      patternId === option.id ? "text-white" : "text-zinc-600"
+                    }`}
+                  >
+                    {option.label}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
