@@ -181,8 +181,8 @@ const SLIDE_MIN = 0; // cm - fully open (the unshifted, "beginning" position)
 const SLIDE_MAX = (BASE_PITCH / 2) * 100; // cm - fully closed, exactly half a pitch away
 const MAX_SLIDE = BASE_PITCH / 2; // meters - matches SLIDE_MAX, so the sheet always fully covers the roof
 const PANEL_THICKNESS = 0.03;
-const END_CAP_LENGTH = 0.15; // 100-200mm cover cap hiding the sliding sheet's cut edge
-const END_CAP_LIFT = 0.06; // sits 60mm above the base comb, covering both roof layers
+const END_CAP_LENGTH = 0.2; // cover cap hiding the sliding sheet's cut edge
+const END_CAP_LIFT = 0.08; // sits above the base comb, covering both roof layers
 const MID_BEAM_HEIGHT = 0.15; // 150x50 connecting beam per middle "field"
 const MID_BEAM_DEPTH = 0.05;
 
@@ -397,8 +397,8 @@ function BaseRung({
       <boxGeometry args={[moduleWidth, PANEL_THICKNESS, BASE_SOLID]} />
       <meshStandardMaterial
         color={color.frame}
-        metalness={0.3}
-        roughness={0.5}
+        metalness={0.05}
+        roughness={0.85}
         clippingPlanes={clippingPlanes}
       />
     </mesh>
@@ -427,11 +427,11 @@ function EndCaps({
     <>
       <mesh position={[centerX, y, capZ]} castShadow receiveShadow>
         <boxGeometry args={[moduleWidth, PANEL_THICKNESS, END_CAP_LENGTH]} />
-        <meshStandardMaterial color={color.frame} metalness={0.3} roughness={0.5} />
+        <meshStandardMaterial color={color.frame} metalness={0.05} roughness={0.85} />
       </mesh>
       <mesh position={[centerX, y, -capZ]} castShadow receiveShadow>
         <boxGeometry args={[moduleWidth, PANEL_THICKNESS, END_CAP_LENGTH]} />
-        <meshStandardMaterial color={color.frame} metalness={0.3} roughness={0.5} />
+        <meshStandardMaterial color={color.frame} metalness={0.05} roughness={0.85} />
       </mesh>
     </>
   );
@@ -523,8 +523,8 @@ function PatternedSheet({
       <mesh geometry={geometry} castShadow receiveShadow>
         <meshStandardMaterial
           color={color.slat}
-          metalness={0.3}
-          roughness={0.5}
+          metalness={0.05}
+          roughness={0.85}
           side={THREE.DoubleSide}
           clippingPlanes={clippingPlanes}
         />
@@ -537,8 +537,8 @@ function PatternedSheet({
           <boxGeometry args={[moduleWidth * 0.97, 0.02, 0.008]} />
           <meshStandardMaterial
             color="#9a9a9e"
-            metalness={0.6}
-            roughness={0.3}
+            metalness={0.15}
+            roughness={0.6}
             clippingPlanes={clippingPlanes}
           />
         </mesh>
