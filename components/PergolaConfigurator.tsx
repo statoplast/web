@@ -182,7 +182,7 @@ const SLIDE_MAX = (BASE_PITCH / 2) * 100; // cm - fully closed, exactly half a p
 const MAX_SLIDE = BASE_PITCH / 2; // meters - matches SLIDE_MAX, so the sheet always fully covers the roof
 const PANEL_THICKNESS = 0.03;
 const END_CAP_LENGTH = 0.2; // cover cap hiding the sliding sheet's cut edge
-const END_CAP_LIFT = 0.08; // sits above the base comb, covering both roof layers
+const END_CAP_LIFT = 0.04; // sits above the base comb, covering both roof layers
 const MID_BEAM_HEIGHT = 0.15; // 150x50 connecting beam per middle "field"
 const MID_BEAM_DEPTH = 0.05;
 
@@ -723,8 +723,16 @@ function Scene({
         position={[6, 9, 5]}
         intensity={2.4}
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
+        shadow-camera-near={1}
+        shadow-camera-far={30}
+        shadow-bias={-0.0005}
+        shadow-normalBias={0.02}
       />
 
       <PergolaModel
