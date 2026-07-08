@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import Link from "next/link";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
@@ -27,6 +27,7 @@ type ColorOption = {
   frame: string;
   slat: string;
   swatch: string;
+  isCustom?: boolean;
 };
 
 const COLOR_OPTIONS: ColorOption[] = [
@@ -35,6 +36,14 @@ const COLOR_OPTIONS: ColorOption[] = [
   { id: "bijela", label: "Bijela", frame: "#f2f2ef", slat: "#e6e6e2", swatch: "#f2f2ef" },
   { id: "bronca", label: "Bronca", frame: "#453329", slat: "#54402f", swatch: "#453329" },
   { id: "srebrna", label: "Srebrna", frame: "#b7bbbe", slat: "#a5a9ac", swatch: "#b7bbbe" },
+  {
+    id: "ral",
+    label: "Bilo koja boja po RAL-u",
+    frame: "#5a5e62",
+    slat: "#686c70",
+    swatch: "",
+    isCustom: true,
+  },
 ];
 
 const MOUNT_OPTIONS: { id: MountType; label: string; description: string }[] = [
@@ -224,47 +233,94 @@ function getBaseRungs(depthM: number): number[] {
   return rungs;
 }
 
+// Fixed, real-world house dimensions - deliberately NOT derived from the
+// pergola's own height. A house wall, its window, and its door don't move
+// just because someone drags the pergola height slider.
+const HOUSE_WALL_HEIGHT = 3.0;
+const HOUSE_WINDOW_Y = 1.5;
+const HOUSE_DOOR_HEIGHT = 2.1;
+
 function WallPanel({
   length,
-  heightM,
   center,
   axis,
   withOpenings,
 }: {
   length: number;
-  heightM: number;
   center: [number, number];
   axis: "x" | "z";
   withOpenings?: boolean;
 }) {
-  const wallHeight = heightM + 1.4;
+  const wallHeight = HOUSE_WALL_HEIGHT;
   const size: [number, number, number] =
     axis === "x" ? [length, wallHeight, WALL_THICKNESS] : [WALL_THICKNESS, wallHeight, length];
+  const plinthSize: [number, number, number] =
+    axis === "x" ? [length, 0.16, WALL_THICKNESS + 0.04] : [WALL_THICKNESS + 0.04, 0.16, length];
+  const fasciaSize: [number, number, number] =
+    axis === "x"
+      ? [length + 0.34, 0.06, WALL_THICKNESS + 0.26]
+      : [WALL_THICKNESS + 0.26, 0.06, length + 0.34];
   const capSize: [number, number, number] =
     axis === "x"
-      ? [length + 0.3, 0.16, WALL_THICKNESS + 0.2]
-      : [WALL_THICKNESS + 0.2, 0.16, length + 0.3];
+      ? [length + 0.3, 0.14, WALL_THICKNESS + 0.2]
+      : [WALL_THICKNESS + 0.2, 0.14, length + 0.3];
 
   return (
     <group position={[center[0], 0, center[1]]}>
+      {/* stucco wall body */}
       <mesh position={[0, wallHeight / 2, 0]} castShadow receiveShadow>
         <boxGeometry args={size} />
-        <meshStandardMaterial color="#e2ded3" roughness={0.9} />
+        <meshStandardMaterial color="#ece7db" roughness={0.95} />
       </mesh>
-      <mesh position={[0, wallHeight + 0.08, 0]} castShadow>
+      {/* plinth / base trim */}
+      <mesh position={[0, 0.08, 0]} castShadow receiveShadow>
+        <boxGeometry args={plinthSize} />
+        <meshStandardMaterial color="#9a9484" roughness={0.9} />
+      </mesh>
+      {/* fascia trim just under the roofline */}
+      <mesh position={[0, wallHeight - 0.03, 0]} castShadow>
+        <boxGeometry args={fasciaSize} />
+        <meshStandardMaterial color="#46474a" roughness={0.7} />
+      </mesh>
+      {/* roof cap */}
+      <mesh position={[0, wallHeight + 0.07, 0]} castShadow>
         <boxGeometry args={capSize} />
-        <meshStandardMaterial color="#4b4b4b" roughness={0.8} />
+        <meshStandardMaterial color="#2f3032" roughness={0.6} />
       </mesh>
+
       {withOpenings && axis === "x" && (
         <>
-          <mesh position={[-length / 4, 1.05, WALL_THICKNESS / 2 + 0.01]}>
-            <boxGeometry args={[0.9, 2.1, 0.02]} />
-            <meshStandardMaterial color="#3f3f46" roughness={0.6} />
-          </mesh>
-          <mesh position={[length / 4, wallHeight * 0.6, WALL_THICKNESS / 2 + 0.01]}>
-            <boxGeometry args={[1.1, 1.1, 0.02]} />
-            <meshStandardMaterial color="#9fbfd8" roughness={0.2} metalness={0.3} />
-          </mesh>
+          {/* door, with a small handle */}
+          <group position={[-length / 4, 0, WALL_THICKNESS / 2 + 0.01]}>
+            <mesh position={[0, HOUSE_DOOR_HEIGHT / 2, 0]}>
+              <boxGeometry args={[0.9, HOUSE_DOOR_HEIGHT, 0.03]} />
+              <meshStandardMaterial color="#2c2c30" roughness={0.5} metalness={0.2} />
+            </mesh>
+            <mesh position={[0.32, HOUSE_DOOR_HEIGHT / 2, 0.02]}>
+              <sphereGeometry args={[0.025, 12, 12]} />
+              <meshStandardMaterial color="#c9a227" metalness={0.7} roughness={0.3} />
+            </mesh>
+          </group>
+
+          {/* window, with a frame and cross mullions */}
+          <group position={[length / 4, HOUSE_WINDOW_Y, WALL_THICKNESS / 2 + 0.01]}>
+            <mesh>
+              <boxGeometry args={[1.2, 1.2, 0.04]} />
+              <meshStandardMaterial color="#fdfdfc" roughness={0.6} />
+            </mesh>
+            <mesh position={[0, 0, 0.021]}>
+              <boxGeometry args={[1.04, 1.04, 0.02]} />
+              <meshStandardMaterial color="#bcd9ec" roughness={0.1} metalness={0.4} />
+            </mesh>
+            <mesh position={[0, 0, 0.032]}>
+              <boxGeometry args={[0.04, 1.04, 0.01]} />
+              <meshStandardMaterial color="#fdfdfc" roughness={0.6} />
+            </mesh>
+            <mesh position={[0, 0, 0.032]}>
+              <boxGeometry args={[1.04, 0.04, 0.01]} />
+              <meshStandardMaterial color="#fdfdfc" roughness={0.6} />
+            </mesh>
+          </group>
         </>
       )}
     </group>
@@ -288,38 +344,32 @@ function HouseStructure({
   const leftWallX = left - WALL_THICKNESS / 2;
 
   if (mount === "single-wall") {
-    return (
-      <WallPanel
-        length={widthM + 1}
-        heightM={heightM}
-        center={[0, backWallZ]}
-        axis="x"
-        withOpenings
-      />
-    );
+    return <WallPanel length={widthM + 1} center={[0, backWallZ]} axis="x" withOpenings />;
   }
 
   if (mount === "l-corner") {
     return (
       <>
-        <WallPanel
-          length={widthM + 0.5}
-          heightM={heightM}
-          center={[0, backWallZ]}
-          axis="x"
-          withOpenings
-        />
-        <WallPanel length={depthM + 0.5} heightM={heightM} center={[leftWallX, 0]} axis="z" />
+        <WallPanel length={widthM + 0.5} center={[0, backWallZ]} axis="x" withOpenings />
+        <WallPanel length={depthM + 0.5} center={[leftWallX, 0]} axis="z" />
       </>
     );
   }
 
   if (mount === "corner-touch") {
-    const cornerHeight = heightM + 0.3;
+    // sized and positioned so its inner corner face actually meets the
+    // pergola's own corner point, instead of floating a gap away from it;
+    // height still tracks the pergola so it always visibly reaches the roof
+    const stubHeight = heightM + 0.3;
+    const stubSize = 0.6;
     return (
-      <mesh position={[left - 0.4, cornerHeight / 2, back - 0.4]} castShadow receiveShadow>
-        <boxGeometry args={[0.4, cornerHeight, 0.4]} />
-        <meshStandardMaterial color="#e2ded3" roughness={0.9} />
+      <mesh
+        position={[left - stubSize / 2, stubHeight / 2, back - stubSize / 2]}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[stubSize, stubHeight, stubSize]} />
+        <meshStandardMaterial color="#ece7db" roughness={0.95} />
       </mesh>
     );
   }
@@ -748,9 +798,19 @@ export default function PergolaConfigurator() {
   const [colorId, setColorId] = useState(COLOR_OPTIONS[0].id);
   const [slidePosition, setSlidePosition] = useState(0);
 
-  const widthM = width / 100;
-  const depthM = depth / 100;
-  const heightM = height / 100;
+  // The 3D rebuild (especially the extruded roof geometry) is expensive
+  // enough that updating it synchronously on every drag event makes the
+  // slider itself feel stuck. Deferring these values keeps the slider
+  // thumb and its number label instantly responsive, while the heavy 3D
+  // update is allowed to lag a frame or two behind under the hood.
+  const deferredWidth = useDeferredValue(width);
+  const deferredDepth = useDeferredValue(depth);
+  const deferredHeight = useDeferredValue(height);
+  const deferredSlidePosition = useDeferredValue(slidePosition);
+
+  const widthM = deferredWidth / 100;
+  const depthM = deferredDepth / 100;
+  const heightM = deferredHeight / 100;
   const area = (widthM * depthM).toFixed(1);
   const color = COLOR_OPTIONS.find((c) => c.id === colorId) ?? COLOR_OPTIONS[0];
   const pillarCount = useMemo(
@@ -763,21 +823,42 @@ export default function PergolaConfigurator() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      <div className="lg:col-span-8 h-[400px] md:h-[550px] rounded-3xl overflow-hidden bg-zinc-100 border border-zinc-200">
-        <Canvas
-          shadows
-          gl={{ localClippingEnabled: true }}
-          camera={{ position: [7, 5, 9], fov: 45 }}
-        >
-          <Scene
-            widthM={widthM}
-            depthM={depthM}
-            heightM={heightM}
-            mount={mount}
-            color={color}
-            slideOffset={slidePosition / 100}
+      <div className="lg:col-span-8 space-y-4">
+        <div className="h-[400px] md:h-[550px] rounded-3xl overflow-hidden bg-zinc-100 border border-zinc-200">
+          <Canvas
+            shadows
+            gl={{ localClippingEnabled: true }}
+            camera={{ position: [7, 5, 9], fov: 45 }}
+          >
+            <Scene
+              widthM={widthM}
+              depthM={depthM}
+              heightM={heightM}
+              mount={mount}
+              color={color}
+              slideOffset={deferredSlidePosition / 100}
+            />
+          </Canvas>
+        </div>
+
+        {/* right beside the 3D view (below it on both mobile and desktop),
+            so you can drag this while watching the roof open/close without
+            losing sight of the model */}
+        <div className="bg-white p-4 rounded-2xl border border-zinc-200">
+          <Field
+            label="Pomak kliznih panela"
+            value={slidePosition}
+            min={SLIDE_MIN}
+            max={SLIDE_MAX}
+            step={1}
+            unit="cm"
+            onChange={setSlidePosition}
           />
-        </Canvas>
+          <p className="text-xs text-zinc-500 leading-relaxed mt-3">
+            Gornji, prorezani paneli (300mm) klize preko donjih, punih panela (170mm). Pomicanjem
+            ovog klizača simulirate zatvaranje ili otvaranje krova pergole.
+          </p>
+        </div>
       </div>
 
       <div className="lg:col-span-4 flex flex-col justify-between">
@@ -803,7 +884,7 @@ export default function PergolaConfigurator() {
           <Field
             label="Visina"
             value={height}
-            min={220}
+            min={200}
             max={300}
             step={5}
             unit="cm"
@@ -841,7 +922,7 @@ export default function PergolaConfigurator() {
             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
               Boja konstrukcije
             </label>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center flex-wrap gap-3">
               {COLOR_OPTIONS.map((option) => (
                 <button
                   key={option.id}
@@ -854,26 +935,23 @@ export default function PergolaConfigurator() {
                       ? "border-zinc-900 scale-110"
                       : "border-zinc-200 hover:border-zinc-400"
                   }`}
-                  style={{ backgroundColor: option.swatch }}
+                  style={
+                    option.isCustom
+                      ? {
+                          background:
+                            "conic-gradient(from 0deg, #ef4444, #f59e0b, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #ef4444)",
+                        }
+                      : { backgroundColor: option.swatch }
+                  }
                 />
               ))}
             </div>
-          </div>
-
-          <div>
-            <Field
-              label="Pomak kliznih panela"
-              value={slidePosition}
-              min={SLIDE_MIN}
-              max={SLIDE_MAX}
-              step={1}
-              unit="cm"
-              onChange={setSlidePosition}
-            />
-            <p className="text-xs text-zinc-500 leading-relaxed mt-3">
-              Gornji, prorezani paneli (300mm) klize preko donjih, punih panela (170mm). Pomicanjem
-              ovog klizača simulirate zatvaranje ili otvaranje krova pergole.
-            </p>
+            {color.isCustom && (
+              <p className="text-xs text-zinc-500 leading-relaxed mt-3">
+                Ne izrađujemo samo standardne nijanse — dostupna je bilo koja boja po RAL karti, po
+                vašem izboru.
+              </p>
+            )}
           </div>
         </div>
 

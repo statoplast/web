@@ -35,6 +35,15 @@ export default function PergolaKonfiguratorPage() {
           </p>
         </div>
 
+        <div className="max-w-2xl bg-white border border-zinc-200 rounded-2xl p-5">
+          <p className="text-sm text-zinc-600 leading-relaxed">
+            <span className="font-bold text-zinc-900">Ovo je tek okvir mogućnosti.</span>{" "}
+            Konfigurator prikazuje uobičajene dimenzije i najčešće načine oslanjanja, no time se ne
+            ograničavamo — ako imate specifičan projekt, netipičnu mjeru ili poseban zahtjev,
+            javite nam se. Prilagođavamo rješenje vašem prostoru, ne obrnuto.
+          </p>
+        </div>
+
         <PergolaConfigurator />
       </main>
     </div>
