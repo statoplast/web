@@ -186,11 +186,15 @@ const END_CAP_LIFT = 0.08; // sits above the base comb, covering both roof layer
 const MID_BEAM_HEIGHT = 0.15; // 150x50 connecting beam per middle "field"
 const MID_BEAM_DEPTH = 0.05;
 
+// Modules span only the space between the INSIDE faces of the left/right
+// beams, not the pergola's full nominal width - otherwise the roof
+// literally overlaps the side beam's own thickness and z-fights with it.
 function getModuleXRanges(widthM: number) {
-  const moduleCount = Math.max(1, Math.round(widthM / MODULE_WIDTH));
-  const moduleWidth = (widthM - MODULE_GAP * (moduleCount - 1)) / moduleCount;
+  const usableWidth = widthM - 2 * BEAM_DEPTH;
+  const moduleCount = Math.max(1, Math.round(usableWidth / MODULE_WIDTH));
+  const moduleWidth = (usableWidth - MODULE_GAP * (moduleCount - 1)) / moduleCount;
   return Array.from({ length: moduleCount }, (_, i) => {
-    const startX = -widthM / 2 + i * (moduleWidth + MODULE_GAP);
+    const startX = -usableWidth / 2 + i * (moduleWidth + MODULE_GAP);
     return { centerX: startX + moduleWidth / 2, width: moduleWidth };
   });
 }
@@ -421,7 +425,10 @@ function EndCaps({
   y: number;
   color: ColorOption;
 }) {
-  const usableDepth = depthM - 0.1;
+  // matches the roof's own clip boundary (the inside face of the front/back
+  // beams) so the cap's outer edge sits flush there, not further out where
+  // it would overlap the beam.
+  const usableDepth = depthM - 2 * BEAM_DEPTH;
   const capZ = usableDepth / 2 - END_CAP_LENGTH / 2;
   return (
     <>
@@ -575,9 +582,10 @@ function PergolaModel({
   // frame instead of perched above it.
   const roofY = heightM + BEAM_HEIGHT - 0.08;
   // hard-clip the sliding sheet so it can never visibly extend past the
-  // frame's inner boundary, no matter how far it's slid
+  // INSIDE face of the front/back beams (not just their mid-thickness),
+  // otherwise the roof overlaps the beam's own volume and z-fights with it.
   const roofClipPlanes = useMemo(() => {
-    const half = (depthM - 0.1) / 2;
+    const half = depthM / 2 - BEAM_DEPTH;
     return [
       new THREE.Plane(new THREE.Vector3(0, 0, -1), half),
       new THREE.Plane(new THREE.Vector3(0, 0, 1), half),
