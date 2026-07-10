@@ -78,7 +78,7 @@ export default function AluStolarijaPage() {
               <div className="h-[450px] rounded-3xl overflow-hidden shadow-lg bg-zinc-200">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/slike/alu_stolarija3.jpg"
+                  src="/slike/alu_stolarija3.jpeg"
                   alt="Aluminijska klizna stijena detalj"
                   className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
                 />

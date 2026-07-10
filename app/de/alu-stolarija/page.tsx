@@ -80,7 +80,7 @@ export default function AluSchreinereiPage() {
               <div className="h-[450px] rounded-3xl overflow-hidden shadow-lg bg-zinc-200">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/slike/alu_stolarija3.jpg"
+                  src="/slike/alu_stolarija3.jpeg"
                   alt="Detail einer Aluminium-Schiebewand"
                   className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
                 />
