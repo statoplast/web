@@ -5,22 +5,45 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FlagDE, FlagEN, FlagHR } from "./Flags";
+import { Locale, localizedPath, stripLocalePrefix } from "@/lib/i18n";
 
 export type SiteHeaderVariant = "transparent" | "light" | "industrial";
 
-const NAV_LINKS = [
-  { href: "/o-nama", label: "O NAMA" },
-  { href: "/projekti", label: "PROJEKTI" },
-  { href: "/kontakt", label: "KONTAKT" },
-];
+const NAV_LINKS: Record<Locale, { href: string; label: string }[]> = {
+  hr: [
+    { href: "/o-nama", label: "O NAMA" },
+    { href: "/projekti", label: "PROJEKTI" },
+    { href: "/kontakt", label: "KONTAKT" },
+  ],
+  en: [
+    { href: "/o-nama", label: "ABOUT US" },
+    { href: "/projekti", label: "PROJECTS" },
+    { href: "/kontakt", label: "CONTACT" },
+  ],
+  de: [
+    { href: "/o-nama", label: "ÜBER UNS" },
+    { href: "/projekti", label: "PROJEKTE" },
+    { href: "/kontakt", label: "KONTAKT" },
+  ],
+};
 
-const LANGUAGES = [
-  { code: "HR", label: "Hrvatski", Flag: FlagHR },
-  { code: "EN", label: "English", Flag: FlagEN },
-  { code: "DE", label: "Deutsch", Flag: FlagDE },
-];
+const HOME_LABEL: Record<Locale, string> = {
+  hr: "Početna",
+  en: "Home",
+  de: "Startseite",
+};
 
-const ACTIVE_LANGUAGE = "HR";
+const MENU_LABEL: Record<Locale, { open: string; close: string }> = {
+  hr: { open: "Otvori izbornik", close: "Zatvori izbornik" },
+  en: { open: "Open menu", close: "Close menu" },
+  de: { open: "Menü öffnen", close: "Menü schließen" },
+};
+
+const LANGUAGES: { code: Locale; label: string; Flag: typeof FlagHR }[] = [
+  { code: "hr", label: "Hrvatski", Flag: FlagHR },
+  { code: "en", label: "English", Flag: FlagEN },
+  { code: "de", label: "Deutsch", Flag: FlagDE },
+];
 
 function HomeIcon({ className }: { className?: string }) {
   return (
@@ -115,18 +138,30 @@ const VARIANT_STYLES: Record<
   },
 };
 
-export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) {
+export default function SiteHeader({
+  variant,
+  locale = "hr",
+}: {
+  variant: SiteHeaderVariant;
+  locale?: Locale;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const styles = VARIANT_STYLES[variant];
+  const navLinks = NAV_LINKS[locale];
+  const basePath = stripLocalePrefix(pathname);
+  const homeHref = localizedPath("/", locale);
 
-  const isActive = (href: string) => pathname === href || pathname === `${href}/`;
+  const isActive = (href: string) => {
+    const target = localizedPath(href, locale);
+    return pathname === target || pathname === `${target}/`;
+  };
 
   return (
     <>
       <header className={styles.header}>
         <Link
-          href="/"
+          href={homeHref}
           className="pointer-events-auto cursor-pointer z-50 flex items-center gap-4 py-3 pr-4"
         >
           <Image
@@ -141,16 +176,16 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
 
         <nav className={styles.nav}>
           <Link
-            href="/"
-            aria-label="Početna"
+            href={homeHref}
+            aria-label={HOME_LABEL[locale]}
             className={`p-2 -m-2 mr-1 transition-colors duration-300 ${styles.homeIcon}`}
           >
             <HomeIcon className="w-4 h-4" />
           </Link>
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={localizedPath(link.href, locale)}
               className={`${styles.navLink} ${
                 isActive(link.href) ? styles.navLinkActive : styles.navLinkInactive
               }`}
@@ -162,24 +197,29 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
 
         <div className={styles.langWrap}>
           {LANGUAGES.map((lang) => (
-            <a key={lang.code} href="#" aria-label={lang.label} className="block p-2 -m-2">
+            <Link
+              key={lang.code}
+              href={localizedPath(basePath, lang.code)}
+              aria-label={lang.label}
+              className="block p-2 -m-2"
+            >
               <span
                 className={`block w-6 h-4 md:w-7 md:h-5 rounded-[2px] overflow-hidden transition-all duration-300 ${
-                  lang.code === ACTIVE_LANGUAGE
+                  lang.code === locale
                     ? `opacity-100 ${styles.flagActiveRing}`
                     : "opacity-40 hover:opacity-80"
                 }`}
               >
                 <lang.Flag className="w-full h-full object-cover" />
               </span>
-            </a>
+            </Link>
           ))}
         </div>
 
         <button
           onClick={() => setIsOpen((v) => !v)}
           className={styles.hamburgerWrap}
-          aria-label={isOpen ? "Zatvori izbornik" : "Otvori izbornik"}
+          aria-label={isOpen ? MENU_LABEL[locale].close : MENU_LABEL[locale].open}
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
         >
@@ -205,17 +245,17 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
       >
         <nav className="flex flex-col items-center space-y-6 text-sm font-bold tracking-[0.2em]">
           <Link
-            href="/"
+            href={homeHref}
             onClick={() => setIsOpen(false)}
-            aria-label="Početna"
+            aria-label={HOME_LABEL[locale]}
             className={`${styles.mobileLink} py-2 transition-colors`}
           >
             <HomeIcon className="w-6 h-6" />
           </Link>
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={localizedPath(link.href, locale)}
               onClick={() => setIsOpen(false)}
               className={`${styles.mobileLink} text-xl py-2 block transition-colors`}
             >
@@ -226,17 +266,23 @@ export default function SiteHeader({ variant }: { variant: SiteHeaderVariant }) 
         <div className={`w-12 h-[1px] my-4 ${styles.mobileDivider}`}></div>
         <div className="flex items-center gap-3">
           {LANGUAGES.map((lang) => (
-            <a key={lang.code} href="#" aria-label={lang.label} className="block p-2.5 -m-2.5">
+            <Link
+              key={lang.code}
+              href={localizedPath(basePath, lang.code)}
+              onClick={() => setIsOpen(false)}
+              aria-label={lang.label}
+              className="block p-2.5 -m-2.5"
+            >
               <span
                 className={`block w-8 h-6 rounded-[2px] overflow-hidden transition-all duration-300 ${
-                  lang.code === ACTIVE_LANGUAGE
+                  lang.code === locale
                     ? `opacity-100 ${styles.flagActiveRing}`
                     : "opacity-40 hover:opacity-80"
                 }`}
               >
                 <lang.Flag className="w-full h-full object-cover" />
               </span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

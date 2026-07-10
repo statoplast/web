@@ -5,6 +5,7 @@ import Link from "next/link";
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, ContactShadows, Grid } from "@react-three/drei";
+import { Locale, localizedPath } from "@/lib/i18n";
 
 // EN AW-6060 200x100x4 aluminum profile, used for both pillars and perimeter
 // beams per the technical drawing (2026-03-VŽ-01).
@@ -30,52 +31,231 @@ type ColorOption = {
   isCustom?: boolean;
 };
 
-const COLOR_OPTIONS: ColorOption[] = [
-  { id: "antracit", label: "Antracit", frame: "#3a3c3f", slat: "#484b4f", swatch: "#3a3c3f" },
-  { id: "crna", label: "Crna mat", frame: "#1c1c1f", slat: "#26262a", swatch: "#1c1c1f" },
-  { id: "bijela", label: "Bijela", frame: "#f2f2ef", slat: "#e6e6e2", swatch: "#f2f2ef" },
-  { id: "bronca", label: "Bronca", frame: "#453329", slat: "#54402f", swatch: "#453329" },
-  { id: "srebrna", label: "Srebrna", frame: "#b7bbbe", slat: "#a5a9ac", swatch: "#b7bbbe" },
-  {
-    id: "ral",
-    label: "Bilo koja boja po RAL-u",
-    frame: "#5a5e62",
-    slat: "#686c70",
-    swatch: "",
-    isCustom: true,
-  },
-];
+const COLOR_OPTIONS: Record<Locale, ColorOption[]> = {
+  hr: [
+    { id: "antracit", label: "Antracit", frame: "#3a3c3f", slat: "#484b4f", swatch: "#3a3c3f" },
+    { id: "crna", label: "Crna mat", frame: "#1c1c1f", slat: "#26262a", swatch: "#1c1c1f" },
+    { id: "bijela", label: "Bijela", frame: "#f2f2ef", slat: "#e6e6e2", swatch: "#f2f2ef" },
+    { id: "bronca", label: "Bronca", frame: "#453329", slat: "#54402f", swatch: "#453329" },
+    { id: "srebrna", label: "Srebrna", frame: "#b7bbbe", slat: "#a5a9ac", swatch: "#b7bbbe" },
+    {
+      id: "ral",
+      label: "Bilo koja boja po RAL-u",
+      frame: "#5a5e62",
+      slat: "#686c70",
+      swatch: "",
+      isCustom: true,
+    },
+  ],
+  en: [
+    { id: "antracit", label: "Anthracite", frame: "#3a3c3f", slat: "#484b4f", swatch: "#3a3c3f" },
+    { id: "crna", label: "Matte black", frame: "#1c1c1f", slat: "#26262a", swatch: "#1c1c1f" },
+    { id: "bijela", label: "White", frame: "#f2f2ef", slat: "#e6e6e2", swatch: "#f2f2ef" },
+    { id: "bronca", label: "Bronze", frame: "#453329", slat: "#54402f", swatch: "#453329" },
+    { id: "srebrna", label: "Silver", frame: "#b7bbbe", slat: "#a5a9ac", swatch: "#b7bbbe" },
+    {
+      id: "ral",
+      label: "Any RAL colour",
+      frame: "#5a5e62",
+      slat: "#686c70",
+      swatch: "",
+      isCustom: true,
+    },
+  ],
+  de: [
+    { id: "antracit", label: "Anthrazit", frame: "#3a3c3f", slat: "#484b4f", swatch: "#3a3c3f" },
+    { id: "crna", label: "Mattschwarz", frame: "#1c1c1f", slat: "#26262a", swatch: "#1c1c1f" },
+    { id: "bijela", label: "Weiß", frame: "#f2f2ef", slat: "#e6e6e2", swatch: "#f2f2ef" },
+    { id: "bronca", label: "Bronze", frame: "#453329", slat: "#54402f", swatch: "#453329" },
+    { id: "srebrna", label: "Silber", frame: "#b7bbbe", slat: "#a5a9ac", swatch: "#b7bbbe" },
+    {
+      id: "ral",
+      label: "Beliebige RAL-Farbe",
+      frame: "#5a5e62",
+      slat: "#686c70",
+      swatch: "",
+      isCustom: true,
+    },
+  ],
+};
 
-const MOUNT_OPTIONS: { id: MountType; label: string; description: string }[] = [
-  {
-    id: "freestanding",
-    label: "Samostojeća",
-    description: "Pergola stoji slobodno, poduprta stupovima sa svih strana.",
-  },
-  {
-    id: "single-wall",
-    label: "Uza zid",
-    description: "Jedna cijela strana oslonjena je na zid kuće, nasuprotna strana stoji na stupovima.",
-  },
-  {
-    id: "l-corner",
-    label: "U kutu (L-oblik)",
-    description: "Dva zida kuće spajaju se pod pravim kutom, a suprotni ugao pridržavaju stupovi.",
-  },
-  {
-    id: "corner-touch",
-    label: "Dodiruje kut",
-    description: "Pergola dodiruje kuću samo u jednom uglu, dok su preostali uglovi poduprti stupovima.",
-  },
-];
+const MOUNT_OPTIONS: Record<Locale, { id: MountType; label: string; description: string }[]> = {
+  hr: [
+    {
+      id: "freestanding",
+      label: "Samostojeća",
+      description: "Pergola stoji slobodno, poduprta stupovima sa svih strana.",
+    },
+    {
+      id: "single-wall",
+      label: "Uza zid",
+      description:
+        "Jedna cijela strana oslonjena je na zid kuće, nasuprotna strana stoji na stupovima.",
+    },
+    {
+      id: "l-corner",
+      label: "U kutu (L-oblik)",
+      description: "Dva zida kuće spajaju se pod pravim kutom, a suprotni ugao pridržavaju stupovi.",
+    },
+    {
+      id: "corner-touch",
+      label: "Dodiruje kut",
+      description:
+        "Pergola dodiruje kuću samo u jednom uglu, dok su preostali uglovi poduprti stupovima.",
+    },
+  ],
+  en: [
+    {
+      id: "freestanding",
+      label: "Freestanding",
+      description: "The pergola stands freely, supported by pillars on all sides.",
+    },
+    {
+      id: "single-wall",
+      label: "Wall-mounted",
+      description:
+        "One full side rests against the house wall, the opposite side stands on pillars.",
+    },
+    {
+      id: "l-corner",
+      label: "In a corner (L-shape)",
+      description: "Two house walls meet at a right angle, and the opposite corner is held by pillars.",
+    },
+    {
+      id: "corner-touch",
+      label: "Touches corner",
+      description:
+        "The pergola touches the house at only one corner, while the remaining corners are supported by pillars.",
+    },
+  ],
+  de: [
+    {
+      id: "freestanding",
+      label: "Freistehend",
+      description: "Die Pergola steht frei und wird an allen Seiten von Stützen getragen.",
+    },
+    {
+      id: "single-wall",
+      label: "An der Wand",
+      description:
+        "Eine ganze Seite liegt an der Hauswand an, die gegenüberliegende Seite steht auf Stützen.",
+    },
+    {
+      id: "l-corner",
+      label: "In der Ecke (L-Form)",
+      description:
+        "Zwei Hauswände treffen im rechten Winkel aufeinander, die gegenüberliegende Ecke wird von Stützen getragen.",
+    },
+    {
+      id: "corner-touch",
+      label: "Berührt Ecke",
+      description:
+        "Die Pergola berührt das Haus nur an einer Ecke, während die übrigen Ecken von Stützen getragen werden.",
+    },
+  ],
+};
 
 type PatternType = "rectangles" | "squares" | "triangles";
 
-const PATTERN_OPTIONS: { id: PatternType; label: string }[] = [
-  { id: "rectangles", label: "3 pravokutnika" },
-  { id: "squares", label: "Mreža kvadrata" },
-  { id: "triangles", label: "Cik-cak trokuti" },
-];
+const PATTERN_OPTIONS: Record<Locale, { id: PatternType; label: string }[]> = {
+  hr: [
+    { id: "rectangles", label: "3 pravokutnika" },
+    { id: "squares", label: "Mreža kvadrata" },
+    { id: "triangles", label: "Cik-cak trokuti" },
+  ],
+  en: [
+    { id: "rectangles", label: "3 rectangles" },
+    { id: "squares", label: "Square grid" },
+    { id: "triangles", label: "Zigzag triangles" },
+  ],
+  de: [
+    { id: "rectangles", label: "3 Rechtecke" },
+    { id: "squares", label: "Quadratraster" },
+    { id: "triangles", label: "Zickzack-Dreiecke" },
+  ],
+};
+
+const UI_TEXT: Record<
+  Locale,
+  {
+    slidePanels: string;
+    slideDesc: string;
+    width: string;
+    depth: string;
+    height: string;
+    mountLabel: string;
+    pillarsNeeded: string;
+    pillarsAuto: string;
+    colorLabel: string;
+    ralNote: string;
+    patternLabel: string;
+    totalArea: string;
+    ctaButton: string;
+    disclaimer: string;
+    inquiry: (width: number, depth: number, height: number, mount: string, pillars: number, color: string) => string;
+  }
+> = {
+  hr: {
+    slidePanels: "Pomak kliznih panela",
+    slideDesc:
+      "Gornji, prorezani paneli (300mm) klize preko donjih, punih panela (170mm). Pomicanjem ovog klizača simulirate zatvaranje ili otvaranje krova pergole.",
+    width: "Širina",
+    depth: "Dubina",
+    height: "Visina",
+    mountLabel: "Način oslanjanja",
+    pillarsNeeded: "Potrebno stupova pri ovim dimenzijama:",
+    pillarsAuto: "Broj stupova automatski raste s većim dimenzijama pergole.",
+    colorLabel: "Boja konstrukcije",
+    ralNote: "Ne izrađujemo samo standardne nijanse — dostupna je bilo koja boja po RAL karti, po vašem izboru.",
+    patternLabel: "Uzorak prorezanih panela",
+    totalArea: "Ukupna površina",
+    ctaButton: "Zatražite ponudu za ovu konfiguraciju",
+    disclaimer:
+      "Prikazani model je okvirna 3D vizualizacija namijenjena boljem uvidu u proporcije i veličinu. Konačan izgled, materijali i točne mjere definiraju se s našim inženjerskim timom.",
+    inquiry: (width, depth, height, mount, pillars, color) =>
+      `Zanima me ponuda za bioklimatsku pergolu s dimenzijama ${width}cm (širina) x ${depth}cm (dubina) x ${height}cm (visina). Način oslanjanja: ${mount} (${pillars} stupova). Boja: ${color}.`,
+  },
+  en: {
+    slidePanels: "Sliding panel offset",
+    slideDesc:
+      "The upper, perforated panels (300mm) slide over the lower, solid panels (170mm). Move this slider to simulate opening or closing the pergola roof.",
+    width: "Width",
+    depth: "Depth",
+    height: "Height",
+    mountLabel: "Mounting type",
+    pillarsNeeded: "Pillars needed at these dimensions:",
+    pillarsAuto: "The number of pillars grows automatically with larger pergola dimensions.",
+    colorLabel: "Frame colour",
+    ralNote: "We don't just make standard shades — any colour from the RAL chart is available, to your choice.",
+    patternLabel: "Perforated panel pattern",
+    totalArea: "Total area",
+    ctaButton: "Request a quote for this configuration",
+    disclaimer:
+      "The model shown is an approximate 3D visualisation intended to give a better sense of proportions and size. The final look, materials and exact measurements are defined together with our engineering team.",
+    inquiry: (width, depth, height, mount, pillars, color) =>
+      `I'm interested in a quote for a bioclimatic pergola with dimensions ${width}cm (width) x ${depth}cm (depth) x ${height}cm (height). Mounting type: ${mount} (${pillars} pillars). Colour: ${color}.`,
+  },
+  de: {
+    slidePanels: "Verschiebung der Schiebepaneele",
+    slideDesc:
+      "Die oberen, geschlitzten Paneele (300mm) gleiten über die unteren, vollen Paneele (170mm). Bewegen Sie diesen Regler, um das Öffnen oder Schließen des Pergoladachs zu simulieren.",
+    width: "Breite",
+    depth: "Tiefe",
+    height: "Höhe",
+    mountLabel: "Befestigungsart",
+    pillarsNeeded: "Benötigte Stützen bei diesen Abmessungen:",
+    pillarsAuto: "Die Anzahl der Stützen wächst automatisch mit größeren Pergola-Abmessungen.",
+    colorLabel: "Rahmenfarbe",
+    ralNote: "Wir fertigen nicht nur Standardtöne — jede Farbe der RAL-Karte ist nach Ihrer Wahl verfügbar.",
+    patternLabel: "Muster der geschlitzten Paneele",
+    totalArea: "Gesamtfläche",
+    ctaButton: "Angebot für diese Konfiguration anfordern",
+    disclaimer:
+      "Das gezeigte Modell ist eine ungefähre 3D-Visualisierung für einen besseren Eindruck von Proportionen und Größe. Das endgültige Aussehen, die Materialien und die genauen Maße werden gemeinsam mit unserem Engineering-Team festgelegt.",
+    inquiry: (width, depth, height, mount, pillars, color) =>
+      `Ich interessiere mich für ein Angebot für eine bioklimatische Pergola mit den Abmessungen ${width}cm (Breite) x ${depth}cm (Tiefe) x ${height}cm (Höhe). Befestigungsart: ${mount} (${pillars} Stützen). Farbe: ${color}.`,
+  },
+};
 
 function dedupe(points: [number, number][]) {
   const seen = new Map<string, [number, number]>();
@@ -897,13 +1077,18 @@ function Field({
   );
 }
 
-export default function PergolaConfigurator() {
+export default function PergolaConfigurator({ locale = "hr" }: { locale?: Locale }) {
+  const colorOptions = COLOR_OPTIONS[locale];
+  const mountOptions = MOUNT_OPTIONS[locale];
+  const patternOptions = PATTERN_OPTIONS[locale];
+  const t = UI_TEXT[locale];
+
   const [width, setWidth] = useState(400);
   const [depth, setDepth] = useState(300);
   const [height, setHeight] = useState(250);
   const [mount, setMount] = useState<MountType>("freestanding");
-  const [colorId, setColorId] = useState(COLOR_OPTIONS[0].id);
-  const [patternId, setPatternId] = useState<PatternType>(PATTERN_OPTIONS[0].id);
+  const [colorId, setColorId] = useState(colorOptions[0].id);
+  const [patternId, setPatternId] = useState<PatternType>(patternOptions[0].id);
   const [slidePosition, setSlidePosition] = useState(0);
 
   // The 3D rebuild (especially the extruded roof geometry) is expensive
@@ -920,14 +1105,14 @@ export default function PergolaConfigurator() {
   const depthM = deferredDepth / 100;
   const heightM = deferredHeight / 100;
   const area = (widthM * depthM).toFixed(1);
-  const color = COLOR_OPTIONS.find((c) => c.id === colorId) ?? COLOR_OPTIONS[0];
+  const color = colorOptions.find((c) => c.id === colorId) ?? colorOptions[0];
   const pillarCount = useMemo(
     () => getPillarPositions(widthM, depthM, mount).length,
     [widthM, depthM, mount]
   );
-  const mountOption = MOUNT_OPTIONS.find((m) => m.id === mount)!;
+  const mountOption = mountOptions.find((m) => m.id === mount)!;
 
-  const inquiryMessage = `Zanima me ponuda za bioklimatsku pergolu s dimenzijama ${width}cm (širina) x ${depth}cm (dubina) x ${height}cm (visina). Način oslanjanja: ${mountOption.label} (${pillarCount} stupova). Boja: ${color.label}.`;
+  const inquiryMessage = t.inquiry(width, depth, height, mountOption.label, pillarCount, color.label);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -955,7 +1140,7 @@ export default function PergolaConfigurator() {
             losing sight of the model */}
         <div className="bg-white p-4 rounded-2xl border border-zinc-200">
           <Field
-            label="Pomak kliznih panela"
+            label={t.slidePanels}
             value={slidePosition}
             min={SLIDE_MIN}
             max={SLIDE_MAX}
@@ -963,17 +1148,14 @@ export default function PergolaConfigurator() {
             unit="cm"
             onChange={setSlidePosition}
           />
-          <p className="text-xs text-zinc-500 leading-relaxed mt-3">
-            Gornji, prorezani paneli (300mm) klize preko donjih, punih panela (170mm). Pomicanjem
-            ovog klizača simulirate zatvaranje ili otvaranje krova pergole.
-          </p>
+          <p className="text-xs text-zinc-500 leading-relaxed mt-3">{t.slideDesc}</p>
         </div>
       </div>
 
       <div className="lg:col-span-4 flex flex-col justify-between">
         <div className="space-y-8">
           <Field
-            label="Širina"
+            label={t.width}
             value={width}
             min={200}
             max={800}
@@ -982,7 +1164,7 @@ export default function PergolaConfigurator() {
             onChange={setWidth}
           />
           <Field
-            label="Dubina"
+            label={t.depth}
             value={depth}
             min={200}
             max={600}
@@ -991,7 +1173,7 @@ export default function PergolaConfigurator() {
             onChange={setDepth}
           />
           <Field
-            label="Visina"
+            label={t.height}
             value={height}
             min={200}
             max={300}
@@ -1002,10 +1184,10 @@ export default function PergolaConfigurator() {
 
           <div>
             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
-              Način oslanjanja
+              {t.mountLabel}
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {MOUNT_OPTIONS.map((option) => (
+              {mountOptions.map((option) => (
                 <button
                   key={option.id}
                   type="button"
@@ -1021,18 +1203,17 @@ export default function PergolaConfigurator() {
               ))}
             </div>
             <p className="text-xs text-zinc-500 leading-relaxed mt-3">
-              {mountOption.description} Potrebno stupova pri ovim dimenzijama:{" "}
-              <span className="font-bold text-zinc-700">{pillarCount}</span>. Broj stupova
-              automatski raste s većim dimenzijama pergole.
+              {mountOption.description} {t.pillarsNeeded}{" "}
+              <span className="font-bold text-zinc-700">{pillarCount}</span>. {t.pillarsAuto}
             </p>
           </div>
 
           <div>
             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
-              Boja konstrukcije
+              {t.colorLabel}
             </label>
             <div className="flex items-center flex-wrap gap-3">
-              {COLOR_OPTIONS.map((option) => (
+              {colorOptions.map((option) => (
                 <button
                   key={option.id}
                   type="button"
@@ -1056,19 +1237,16 @@ export default function PergolaConfigurator() {
               ))}
             </div>
             {color.isCustom && (
-              <p className="text-xs text-zinc-500 leading-relaxed mt-3">
-                Ne izrađujemo samo standardne nijanse — dostupna je bilo koja boja po RAL karti, po
-                vašem izboru.
-              </p>
+              <p className="text-xs text-zinc-500 leading-relaxed mt-3">{t.ralNote}</p>
             )}
           </div>
 
           <div>
             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
-              Uzorak prorezanih panela
+              {t.patternLabel}
             </label>
             <div className="grid grid-cols-3 gap-2">
-              {PATTERN_OPTIONS.map((option) => (
+              {patternOptions.map((option) => (
                 <button
                   key={option.id}
                   type="button"
@@ -1134,21 +1312,17 @@ export default function PergolaConfigurator() {
         <div className="mt-8 pt-6 border-t border-zinc-200 space-y-4">
           <div className="flex items-baseline justify-between">
             <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">
-              Ukupna površina
+              {t.totalArea}
             </span>
             <span className="text-2xl font-bold text-zinc-900">{area} m²</span>
           </div>
           <Link
-            href={`/kontakt?poruka=${encodeURIComponent(inquiryMessage)}`}
+            href={`${localizedPath("/kontakt", locale)}?poruka=${encodeURIComponent(inquiryMessage)}`}
             className="block w-full text-center bg-black hover:bg-zinc-800 text-white py-4 rounded-lg text-sm font-bold tracking-widest uppercase transition-colors"
           >
-            Zatražite ponudu za ovu konfiguraciju
+            {t.ctaButton}
           </Link>
-          <p className="text-xs text-zinc-400 leading-relaxed">
-            Prikazani model je okvirna 3D vizualizacija namijenjena boljem uvidu u proporcije i
-            veličinu. Konačan izgled, materijali i točne mjere definiraju se s našim inženjerskim
-            timom.
-          </p>
+          <p className="text-xs text-zinc-400 leading-relaxed">{t.disclaimer}</p>
         </div>
       </div>
     </div>

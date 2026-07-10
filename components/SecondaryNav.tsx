@@ -2,28 +2,70 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Locale, localizedPath } from "@/lib/i18n";
 
 export type SecondaryNavVariant = "light" | "industrial";
 
-const LIGHT_LINKS = [
-  { href: "/pivot-vrata", label: "Pivot Vrata" },
-  { href: "/bioklimatske-pergole", label: "Bioklimatske pergole" },
-  { href: "/alu-stolarija", label: "Alu Stolarija" },
-  { href: "/moderne-ograde", label: "Moderne Ograde" },
-  { href: "/zatvaranje-nadstresnica", label: "Zatvaranje Nadstrešnica" },
-];
+const LIGHT_LINKS: Record<Locale, { href: string; label: string }[]> = {
+  hr: [
+    { href: "/pivot-vrata", label: "Pivot Vrata" },
+    { href: "/bioklimatske-pergole", label: "Bioklimatske pergole" },
+    { href: "/alu-stolarija", label: "Alu Stolarija" },
+    { href: "/moderne-ograde", label: "Moderne Ograde" },
+    { href: "/zatvaranje-nadstresnica", label: "Zatvaranje Nadstrešnica" },
+  ],
+  en: [
+    { href: "/pivot-vrata", label: "Pivot Doors" },
+    { href: "/bioklimatske-pergole", label: "Bioclimatic Pergolas" },
+    { href: "/alu-stolarija", label: "Aluminium Joinery" },
+    { href: "/moderne-ograde", label: "Modern Fencing" },
+    { href: "/zatvaranje-nadstresnica", label: "Canopy Enclosures" },
+  ],
+  de: [
+    { href: "/pivot-vrata", label: "Pivottüren" },
+    { href: "/bioklimatske-pergole", label: "Bioklimatische Pergolen" },
+    { href: "/alu-stolarija", label: "Alu-Schreinerei" },
+    { href: "/moderne-ograde", label: "Moderne Zäune" },
+    { href: "/zatvaranje-nadstresnica", label: "Terrassenverglasung" },
+  ],
+};
 
-const INDUSTRIAL_LINKS = [
-  { href: "/plastifikacija-metala", label: "Plastifikacija Metala" },
-  { href: "/lasersko-rezanje", label: "Lasersko Rezanje" },
-  { href: "/cnc-obrada", label: "CNC Obrada" },
-  { href: "/ormari", label: "Metalni i Elektro Ormari" },
-  { href: "/serijska-proizvodnja", label: "Serijska Proizvodnja" },
-];
+const INDUSTRIAL_LINKS: Record<Locale, { href: string; label: string }[]> = {
+  hr: [
+    { href: "/plastifikacija-metala", label: "Plastifikacija Metala" },
+    { href: "/lasersko-rezanje", label: "Lasersko Rezanje" },
+    { href: "/cnc-obrada", label: "CNC Obrada" },
+    { href: "/ormari", label: "Metalni i Elektro Ormari" },
+    { href: "/serijska-proizvodnja", label: "Serijska Proizvodnja" },
+  ],
+  en: [
+    { href: "/plastifikacija-metala", label: "Metal Powder Coating" },
+    { href: "/lasersko-rezanje", label: "Laser Cutting" },
+    { href: "/cnc-obrada", label: "CNC Machining" },
+    { href: "/ormari", label: "Metal & Electrical Cabinets" },
+    { href: "/serijska-proizvodnja", label: "Series Production" },
+  ],
+  de: [
+    { href: "/plastifikacija-metala", label: "Metallbeschichtung" },
+    { href: "/lasersko-rezanje", label: "Laserschneiden" },
+    { href: "/cnc-obrada", label: "CNC-Bearbeitung" },
+    { href: "/ormari", label: "Metall- und Elektroschränke" },
+    { href: "/serijska-proizvodnja", label: "Serienproduktion" },
+  ],
+};
 
-export default function SecondaryNav({ variant }: { variant: SecondaryNavVariant }) {
+export default function SecondaryNav({
+  variant,
+  locale = "hr",
+}: {
+  variant: SecondaryNavVariant;
+  locale?: Locale;
+}) {
   const pathname = usePathname();
-  const isActive = (href: string) => pathname === href || pathname === `${href}/`;
+  const isActive = (href: string) => {
+    const target = localizedPath(href, locale);
+    return pathname === target || pathname === `${target}/`;
+  };
 
   if (variant === "light") {
     return (
@@ -33,10 +75,10 @@ export default function SecondaryNav({ variant }: { variant: SecondaryNavVariant
           className="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none py-4"
         >
           <div className="flex space-x-8 text-sm font-semibold tracking-wide justify-start md:justify-center">
-            {LIGHT_LINKS.map((link) => (
+            {LIGHT_LINKS[locale].map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={localizedPath(link.href, locale)}
                 className={`border-b-2 pb-1 transition-all duration-300 inline-block ${
                   isActive(link.href)
                     ? "text-black border-black"
@@ -59,10 +101,10 @@ export default function SecondaryNav({ variant }: { variant: SecondaryNavVariant
         className="max-w-6xl mx-auto px-6 overflow-x-auto whitespace-nowrap scrollbar-none"
       >
         <div className="flex space-x-10 md:space-x-12">
-          {INDUSTRIAL_LINKS.map((link) => (
+          {INDUSTRIAL_LINKS[locale].map((link) => (
             <Link
               key={link.href}
-              href={link.href}
+              href={localizedPath(link.href, locale)}
               className={`relative pb-4 text-sm tracking-wide transition-all inline-block ${
                 isActive(link.href)
                   ? "font-bold text-white"
