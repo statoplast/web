@@ -53,7 +53,7 @@ export default function AluStolarijaPage() {
             <div className="lg:col-span-7 w-full h-[500px] lg:h-[700px] rounded-3xl overflow-hidden shadow-2xl bg-zinc-200">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/slike/alu_stolarija.jpg"
+                src="/slike/moderna_arhitektura_kuca.jpeg"
                 alt="Alu Stolarija - Pogled na gotov objekt"
                 className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
               />
