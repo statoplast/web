@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { Locale, localizedPath } from "@/lib/i18n";
 
 export type SecondaryNavVariant = "light" | "industrial";
@@ -62,10 +63,20 @@ export default function SecondaryNav({
   locale?: Locale;
 }) {
   const pathname = usePathname();
+  const activeRef = useRef<HTMLAnchorElement | null>(null);
   const isActive = (href: string) => {
     const target = localizedPath(href, locale);
     return pathname === target || pathname === `${target}/`;
   };
+
+  // The nav bar is a fresh mount on every page navigation, so its scroll
+  // position always starts at 0 - if the active link (the page you just
+  // clicked to) sits further right, it snaps out of view instead of
+  // staying visible. Scroll it into view immediately on mount, without
+  // animating, so the bar looks like it "kept" its position.
+  useEffect(() => {
+    activeRef.current?.scrollIntoView({ behavior: "instant", inline: "center", block: "nearest" });
+  }, [pathname]);
 
   if (variant === "light") {
     return (
@@ -78,6 +89,7 @@ export default function SecondaryNav({
             {LIGHT_LINKS[locale].map((link) => (
               <Link
                 key={link.href}
+                ref={isActive(link.href) ? activeRef : undefined}
                 href={localizedPath(link.href, locale)}
                 className={`border-b-2 pb-1 transition-all duration-300 inline-block ${
                   isActive(link.href)
@@ -104,6 +116,7 @@ export default function SecondaryNav({
           {INDUSTRIAL_LINKS[locale].map((link) => (
             <Link
               key={link.href}
+              ref={isActive(link.href) ? activeRef : undefined}
               href={localizedPath(link.href, locale)}
               className={`relative pb-4 text-sm tracking-wide transition-all inline-block ${
                 isActive(link.href)
