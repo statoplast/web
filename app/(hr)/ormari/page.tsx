@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     canonical: "/ormari/",
     languages: alternateLanguages("/ormari"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Metalni i Elektro Ormari po Mjeri | Statoplast",
+    description: "Proizvodnja elektro ormara, IT rack sustava i metalnih kućišta po mjeri. Statoplast nudi kompletnu izradu uz visoku IP zaštitu i plastifikaciju. Saznajte više!",
+    url: "/ormari/",
+    images: [{ url: "/slike/ormari-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Metalni i Elektro Ormari po Mjeri | Statoplast",
+    description: "Proizvodnja elektro ormara, IT rack sustava i metalnih kućišta po mjeri. Statoplast nudi kompletnu izradu uz visoku IP zaštitu i plastifikaciju. Saznajte više!",
+    images: ["/slike/ormari-glavna.jpg"],
+  },
 };
 
 export default function OrmariPage() {

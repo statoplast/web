@@ -7,10 +7,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "CNC Obrada Metala i Savijanje Limova | Statoplast",
   description:
-    "Vrhunska CNC obrada metala i oblikovanje limova. Statoplast nudi precizno kutno savijanje (piganje), industrijsko štancanje i strojno glodanje. Zatražite ponudu!",
+    "Vrhunska CNC obrada metala i oblikovanje limova: precizno kutno savijanje, industrijsko štancanje i strojno glodanje. Zatražite ponudu.",
   alternates: {
     canonical: "/cnc-obrada/",
     languages: alternateLanguages("/cnc-obrada"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "CNC Obrada Metala i Savijanje Limova | Statoplast",
+    description: "Vrhunska CNC obrada metala i oblikovanje limova: precizno kutno savijanje, industrijsko štancanje i strojno glodanje. Zatražite ponudu.",
+    url: "/cnc-obrada/",
+    images: [{ url: "/slike/cnc-obrada-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CNC Obrada Metala i Savijanje Limova | Statoplast",
+    description: "Vrhunska CNC obrada metala i oblikovanje limova: precizno kutno savijanje, industrijsko štancanje i strojno glodanje. Zatražite ponudu.",
+    images: ["/slike/cnc-obrada-glavna.jpg"],
   },
 };
 

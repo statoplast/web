@@ -6,10 +6,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "Aluminium-Pivottüren | Statoplast Moderne Architektur",
   description:
-    "Statoplast Aluminium-Pivottüren stehen für den Höhepunkt moderner Ästhetik und Ingenieurskunst. Maßanfertigung, hohe Tragfähigkeit und erstklassige Wärmedämmung.",
+    "Aluminium-Pivottüren von Statoplast: moderne Ästhetik, Maßanfertigung, hohe Tragfähigkeit und erstklassige Wärmedämmung.",
   alternates: {
     canonical: "/de/pivot-vrata/",
     languages: alternateLanguages("/pivot-vrata"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Aluminium-Pivottüren | Statoplast Moderne Architektur",
+    description: "Aluminium-Pivottüren von Statoplast: moderne Ästhetik, Maßanfertigung, hohe Tragfähigkeit und erstklassige Wärmedämmung.",
+    url: "/de/pivot-vrata/",
+    images: [{ url: "/slike/pivot_vrata.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aluminium-Pivottüren | Statoplast Moderne Architektur",
+    description: "Aluminium-Pivottüren von Statoplast: moderne Ästhetik, Maßanfertigung, hohe Tragfähigkeit und erstklassige Wärmedämmung.",
+    images: ["/slike/pivot_vrata.jpg"],
   },
 };
 

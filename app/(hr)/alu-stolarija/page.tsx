@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/alu-stolarija/",
     languages: alternateLanguages("/alu-stolarija"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Kvalitetna ALU Stolarija i Prozori | Statoplast",
+    description: "Vrhunski aluminijski prozori, vrata i klizne stijene s prekinutim toplinskim mostom. Maksimalna izolacija, stabilnost i dugovječnost za sve tipove objekata.",
+    url: "/alu-stolarija/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kvalitetna ALU Stolarija i Prozori | Statoplast",
+    description: "Vrhunski aluminijski prozori, vrata i klizne stijene s prekinutim toplinskim mostom. Maksimalna izolacija, stabilnost i dugovječnost za sve tipove objekata.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function AluStolarijaPage() {

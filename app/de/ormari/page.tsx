@@ -7,10 +7,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "Metall- und Elektroschränke nach Maß | Statoplast",
   description:
-    "Herstellung von Elektroschränken, IT-Rack-Systemen und Metallgehäusen nach Maß. Statoplast bietet komplette Fertigung mit hohem IP-Schutz und Pulverbeschichtung. Erfahren Sie mehr!",
+    "Elektroschränke, IT-Rack-Systeme und Metallgehäuse nach Maß, komplett gefertigt mit hohem IP-Schutz und Pulverbeschichtung.",
   alternates: {
     canonical: "/de/ormari/",
     languages: alternateLanguages("/ormari"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Metall- und Elektroschränke nach Maß | Statoplast",
+    description: "Elektroschränke, IT-Rack-Systeme und Metallgehäuse nach Maß, komplett gefertigt mit hohem IP-Schutz und Pulverbeschichtung.",
+    url: "/de/ormari/",
+    images: [{ url: "/slike/ormari-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Metall- und Elektroschränke nach Maß | Statoplast",
+    description: "Elektroschränke, IT-Rack-Systeme und Metallgehäuse nach Maß, komplett gefertigt mit hohem IP-Schutz und Pulverbeschichtung.",
+    images: ["/slike/ormari-glavna.jpg"],
   },
 };
 

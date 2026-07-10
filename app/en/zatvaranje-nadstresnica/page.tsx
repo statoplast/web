@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/en/zatvaranje-nadstresnica/",
     languages: alternateLanguages("/zatvaranje-nadstresnica"),
   },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Canopy & Terrace Enclosures | Statoplast",
+    description: "Turn an open canopy or terrace into a usable space all year round. Quality sliding glass walls and a stable aluminium structure.",
+    url: "/en/zatvaranje-nadstresnica/",
+    images: [{ url: "/slike/zatvaranje_nadstresnica.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Canopy & Terrace Enclosures | Statoplast",
+    description: "Turn an open canopy or terrace into a usable space all year round. Quality sliding glass walls and a stable aluminium structure.",
+    images: ["/slike/zatvaranje_nadstresnica.jpeg"],
+  },
 };
 
 export default function CanopyEnclosuresPage() {

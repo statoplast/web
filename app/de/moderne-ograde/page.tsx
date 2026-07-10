@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/de/moderne-ograde/",
     languages: alternateLanguages("/moderne-ograde"),
   },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Moderne Zäune | Aluminium- und Glassysteme | Statoplast",
+    description: "Elegante Aluminium- und Glaszäune nach Maß. Minimalistisches Design mit klaren Linien für Balkone, Terrassen und Gärten, wartungsfrei.",
+    url: "/de/moderne-ograde/",
+    images: [{ url: "/slike/moderne_ograde.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Moderne Zäune | Aluminium- und Glassysteme | Statoplast",
+    description: "Elegante Aluminium- und Glaszäune nach Maß. Minimalistisches Design mit klaren Linien für Balkone, Terrassen und Gärten, wartungsfrei.",
+    images: ["/slike/moderne_ograde.jpeg"],
+  },
 };
 
 export default function ModerneZaeunePage() {

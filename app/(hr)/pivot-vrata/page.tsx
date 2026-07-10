@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/pivot-vrata/",
     languages: alternateLanguages("/pivot-vrata"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Aluminijska Pivot Vrata | Statoplast Moderna Arhitektura",
+    description: "Statoplast aluminijska pivot vrata predstavljaju vrh moderne estetike i inženjeringa. Izrada po mjeri, visoka nosivost i vrhunska toplinska izolacija.",
+    url: "/pivot-vrata/",
+    images: [{ url: "/slike/pivot_vrata.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aluminijska Pivot Vrata | Statoplast Moderna Arhitektura",
+    description: "Statoplast aluminijska pivot vrata predstavljaju vrh moderne estetike i inženjeringa. Izrada po mjeri, visoka nosivost i vrhunska toplinska izolacija.",
+    images: ["/slike/pivot_vrata.jpg"],
+  },
 };
 
 export default function PivotVrataPage() {

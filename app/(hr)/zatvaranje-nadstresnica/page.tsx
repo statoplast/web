@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/zatvaranje-nadstresnica/",
     languages: alternateLanguages("/zatvaranje-nadstresnica"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Zatvaranje Nadstrešnica i Terasa | Statoplast",
+    description: "Pretvorite otvorenu nadstrešnicu ili terasu u koristan prostor tijekom cijele godine. Kvalitetne klizne staklene stijene i stabilna aluminijska konstrukcija.",
+    url: "/zatvaranje-nadstresnica/",
+    images: [{ url: "/slike/zatvaranje_nadstresnica.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zatvaranje Nadstrešnica i Terasa | Statoplast",
+    description: "Pretvorite otvorenu nadstrešnicu ili terasu u koristan prostor tijekom cijele godine. Kvalitetne klizne staklene stijene i stabilna aluminijska konstrukcija.",
+    images: ["/slike/zatvaranje_nadstresnica.jpeg"],
+  },
 };
 
 export default function ZatvaranjeNadstresnicaPage() {

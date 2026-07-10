@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/en/o-nama/",
     languages: alternateLanguages("/o-nama"),
   },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Statoplast | About Us",
+    description: "Learn more about Statoplast. With over 30 years of experience in metalworking, we combine family tradition with state-of-the-art CNC technology.",
+    url: "/en/o-nama/",
+    images: [{ url: "/slike/o-nama.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Statoplast | About Us",
+    description: "Learn more about Statoplast. With over 30 years of experience in metalworking, we combine family tradition with state-of-the-art CNC technology.",
+    images: ["/slike/o-nama.jpg"],
+  },
 };
 
 export default function AboutPage() {

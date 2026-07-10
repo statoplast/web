@@ -13,6 +13,21 @@ export const metadata: Metadata = {
     canonical: "/de/bioklimatske-pergole/konfigurator/",
     languages: alternateLanguages("/bioklimatske-pergole/konfigurator"),
   },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "3D-Konfigurator Bioklimatische Pergola | Statoplast",
+    description: "Testen Sie unseren 3D-Konfigurator und passen Sie die Abmessungen Ihrer bioklimatischen Pergola - Breite, Tiefe, Höhe und Anzahl der Stützen - in Echtzeit an.",
+    url: "/de/bioklimatske-pergole/konfigurator/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "3D-Konfigurator Bioklimatische Pergola | Statoplast",
+    description: "Testen Sie unseren 3D-Konfigurator und passen Sie die Abmessungen Ihrer bioklimatischen Pergola - Breite, Tiefe, Höhe und Anzahl der Stützen - in Echtzeit an.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function PergolaKonfiguratorPage() {

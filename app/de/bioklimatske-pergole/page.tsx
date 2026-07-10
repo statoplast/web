@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     canonical: "/de/bioklimatske-pergole/",
     languages: alternateLanguages("/bioklimatske-pergole"),
   },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Bioklimatische Pergolen mit Schiebedach | Statoplast",
+    description: "Innovative Aluminium-Pergolen mit einem selbst entwickelten Schiebedach. Integrierte Wasserableitung, LED-Beleuchtung und smarte Terrassensteuerung.",
+    url: "/de/bioklimatske-pergole/",
+    images: [{ url: "/slike/bioklimatska_pergola.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bioklimatische Pergolen mit Schiebedach | Statoplast",
+    description: "Innovative Aluminium-Pergolen mit einem selbst entwickelten Schiebedach. Integrierte Wasserableitung, LED-Beleuchtung und smarte Terrassensteuerung.",
+    images: ["/slike/bioklimatska_pergola.jpeg"],
+  },
 };
 
 export default function BioklimatischePergolenPage() {

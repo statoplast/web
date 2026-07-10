@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     canonical: "/en/bioklimatske-pergole/",
     languages: alternateLanguages("/bioklimatske-pergole"),
   },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Bioclimatic Pergolas with Sliding Roof | Statoplast",
+    description: "Innovative aluminium bioclimatic pergolas with an in-house designed sliding roof. Integrated water drainage, LED lighting and smart terrace control.",
+    url: "/en/bioklimatske-pergole/",
+    images: [{ url: "/slike/bioklimatska_pergola.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bioclimatic Pergolas with Sliding Roof | Statoplast",
+    description: "Innovative aluminium bioclimatic pergolas with an in-house designed sliding roof. Integrated water drainage, LED lighting and smart terrace control.",
+    images: ["/slike/bioklimatska_pergola.jpeg"],
+  },
 };
 
 export default function BioclimaticPergolasPage() {

@@ -7,10 +7,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "Laser Metal Cutting | Statoplast",
   description:
-    "Premium laser cutting of metal: mild steel, aluminium and stainless steel. Statoplast offers maximum precision for prototypes and series production. Request a quote!",
+    "Premium laser cutting of mild steel, aluminium and stainless steel. Maximum precision for prototypes and series production.",
   alternates: {
     canonical: "/en/lasersko-rezanje/",
     languages: alternateLanguages("/lasersko-rezanje"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Laser Metal Cutting | Statoplast",
+    description: "Premium laser cutting of mild steel, aluminium and stainless steel. Maximum precision for prototypes and series production.",
+    url: "/en/lasersko-rezanje/",
+    images: [{ url: "/slike/laser-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Laser Metal Cutting | Statoplast",
+    description: "Premium laser cutting of mild steel, aluminium and stainless steel. Maximum precision for prototypes and series production.",
+    images: ["/slike/laser-glavna.jpg"],
   },
 };
 

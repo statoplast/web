@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/en/alu-stolarija/",
     languages: alternateLanguages("/alu-stolarija"),
   },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Quality Aluminium Joinery & Windows | Statoplast",
+    description: "Premium aluminium windows, doors and sliding walls with a thermal break. Maximum insulation, stability and longevity for every type of building.",
+    url: "/en/alu-stolarija/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Quality Aluminium Joinery & Windows | Statoplast",
+    description: "Premium aluminium windows, doors and sliding walls with a thermal break. Maximum insulation, stability and longevity for every type of building.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function AluminiumJoineryPage() {

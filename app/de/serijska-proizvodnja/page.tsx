@@ -7,10 +7,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "Serienproduktion von Metallkomponenten | Statoplast",
   description:
-    "Zuverlässige Serienproduktion von Metallkomponenten. Statoplast ist Ihr strategischer B2B-Outsourcing-Partner für komplette Fertigung und Montage. Senden Sie uns eine Zeichnung!",
+    "Zuverlässige Serienproduktion von Metallkomponenten — Ihr strategischer B2B-Outsourcing-Partner für komplette Fertigung und Montage.",
   alternates: {
     canonical: "/de/serijska-proizvodnja/",
     languages: alternateLanguages("/serijska-proizvodnja"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Serienproduktion von Metallkomponenten | Statoplast",
+    description: "Zuverlässige Serienproduktion von Metallkomponenten — Ihr strategischer B2B-Outsourcing-Partner für komplette Fertigung und Montage.",
+    url: "/de/serijska-proizvodnja/",
+    images: [{ url: "/slike/serijska-proizvodnja.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Serienproduktion von Metallkomponenten | Statoplast",
+    description: "Zuverlässige Serienproduktion von Metallkomponenten — Ihr strategischer B2B-Outsourcing-Partner für komplette Fertigung und Montage.",
+    images: ["/slike/serijska-proizvodnja.jpeg"],
   },
 };
 

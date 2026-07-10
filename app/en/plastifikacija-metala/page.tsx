@@ -5,12 +5,27 @@ import SecondaryNav from "@/components/SecondaryNav";
 import { alternateLanguages } from "@/lib/i18n";
 
 export const metadata: Metadata = {
-  title: "Metal Powder Coating & Anti-Corrosion Protection | Statoplast",
+  title: "Metal Powder Coating | Statoplast",
   description:
     "Premium metal powder coating and anti-corrosion protection. Statoplast offers electrostatic coating in any RAL shade for large and small batches. Learn more!",
   alternates: {
     canonical: "/en/plastifikacija-metala/",
     languages: alternateLanguages("/plastifikacija-metala"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Metal Powder Coating | Statoplast",
+    description: "Premium metal powder coating and anti-corrosion protection. Statoplast offers electrostatic coating in any RAL shade for large and small batches. Learn more!",
+    url: "/en/plastifikacija-metala/",
+    images: [{ url: "/slike/plastifikacija-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Metal Powder Coating | Statoplast",
+    description: "Premium metal powder coating and anti-corrosion protection. Statoplast offers electrostatic coating in any RAL shade for large and small batches. Learn more!",
+    images: ["/slike/plastifikacija-glavna.jpg"],
   },
 };
 

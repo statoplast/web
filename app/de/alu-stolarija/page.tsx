@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/de/alu-stolarija/",
     languages: alternateLanguages("/alu-stolarija"),
   },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Hochwertige Alu-Schreinerei & Fenster | Statoplast",
+    description: "Erstklassige Aluminiumfenster, -türen und Schiebewände mit thermischer Trennung. Maximale Isolierung, Stabilität und Langlebigkeit für alle Gebäudetypen.",
+    url: "/de/alu-stolarija/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hochwertige Alu-Schreinerei & Fenster | Statoplast",
+    description: "Erstklassige Aluminiumfenster, -türen und Schiebewände mit thermischer Trennung. Maximale Isolierung, Stabilität und Langlebigkeit für alle Gebäudetypen.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function AluSchreinereiPage() {

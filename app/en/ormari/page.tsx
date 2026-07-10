@@ -7,10 +7,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "Custom Metal & Electrical Cabinets | Statoplast",
   description:
-    "Manufacturing of electrical cabinets, IT rack systems and custom metal enclosures. Statoplast offers complete production with high IP protection and powder coating. Learn more!",
+    "Electrical cabinets, IT rack systems and custom metal enclosures, fully manufactured with high IP protection and powder coating.",
   alternates: {
     canonical: "/en/ormari/",
     languages: alternateLanguages("/ormari"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Custom Metal & Electrical Cabinets | Statoplast",
+    description: "Electrical cabinets, IT rack systems and custom metal enclosures, fully manufactured with high IP protection and powder coating.",
+    url: "/en/ormari/",
+    images: [{ url: "/slike/ormari-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Custom Metal & Electrical Cabinets | Statoplast",
+    description: "Electrical cabinets, IT rack systems and custom metal enclosures, fully manufactured with high IP protection and powder coating.",
+    images: ["/slike/ormari-glavna.jpg"],
   },
 };
 

@@ -6,10 +6,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "Aluminium Pivot Doors | Statoplast Modern Architecture",
   description:
-    "Statoplast aluminium pivot doors represent the pinnacle of modern aesthetics and engineering. Custom-made, high load capacity and outstanding thermal insulation.",
+    "Statoplast aluminium pivot doors: the pinnacle of modern aesthetics, custom-made with high load capacity and outstanding thermal insulation.",
   alternates: {
     canonical: "/en/pivot-vrata/",
     languages: alternateLanguages("/pivot-vrata"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Aluminium Pivot Doors | Statoplast Modern Architecture",
+    description: "Statoplast aluminium pivot doors: the pinnacle of modern aesthetics, custom-made with high load capacity and outstanding thermal insulation.",
+    url: "/en/pivot-vrata/",
+    images: [{ url: "/slike/pivot_vrata.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aluminium Pivot Doors | Statoplast Modern Architecture",
+    description: "Statoplast aluminium pivot doors: the pinnacle of modern aesthetics, custom-made with high load capacity and outstanding thermal insulation.",
+    images: ["/slike/pivot_vrata.jpg"],
   },
 };
 

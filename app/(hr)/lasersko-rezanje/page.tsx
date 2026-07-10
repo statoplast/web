@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     canonical: "/lasersko-rezanje/",
     languages: alternateLanguages("/lasersko-rezanje"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Lasersko Rezanje Metala | Statoplast",
+    description: "Vrhunsko lasersko rezanje metala: crni čelik, aluminij i inox. Statoplast nudi maksimalnu preciznost za prototipove i serijsku proizvodnju. Zatražite ponudu!",
+    url: "/lasersko-rezanje/",
+    images: [{ url: "/slike/laser-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lasersko Rezanje Metala | Statoplast",
+    description: "Vrhunsko lasersko rezanje metala: crni čelik, aluminij i inox. Statoplast nudi maksimalnu preciznost za prototipove i serijsku proizvodnju. Zatražite ponudu!",
+    images: ["/slike/laser-glavna.jpg"],
+  },
 };
 
 export default function LaserskoRezanjePage() {

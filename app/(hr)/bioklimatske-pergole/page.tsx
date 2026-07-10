@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     canonical: "/bioklimatske-pergole/",
     languages: alternateLanguages("/bioklimatske-pergole"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Bioklimatske Pergole s Kliznim Krovom | Statoplast",
+    description: "Inovativne aluminijske bioklimatske pergole s vlastito dizajniranim kliznim krovom. Integrirana odvodnja vode, LED rasvjeta i pametno upravljanje terasom.",
+    url: "/bioklimatske-pergole/",
+    images: [{ url: "/slike/bioklimatska_pergola.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bioklimatske Pergole s Kliznim Krovom | Statoplast",
+    description: "Inovativne aluminijske bioklimatske pergole s vlastito dizajniranim kliznim krovom. Integrirana odvodnja vode, LED rasvjeta i pametno upravljanje terasom.",
+    images: ["/slike/bioklimatska_pergola.jpeg"],
+  },
 };
 
 export default function BioklimatskePergolePage() {

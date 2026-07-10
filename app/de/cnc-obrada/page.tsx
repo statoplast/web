@@ -7,10 +7,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "CNC-Bearbeitung von Metall & Blechbiegen | Statoplast",
   description:
-    "Erstklassige CNC-Bearbeitung von Metall und Blechumformung. Statoplast bietet präzises Winkelbiegen, industrielles Stanzen und maschinelles Fräsen. Fordern Sie ein Angebot an!",
+    "Erstklassige CNC-Bearbeitung: präzises Winkelbiegen, industrielles Stanzen und maschinelles Fräsen von Metall. Fordern Sie ein Angebot an.",
   alternates: {
     canonical: "/de/cnc-obrada/",
     languages: alternateLanguages("/cnc-obrada"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "CNC-Bearbeitung von Metall & Blechbiegen | Statoplast",
+    description: "Erstklassige CNC-Bearbeitung: präzises Winkelbiegen, industrielles Stanzen und maschinelles Fräsen von Metall. Fordern Sie ein Angebot an.",
+    url: "/de/cnc-obrada/",
+    images: [{ url: "/slike/cnc-obrada-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CNC-Bearbeitung von Metall & Blechbiegen | Statoplast",
+    description: "Erstklassige CNC-Bearbeitung: präzises Winkelbiegen, industrielles Stanzen und maschinelles Fräsen von Metall. Fordern Sie ein Angebot an.",
+    images: ["/slike/cnc-obrada-glavna.jpg"],
   },
 };
 

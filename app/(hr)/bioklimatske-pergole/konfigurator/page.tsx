@@ -13,6 +13,21 @@ export const metadata: Metadata = {
     canonical: "/bioklimatske-pergole/konfigurator/",
     languages: alternateLanguages("/bioklimatske-pergole/konfigurator"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "3D Konfigurator Bioklimatske Pergole | Statoplast",
+    description: "Isprobajte naš 3D konfigurator i prilagodite dimenzije bioklimatske pergole - širinu, dubinu, visinu i broj stupova - u stvarnom vremenu.",
+    url: "/bioklimatske-pergole/konfigurator/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "3D Konfigurator Bioklimatske Pergole | Statoplast",
+    description: "Isprobajte naš 3D konfigurator i prilagodite dimenzije bioklimatske pergole - širinu, dubinu, visinu i broj stupova - u stvarnom vremenu.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function PergolaKonfiguratorPage() {

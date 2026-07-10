@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     canonical: "/serijska-proizvodnja/",
     languages: alternateLanguages("/serijska-proizvodnja"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Serijska Proizvodnja Metalnih Komponenti | Statoplast",
+    description: "Pouzdana serijska proizvodnja metalnih komponenti. Statoplast je vaš strateški B2B outsourcing partner za cjelovitu izradu i montažu. Pošaljite nacrt!",
+    url: "/serijska-proizvodnja/",
+    images: [{ url: "/slike/serijska-proizvodnja.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Serijska Proizvodnja Metalnih Komponenti | Statoplast",
+    description: "Pouzdana serijska proizvodnja metalnih komponenti. Statoplast je vaš strateški B2B outsourcing partner za cjelovitu izradu i montažu. Pošaljite nacrt!",
+    images: ["/slike/serijska-proizvodnja.jpeg"],
+  },
 };
 
 export default function SerijskaProizvodnjaPage() {

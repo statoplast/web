@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     canonical: "/en/cnc-obrada/",
     languages: alternateLanguages("/cnc-obrada"),
   },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "CNC Metalworking & Sheet Metal Bending | Statoplast",
+    description: "Premium CNC metalworking and sheet metal forming. Statoplast offers precise angle bending, industrial punching and machine milling. Request a quote!",
+    url: "/en/cnc-obrada/",
+    images: [{ url: "/slike/cnc-obrada-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CNC Metalworking & Sheet Metal Bending | Statoplast",
+    description: "Premium CNC metalworking and sheet metal forming. Statoplast offers precise angle bending, industrial punching and machine milling. Request a quote!",
+    images: ["/slike/cnc-obrada-glavna.jpg"],
+  },
 };
 
 export default function CncMachiningPage() {

@@ -21,6 +21,8 @@ const ROUTES = [
   "/serijska-proizvodnja",
 ];
 
+const BUILD_DATE = new Date();
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   for (const route of ROUTES) {
@@ -28,6 +30,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       const path = localizedPath(route, locale);
       entries.push({
         url: `${SITE_URL}${path === "/" ? "/" : `${path}/`}`,
+        lastModified: BUILD_DATE,
+        changeFrequency: route === "/" ? "weekly" : "monthly",
+        priority: route === "/" ? 1 : route === "/bioklimatske-pergole/konfigurator" ? 0.9 : 0.7,
         alternates: { languages: alternateLanguages(route) },
       });
     }

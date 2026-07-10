@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/moderne-ograde/",
     languages: alternateLanguages("/moderne-ograde"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Moderne Ograde | Aluminijski i Stakleni Sustavi | Statoplast",
+    description: "Elegantne aluminijske i staklene ograde po mjeri. Minimalistički dizajn s čistim linijama za balkone, terase i dvorišta uz nula održavanja.",
+    url: "/moderne-ograde/",
+    images: [{ url: "/slike/moderne_ograde.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Moderne Ograde | Aluminijski i Stakleni Sustavi | Statoplast",
+    description: "Elegantne aluminijske i staklene ograde po mjeri. Minimalistički dizajn s čistim linijama za balkone, terase i dvorišta uz nula održavanja.",
+    images: ["/slike/moderne_ograde.jpeg"],
+  },
 };
 
 export default function ModerneOgradePage() {

@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/o-nama/",
     languages: alternateLanguages("/o-nama"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Statoplast | O nama",
+    description: "Saznajte više o tvrtki Statoplast. S preko 30 godina iskustva u obradi metala, spajamo obiteljsku tradiciju i najmoderniju CNC tehnologiju.",
+    url: "/o-nama/",
+    images: [{ url: "/slike/o-nama.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Statoplast | O nama",
+    description: "Saznajte više o tvrtki Statoplast. S preko 30 godina iskustva u obradi metala, spajamo obiteljsku tradiciju i najmoderniju CNC tehnologiju.",
+    images: ["/slike/o-nama.jpg"],
+  },
 };
 
 export default function ONamaPage() {

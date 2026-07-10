@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     canonical: "/plastifikacija-metala/",
     languages: alternateLanguages("/plastifikacija-metala"),
   },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Plastifikacija Metala i Antikorozivna Zaštita | Statoplast",
+    description: "Vrhunska plastifikacija metala i antikorozivna zaštita. Statoplast nudi elektrostatsko plastificiranje po RAL karti za velike i male serije. Saznajte više!",
+    url: "/plastifikacija-metala/",
+    images: [{ url: "/slike/plastifikacija-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Plastifikacija Metala i Antikorozivna Zaštita | Statoplast",
+    description: "Vrhunska plastifikacija metala i antikorozivna zaštita. Statoplast nudi elektrostatsko plastificiranje po RAL karti za velike i male serije. Saznajte više!",
+    images: ["/slike/plastifikacija-glavna.jpg"],
+  },
 };
 
 export default function PlastifikacijaMetalaPage() {

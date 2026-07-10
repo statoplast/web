@@ -7,10 +7,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "Metallbeschichtung & Korrosionsschutz | Statoplast",
   description:
-    "Erstklassige Metallbeschichtung und Korrosionsschutz. Statoplast bietet elektrostatische Pulverbeschichtung nach RAL-Karte für große und kleine Serien. Erfahren Sie mehr!",
+    "Erstklassige Metallbeschichtung und Korrosionsschutz: elektrostatische Pulverbeschichtung nach RAL-Karte für große und kleine Serien.",
   alternates: {
     canonical: "/de/plastifikacija-metala/",
     languages: alternateLanguages("/plastifikacija-metala"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Metallbeschichtung & Korrosionsschutz | Statoplast",
+    description: "Erstklassige Metallbeschichtung und Korrosionsschutz: elektrostatische Pulverbeschichtung nach RAL-Karte für große und kleine Serien.",
+    url: "/de/plastifikacija-metala/",
+    images: [{ url: "/slike/plastifikacija-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Metallbeschichtung & Korrosionsschutz | Statoplast",
+    description: "Erstklassige Metallbeschichtung und Korrosionsschutz: elektrostatische Pulverbeschichtung nach RAL-Karte für große und kleine Serien.",
+    images: ["/slike/plastifikacija-glavna.jpg"],
   },
 };
 

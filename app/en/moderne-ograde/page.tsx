@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/en/moderne-ograde/",
     languages: alternateLanguages("/moderne-ograde"),
   },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Modern Fencing | Aluminium & Glass Systems | Statoplast",
+    description: "Elegant, custom-made aluminium and glass fencing. Minimalist design with clean lines for balconies, terraces and gardens with zero maintenance.",
+    url: "/en/moderne-ograde/",
+    images: [{ url: "/slike/moderne_ograde.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Modern Fencing | Aluminium & Glass Systems | Statoplast",
+    description: "Elegant, custom-made aluminium and glass fencing. Minimalist design with clean lines for balconies, terraces and gardens with zero maintenance.",
+    images: ["/slike/moderne_ograde.jpeg"],
+  },
 };
 
 export default function ModernFencingPage() {

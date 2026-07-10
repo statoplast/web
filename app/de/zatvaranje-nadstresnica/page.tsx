@@ -11,6 +11,21 @@ export const metadata: Metadata = {
     canonical: "/de/zatvaranje-nadstresnica/",
     languages: alternateLanguages("/zatvaranje-nadstresnica"),
   },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Terrassenverglasung & Vordachverschluss | Statoplast",
+    description: "Verwandeln Sie ein offenes Vordach oder eine Terrasse in einen ganzjährig nutzbaren Raum. Hochwertige Glasschiebewände und eine stabile Aluminiumkonstruktion.",
+    url: "/de/zatvaranje-nadstresnica/",
+    images: [{ url: "/slike/zatvaranje_nadstresnica.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terrassenverglasung & Vordachverschluss | Statoplast",
+    description: "Verwandeln Sie ein offenes Vordach oder eine Terrasse in einen ganzjährig nutzbaren Raum. Hochwertige Glasschiebewände und eine stabile Aluminiumkonstruktion.",
+    images: ["/slike/zatvaranje_nadstresnica.jpeg"],
+  },
 };
 
 export default function TerrassenverglasungPage() {

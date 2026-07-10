@@ -12,6 +12,21 @@ export const metadata: Metadata = {
     canonical: "/en/serijska-proizvodnja/",
     languages: alternateLanguages("/serijska-proizvodnja"),
   },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Series Production of Metal Components | Statoplast",
+    description: "Reliable series production of metal components. Statoplast is your strategic B2B outsourcing partner for complete manufacturing and assembly. Send us a drawing!",
+    url: "/en/serijska-proizvodnja/",
+    images: [{ url: "/slike/serijska-proizvodnja.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Series Production of Metal Components | Statoplast",
+    description: "Reliable series production of metal components. Statoplast is your strategic B2B outsourcing partner for complete manufacturing and assembly. Send us a drawing!",
+    images: ["/slike/serijska-proizvodnja.jpeg"],
+  },
 };
 
 export default function SeriesProductionPage() {

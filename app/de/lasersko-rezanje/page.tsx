@@ -7,10 +7,25 @@ import { alternateLanguages } from "@/lib/i18n";
 export const metadata: Metadata = {
   title: "Laserschneiden von Metall | Statoplast",
   description:
-    "Erstklassiges Laserschneiden von Metall: Schwarzstahl, Aluminium und Edelstahl. Statoplast bietet maximale Präzision für Prototypen und Serienproduktion. Fordern Sie ein Angebot an!",
+    "Erstklassiges Laserschneiden von Schwarzstahl, Aluminium und Edelstahl. Maximale Präzision für Prototypen und Serienproduktion.",
   alternates: {
     canonical: "/de/lasersko-rezanje/",
     languages: alternateLanguages("/lasersko-rezanje"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Laserschneiden von Metall | Statoplast",
+    description: "Erstklassiges Laserschneiden von Schwarzstahl, Aluminium und Edelstahl. Maximale Präzision für Prototypen und Serienproduktion.",
+    url: "/de/lasersko-rezanje/",
+    images: [{ url: "/slike/laser-glavna.jpg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Laserschneiden von Metall | Statoplast",
+    description: "Erstklassiges Laserschneiden von Schwarzstahl, Aluminium und Edelstahl. Maximale Präzision für Prototypen und Serienproduktion.",
+    images: ["/slike/laser-glavna.jpg"],
   },
 };
 
