@@ -82,7 +82,7 @@ export default function CncMachiningPage() {
             <img
               src="/slike/cnc-obrada2.jpeg"
               alt="CNC bending detail on a press brake"
-              className="w-full h-64 object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+              className="w-full h-64 object-contain bg-slate-800/30 rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

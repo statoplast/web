@@ -84,7 +84,7 @@ export default function CncObradaPage() {
             <img
               src="/slike/cnc-obrada2.jpeg"
               alt="Detalj CNC savijanja na pigalici"
-              className="w-full h-64 object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+              className="w-full h-64 object-contain bg-slate-800/30 rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
