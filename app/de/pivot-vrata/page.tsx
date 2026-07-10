@@ -90,7 +90,7 @@ export default function PivottuerenPage() {
               <div className="h-[400px] rounded-2xl overflow-hidden shadow-lg bg-zinc-200 sm:mt-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/slike/pivot_vrata3.jpg"
+                  src="/slike/pivot_vrata3.jpeg"
                   alt="Pivottüren - Individuelles Modell 2"
                   className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
                 />
