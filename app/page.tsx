@@ -17,7 +17,10 @@ export default function HomePage() {
           href="/pivot-vrata"
           className="group relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden flex flex-col justify-end p-6 pb-10 sm:p-10 lg:p-20 text-left cursor-pointer border-b md:border-b-0 md:border-r border-white/10"
         >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')] bg-cover bg-center transform group-hover:scale-105 transition-transform duration-[1.5s] ease-out"></div>
+          <div
+            className="absolute inset-0 bg-cover bg-center transform group-hover:scale-105 transition-transform duration-[1.5s] ease-out"
+            style={{ backgroundImage: "url('/slike/moderna_arhitektura_kuca.jpeg')" }}
+          ></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 group-hover:from-black/80 transition-colors duration-700"></div>
 
           <div className="relative z-10 transform md:group-hover:-translate-y-4 transition-transform duration-700 ease-out">
