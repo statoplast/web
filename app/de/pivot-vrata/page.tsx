@@ -130,45 +130,45 @@ export default function PivottuerenPage() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-zinc-300 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                    <th className="pb-4">Merkmal</th>
+                    <th className="pb-4 pr-6">Merkmal</th>
                     <th className="pb-4">Beschreibung und Vorteile</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm divide-y divide-zinc-200 text-zinc-700">
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Abdichtung</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Abdichtung</td>
+                    <td className="py-4 align-top">
                       3-stufige Abdichtung mit speziell entwickelten EPDM-Dichtungen und einer
                       durchgehenden Mitteldichtung sorgt für ein hohes Maß an Luft- und
                       Wasserdichtigkeit sowie Isolierung.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Wärmedämmung</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Wärmedämmung</td>
+                    <td className="py-4 align-top">
                       Spezielle verzugshemmende Polyamide in Kombination mit einem
                       Polyurethankern erzielen eine optimale Dämmung und minimieren
                       Flügelverformungen durch Temperaturunterschiede.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Sicherheit & Steuerung</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Sicherheit & Steuerung</td>
+                    <td className="py-4 align-top">
                       Standardmäßige automatische 5-Punkt-Verriegelung mit optionalem
                       Elektromagnetschloss. Bedienung nach Wunsch per Fingerabdruckscanner oder
                       digitalem Tastenfeld.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Zugang</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Zugang</td>
+                    <td className="py-4 align-top">
                       Eine niedrige Schwelle ermöglicht einen einfachen, ungehinderten Zugang von
                       innen, besonders geeignet für Menschen mit Behinderung.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Scharniermechanismus</td>
-                    <td className="py-4">Erstklassige, robuste Pivotsysteme mit stabiler Achse.</td>
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Scharniermechanismus</td>
+                    <td className="py-4 align-top">Erstklassige, robuste Pivotsysteme mit stabiler Achse.</td>
                   </tr>
                 </tbody>
               </table>

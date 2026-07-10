@@ -128,44 +128,44 @@ export default function PivotDoorsPage() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-zinc-300 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                    <th className="pb-4">Feature</th>
+                    <th className="pb-4 pr-6">Feature</th>
                     <th className="pb-4">Description and benefits</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm divide-y divide-zinc-200 text-zinc-700">
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Sealing</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Sealing</td>
+                    <td className="py-4 align-top">
                       3-level sealing with specially designed EPDM gaskets and an uninterrupted
                       central seal delivers a high degree of air- and water-tightness and
                       insulation.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Thermal insulation</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Thermal insulation</td>
+                    <td className="py-4 align-top">
                       Special anti-warping polyamides combined with a polyurethane core achieve
                       optimal insulation and minimise leaf deformation caused by temperature
                       differences.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Security & control</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Security & control</td>
+                    <td className="py-4 align-top">
                       Standard automatic 5-point locking with an optional electromagnetic lock.
                       Operable via fingerprint scanner or digital keypad on request.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Access</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Access</td>
+                    <td className="py-4 align-top">
                       A low threshold enables easy, unobstructed access from the interior,
                       particularly suited for people with disabilities.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Hinge mechanism</td>
-                    <td className="py-4">Premium, robust pivot systems with a stable axis.</td>
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Hinge mechanism</td>
+                    <td className="py-4 align-top">Premium, robust pivot systems with a stable axis.</td>
                   </tr>
                 </tbody>
               </table>

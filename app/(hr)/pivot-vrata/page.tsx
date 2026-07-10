@@ -130,44 +130,44 @@ export default function PivotVrataPage() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-zinc-300 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                    <th className="pb-4">Karakteristika</th>
+                    <th className="pb-4 pr-6">Karakteristika</th>
                     <th className="pb-4">Opis i prednosti</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm divide-y divide-zinc-200 text-zinc-700">
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Brtvljenje</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Brtvljenje</td>
+                    <td className="py-4 align-top">
                       3-razinsko brtvljenje s posebno dizajniranim EPDM gumama i neprekinutom
                       središnjom brtvom nudi visoku razinu nepropusnosti zraka, vode i izolacije.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Toplinska izolacija</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Toplinska izolacija</td>
+                    <td className="py-4 align-top">
                       Posebni poliamidi protiv izobličenja u kombinaciji s poliuretanskom jezgrom
                       postižu optimalnu izolaciju i minimiziraju deformacije krila zbog temperaturnih
                       razlika.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Sigurnost i kontrola</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Sigurnost i kontrola</td>
+                    <td className="py-4 align-top">
                       Standardno automatsko zaključavanje u 5 točaka uz opciju elektromagnetske
                       brave. Upravljanje po želji putem skenera otiska prsta ili digitalne
                       tipkovnice.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Pristup</td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Pristup</td>
+                    <td className="py-4 align-top">
                       Niski prag koji omogućuje lak i nesmetan pristup iz unutrašnjosti, posebno
                       pogodan za osobe s invaliditetom.
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-4 font-semibold text-zinc-950">Mehanizam panta</td>
-                    <td className="py-4">Vrhunski robusni pivot sustavi sa stabilnom osi.</td>
+                    <td className="py-4 pr-6 font-semibold text-zinc-950 align-top">Mehanizam panta</td>
+                    <td className="py-4 align-top">Vrhunski robusni pivot sustavi sa stabilnom osi.</td>
                   </tr>
                 </tbody>
               </table>

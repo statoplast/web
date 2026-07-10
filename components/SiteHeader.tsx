@@ -239,7 +239,7 @@ export default function SiteHeader({
       <div
         id="mobile-menu"
         aria-hidden={!isOpen}
-        className={`fixed inset-0 backdrop-blur-xl z-40 flex flex-col justify-center items-center space-y-8 transition-all duration-500 ${
+        className={`fixed inset-0 backdrop-blur-xl z-[45] flex flex-col justify-center items-center space-y-8 transition-all duration-500 ${
           styles.mobileMenu
         } ${isOpen ? "visible opacity-100" : "invisible opacity-0"}`}
       >
