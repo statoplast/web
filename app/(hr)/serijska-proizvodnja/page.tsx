@@ -29,7 +29,7 @@ export default function SerijskaProizvodnjaPage() {
             <div className="order-2 lg:order-1 rounded-2xl overflow-hidden border border-slate-800 relative group">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/slike/serijska-glavna.jpg"
+                src="/slike/serijska-proizvodnja.jpeg"
                 alt="Serijska industrijska proizvodnja"
                 className="w-full h-[400px] lg:h-[500px] object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
               />

@@ -85,7 +85,7 @@ export default function PowderCoatingPage() {
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/slike/plastifikacija-gotovo.jpg"
+              src="/slike/plastifikacija-gotovo.jpeg"
               alt="Powder-coated parts"
               className="w-full h-64 object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
             />

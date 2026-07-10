@@ -83,7 +83,7 @@ export default function CncBearbeitungPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/slike/cnc-savijanje.jpg"
+              src="/slike/cnc-obrada2.jpeg"
               alt="Detail des CNC-Biegens auf der Abkantpresse"
               className="w-full h-64 object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
             />
