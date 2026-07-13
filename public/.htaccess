@@ -1,0 +1,14 @@
+# 301 redirects from the old WordPress site's URLs to their equivalents
+# on this site. More specific paths are listed before their parent
+# catch-alls, since mod_alias matches Redirect directives in order and
+# treats each source as a prefix match.
+Redirect 301 /usluge/plastificiranje/ /plastifikacija-metala/
+Redirect 301 /usluge/obrada-metala/ /cnc-obrada/
+Redirect 301 /proizvodi/aluminijska-stolarija/ /aluminijska-stolarija/
+Redirect 301 /proizvodi/bioklimatske-pergole/ /bioklimatske-pergole/
+Redirect 301 /proizvodi/pivot-vrata/ /pivot-vrata/
+Redirect 301 /proizvodi/ogradni-sistemi/ /moderne-ograde/
+Redirect 301 /proizvodi/zatvaranje-nadstresnice/ /zatvaranje-nadstresnica/
+Redirect 301 /hvala-na-poslanoj-poruci/ /kontakt/
+Redirect 301 /usluge/ /
+Redirect 301 /proizvodi/ /

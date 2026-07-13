@@ -16,7 +16,7 @@ export default function HomePage() {
         </div>
 
         <Link
-          href="/de/pivot-vrata"
+          href="/de/pivot-turen"
           className="group relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden flex flex-col justify-end p-6 pb-10 sm:p-10 lg:p-20 text-left cursor-pointer border-b md:border-b-0 md:border-r border-white/10"
         >
           <div
@@ -53,7 +53,7 @@ export default function HomePage() {
         </Link>
 
         <Link
-          href="/de/plastifikacija-metala"
+          href="/de/plastifizierung"
           className="group relative w-full md:w-1/2 h-1/2 md:h-full overflow-hidden flex flex-col justify-end p-6 pb-12 sm:p-10 lg:p-20 text-left cursor-pointer"
         >
           <div

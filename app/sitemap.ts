@@ -11,7 +11,7 @@ const ROUTES = [
   "/pivot-vrata",
   "/bioklimatske-pergole",
   "/bioklimatske-pergole/konfigurator",
-  "/alu-stolarija",
+  "/aluminijska-stolarija",
   "/moderne-ograde",
   "/zatvaranje-nadstresnica",
   "/plastifikacija-metala",
