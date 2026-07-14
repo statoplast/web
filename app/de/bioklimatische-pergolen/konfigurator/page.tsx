@@ -64,6 +64,13 @@ export default function PergolaKonfiguratorPage() {
             Maß oder eine besondere Anforderung haben, melden Sie sich bei uns. Wir passen die
             Lösung Ihrem Raum an, nicht umgekehrt.
           </p>
+          <Link
+            href="/de/projekte"
+            className="group inline-flex items-center gap-2 mt-4 text-sm font-bold text-zinc-900 hover:text-blue-600 transition-colors"
+          >
+            Sehen Sie unsere bereits gebauten Pergolen
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </Link>
         </div>
 
         <PergolaConfigurator locale="de" />

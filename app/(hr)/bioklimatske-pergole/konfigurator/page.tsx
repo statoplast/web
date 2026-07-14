@@ -62,6 +62,13 @@ export default function PergolaKonfiguratorPage() {
             ograničavamo — ako imate specifičan projekt, netipičnu mjeru ili poseban zahtjev,
             javite nam se. Prilagođavamo rješenje vašem prostoru, ne obrnuto.
           </p>
+          <Link
+            href="/projekti"
+            className="group inline-flex items-center gap-2 mt-4 text-sm font-bold text-zinc-900 hover:text-blue-600 transition-colors"
+          >
+            Pogledajte naše dosad izrađene pergole
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </Link>
         </div>
 
         <PergolaConfigurator locale="hr" />

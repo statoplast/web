@@ -63,6 +63,13 @@ export default function PergolaConfiguratorPage() {
             or a special requirement, get in touch. We adapt the solution to your space, not the
             other way around.
           </p>
+          <Link
+            href="/en/projects"
+            className="group inline-flex items-center gap-2 mt-4 text-sm font-bold text-zinc-900 hover:text-blue-600 transition-colors"
+          >
+            See the pergolas we've already built
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </Link>
         </div>
 
         <PergolaConfigurator locale="en" />

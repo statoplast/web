@@ -102,6 +102,28 @@ export default function SchraenkePage() {
               className="w-full h-64 object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
             />
           </div>
+
+          <div className="mt-16">
+            <h4 className="text-xl font-bold text-white mb-2">Derselbe Schrank, zwei Standorte</h4>
+            <p className="text-slate-400 text-sm mb-6 max-w-2xl">
+              Unser Metallgehäuse übersteht jede Witterung - von einer Terrasse am Meer bis zu
+              einem Berggipfel.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/slike/aparat1.jpeg"
+                alt="Metallgehäuse eines Fotokiosk-Geräts auf einer Terrasse"
+                className="w-full h-[420px] object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/slike/aparat2.jpeg"
+                alt="Metallgehäuse eines Fotokiosk-Geräts an einem Aussichtspunkt"
+                className="w-full h-[420px] object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="mt-20 p-10 lg:p-16 bg-gradient-to-r from-blue-900/40 to-slate-800/40 border border-slate-700 rounded-3xl text-center relative overflow-hidden">
