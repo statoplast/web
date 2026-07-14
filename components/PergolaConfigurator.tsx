@@ -189,6 +189,8 @@ const UI_TEXT: Record<
     colorLabel: string;
     ralNote: string;
     patternLabel: string;
+    patternNote: string;
+    patternOther: string;
     totalArea: string;
     ctaButton: string;
     disclaimer: string;
@@ -208,6 +210,8 @@ const UI_TEXT: Record<
     colorLabel: "Boja konstrukcije",
     ralNote: "Ne izrađujemo samo standardne nijanse — dostupna je bilo koja boja po RAL karti, po vašem izboru.",
     patternLabel: "Uzorak prorezanih panela",
+    patternNote: "Ovo su samo primjeri uzoraka — nismo ograničeni na ova tri, moguća je izrada bilo kojeg uzorka po vašoj želji.",
+    patternOther: "Neki drugi uzorak?",
     totalArea: "Ukupna površina",
     ctaButton: "Zatražite ponudu za ovu konfiguraciju",
     disclaimer:
@@ -228,6 +232,8 @@ const UI_TEXT: Record<
     colorLabel: "Frame colour",
     ralNote: "We don't just make standard shades — any colour from the RAL chart is available, to your choice.",
     patternLabel: "Perforated panel pattern",
+    patternNote: "These are just example patterns — we're not limited to these three, any pattern can be made to your requirements.",
+    patternOther: "Want a different pattern?",
     totalArea: "Total area",
     ctaButton: "Request a quote for this configuration",
     disclaimer:
@@ -248,6 +254,8 @@ const UI_TEXT: Record<
     colorLabel: "Rahmenfarbe",
     ralNote: "Wir fertigen nicht nur Standardtöne — jede Farbe der RAL-Karte ist nach Ihrer Wahl verfügbar.",
     patternLabel: "Muster der geschlitzten Paneele",
+    patternNote: "Dies sind nur Beispielmuster — wir sind nicht auf diese drei beschränkt, jedes gewünschte Muster ist möglich.",
+    patternOther: "Ein anderes Muster gewünscht?",
     totalArea: "Gesamtfläche",
     ctaButton: "Angebot für diese Konfiguration anfordern",
     disclaimer:
@@ -1236,9 +1244,7 @@ export default function PergolaConfigurator({ locale = "hr" }: { locale?: Locale
                 />
               ))}
             </div>
-            {color.isCustom && (
-              <p className="text-xs text-zinc-500 leading-relaxed mt-3">{t.ralNote}</p>
-            )}
+            <p className="text-xs text-zinc-500 leading-relaxed mt-3">{t.ralNote}</p>
           </div>
 
           <div>
@@ -1306,6 +1312,13 @@ export default function PergolaConfigurator({ locale = "hr" }: { locale?: Locale
                 </button>
               ))}
             </div>
+            <p className="text-xs text-zinc-500 leading-relaxed mt-3">{t.patternNote}</p>
+            <Link
+              href={localizedPath("/kontakt", locale)}
+              className="mt-2 block w-full text-center border border-dashed border-zinc-300 text-zinc-600 hover:border-zinc-400 hover:text-zinc-900 py-2.5 rounded-lg text-xs font-semibold transition-colors"
+            >
+              {t.patternOther}
+            </Link>
           </div>
         </div>
 
