@@ -1,0 +1,32 @@
+# 301 redirects from the old WordPress site's URLs to their equivalents on
+# this site. Specific paths are listed before their parent catch-alls.
+
+# Croatian
+/usluge/plastificiranje/             /plastifikacija-metala/            301
+/usluge/obrada-metala/               /cnc-obrada/                       301
+/proizvodi/aluminijska-stolarija/    /aluminijska-stolarija/            301
+/proizvodi/bioklimatske-pergole/     /bioklimatske-pergole/             301
+/proizvodi/pivot-vrata/              /pivot-vrata/                      301
+/proizvodi/ogradni-sistemi/          /moderne-ograde/                   301
+/proizvodi/zatvaranje-nadstresnice/  /zatvaranje-nadstresnica/          301
+/hvala-na-poslanoj-poruci/           /kontakt/                          301
+/usluge/                             /                                  301
+/proizvodi/                          /                                  301
+
+# English
+/en/services/powder-coating/         /en/powder-coating/                301
+/en/products/aluminium-joinery/      /en/aluminium-joinery/             301
+/en/products/bioclimatic-pergolas/   /en/bioclimatic-pergolas/          301
+/en/products/pivot-doors/            /en/pivot-doors/                   301
+/en/products/fence-systems/          /en/fence-systems/                 301
+/en/services/                        /en/                               301
+/en/products/                        /en/                               301
+
+# German
+/de/dienstleistungen/plastifizierung/    /de/plastifizierung/           301
+/de/produkte/aluminium-tischlerei/       /de/aluminium-tischlerei/      301
+/de/produkte/bioklimatische-pergolen/    /de/bioklimatische-pergolen/   301
+/de/produkte/pivot-turen/                /de/pivot-turen/               301
+/de/produkte/zaunsysteme/                /de/zaunsysteme/               301
+/de/dienstleistungen/                    /de/                           301
+/de/produkte/                            /de/                           301
