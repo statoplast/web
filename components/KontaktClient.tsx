@@ -193,7 +193,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
           <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-zinc-100 flex flex-col justify-center min-h-[500px]">
             {status !== "success" && status !== "error" && (
               <form
-                action="https://formspree.io/f/mkoabvbp"
+                action="https://formspree.io/f/xqeraako"
                 method="POST"
                 className="space-y-6"
                 onSubmit={handleSubmit}
