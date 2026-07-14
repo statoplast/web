@@ -103,26 +103,19 @@ export default function CabinetsPage() {
             />
           </div>
 
-          <div className="mt-16">
-            <h4 className="text-xl font-bold text-white mb-2">Same cabinet, two locations</h4>
-            <p className="text-slate-400 text-sm mb-6 max-w-2xl">
-              Our metal enclosure withstands any weather - from a seaside terrace to a mountain
-              summit.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/slike/aparat1.jpeg"
-                alt="Metal enclosure of a photo kiosk unit on a terrace"
-                className="w-full h-[420px] object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/slike/aparat2.jpeg"
-                alt="Metal enclosure of a photo kiosk unit at a viewpoint"
-                className="w-full h-[420px] object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-              />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/slike/aparat1.jpeg"
+              alt="Metal enclosure of a photo kiosk unit on a terrace"
+              className="w-full h-auto rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/slike/aparat2.jpeg"
+              alt="Metal enclosure of a photo kiosk unit at a viewpoint"
+              className="w-full h-auto rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+            />
           </div>
         </div>
 
