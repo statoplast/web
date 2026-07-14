@@ -91,7 +91,7 @@ export default function LaserschneidenPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/slike/laser-detalj.jpg"
+              src="/slike/laser.jpeg"
               alt="Laserschneideprozess"
               className="w-full h-64 object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
             />
