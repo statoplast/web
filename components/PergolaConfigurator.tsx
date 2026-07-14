@@ -155,23 +155,26 @@ const MOUNT_OPTIONS: Record<Locale, { id: MountType; label: string; description:
   ],
 };
 
-type PatternType = "rectangles" | "squares" | "triangles";
+type PatternType = "rectangles" | "squares" | "triangles" | "other";
 
 const PATTERN_OPTIONS: Record<Locale, { id: PatternType; label: string }[]> = {
   hr: [
     { id: "rectangles", label: "3 pravokutnika" },
     { id: "squares", label: "Mreža kvadrata" },
     { id: "triangles", label: "Cik-cak trokuti" },
+    { id: "other", label: "Neki drugi" },
   ],
   en: [
     { id: "rectangles", label: "3 rectangles" },
     { id: "squares", label: "Square grid" },
     { id: "triangles", label: "Zigzag triangles" },
+    { id: "other", label: "Something else" },
   ],
   de: [
     { id: "rectangles", label: "3 Rechtecke" },
     { id: "squares", label: "Quadratraster" },
     { id: "triangles", label: "Zickzack-Dreiecke" },
+    { id: "other", label: "Etwas anderes" },
   ],
 };
 
@@ -190,11 +193,18 @@ const UI_TEXT: Record<
     ralNote: string;
     patternLabel: string;
     patternNote: string;
-    patternOther: string;
     totalArea: string;
     ctaButton: string;
     disclaimer: string;
-    inquiry: (width: number, depth: number, height: number, mount: string, pillars: number, color: string) => string;
+    inquiry: (
+      width: number,
+      depth: number,
+      height: number,
+      mount: string,
+      pillars: number,
+      color: string,
+      pattern: string
+    ) => string;
   }
 > = {
   hr: {
@@ -211,13 +221,12 @@ const UI_TEXT: Record<
     ralNote: "Ne izrađujemo samo standardne nijanse — dostupna je bilo koja boja po RAL karti, po vašem izboru.",
     patternLabel: "Uzorak prorezanih panela",
     patternNote: "Ovo su samo primjeri uzoraka — nismo ograničeni na ova tri, moguća je izrada bilo kojeg uzorka po vašoj želji.",
-    patternOther: "Neki drugi uzorak?",
     totalArea: "Ukupna površina",
     ctaButton: "Zatražite ponudu za ovu konfiguraciju",
     disclaimer:
       "Prikazani model je okvirna 3D vizualizacija namijenjena boljem uvidu u proporcije i veličinu. Konačan izgled, materijali i točne mjere definiraju se s našim inženjerskim timom.",
-    inquiry: (width, depth, height, mount, pillars, color) =>
-      `Zanima me ponuda za bioklimatsku pergolu s dimenzijama ${width}cm (širina) x ${depth}cm (dubina) x ${height}cm (visina). Način oslanjanja: ${mount} (${pillars} stupova). Boja: ${color}.`,
+    inquiry: (width, depth, height, mount, pillars, color, pattern) =>
+      `Zanima me ponuda za bioklimatsku pergolu s dimenzijama ${width}cm (širina) x ${depth}cm (dubina) x ${height}cm (visina). Način oslanjanja: ${mount} (${pillars} stupova). Boja: ${color}. Uzorak: ${pattern}.`,
   },
   en: {
     slidePanels: "Sliding panel offset",
@@ -233,13 +242,12 @@ const UI_TEXT: Record<
     ralNote: "We don't just make standard shades — any colour from the RAL chart is available, to your choice.",
     patternLabel: "Perforated panel pattern",
     patternNote: "These are just example patterns — we're not limited to these three, any pattern can be made to your requirements.",
-    patternOther: "Want a different pattern?",
     totalArea: "Total area",
     ctaButton: "Request a quote for this configuration",
     disclaimer:
       "The model shown is an approximate 3D visualisation intended to give a better sense of proportions and size. The final look, materials and exact measurements are defined together with our engineering team.",
-    inquiry: (width, depth, height, mount, pillars, color) =>
-      `I'm interested in a quote for a bioclimatic pergola with dimensions ${width}cm (width) x ${depth}cm (depth) x ${height}cm (height). Mounting type: ${mount} (${pillars} pillars). Colour: ${color}.`,
+    inquiry: (width, depth, height, mount, pillars, color, pattern) =>
+      `I'm interested in a quote for a bioclimatic pergola with dimensions ${width}cm (width) x ${depth}cm (depth) x ${height}cm (height). Mounting type: ${mount} (${pillars} pillars). Colour: ${color}. Pattern: ${pattern}.`,
   },
   de: {
     slidePanels: "Verschiebung der Schiebepaneele",
@@ -255,13 +263,12 @@ const UI_TEXT: Record<
     ralNote: "Wir fertigen nicht nur Standardtöne — jede Farbe der RAL-Karte ist nach Ihrer Wahl verfügbar.",
     patternLabel: "Muster der geschlitzten Paneele",
     patternNote: "Dies sind nur Beispielmuster — wir sind nicht auf diese drei beschränkt, jedes gewünschte Muster ist möglich.",
-    patternOther: "Ein anderes Muster gewünscht?",
     totalArea: "Gesamtfläche",
     ctaButton: "Angebot für diese Konfiguration anfordern",
     disclaimer:
       "Das gezeigte Modell ist eine ungefähre 3D-Visualisierung für einen besseren Eindruck von Proportionen und Größe. Das endgültige Aussehen, die Materialien und die genauen Maße werden gemeinsam mit unserem Engineering-Team festgelegt.",
-    inquiry: (width, depth, height, mount, pillars, color) =>
-      `Ich interessiere mich für ein Angebot für eine bioklimatische Pergola mit den Abmessungen ${width}cm (Breite) x ${depth}cm (Tiefe) x ${height}cm (Höhe). Befestigungsart: ${mount} (${pillars} Stützen). Farbe: ${color}.`,
+    inquiry: (width, depth, height, mount, pillars, color, pattern) =>
+      `Ich interessiere mich für ein Angebot für eine bioklimatische Pergola mit den Abmessungen ${width}cm (Breite) x ${depth}cm (Tiefe) x ${height}cm (Höhe). Befestigungsart: ${mount} (${pillars} Stützen). Farbe: ${color}. Muster: ${pattern}.`,
   },
 };
 
@@ -705,11 +712,14 @@ function addPatternCell(
 ) {
   // rectangles keeps a wider centered margin; squares and triangles use a
   // much tighter one so their grid fills almost the whole panel width
-  // instead of leaving big bare strips on either side.
-  const sideMargin = moduleWidth * (pattern === "rectangles" ? 0.1 : 0.03);
+  // instead of leaving big bare strips on either side. "other" has no
+  // geometry of its own - it renders as a placeholder using the rectangles
+  // cut, matching how the RAL "any colour" swatch still shows a real
+  // (placeholder) colour rather than nothing.
+  const sideMargin = moduleWidth * (pattern === "rectangles" || pattern === "other" ? 0.1 : 0.03);
   const usableWidth = moduleWidth - sideMargin * 2;
 
-  if (pattern === "rectangles") {
+  if (pattern === "rectangles" || pattern === "other") {
     const holeCount = 3;
     const holeGapX = usableWidth * 0.08;
     const holeWidth = (usableWidth - holeGapX * (holeCount - 1)) / holeCount;
@@ -1119,8 +1129,17 @@ export default function PergolaConfigurator({ locale = "hr" }: { locale?: Locale
     [widthM, depthM, mount]
   );
   const mountOption = mountOptions.find((m) => m.id === mount)!;
+  const patternOption = patternOptions.find((p) => p.id === patternId)!;
 
-  const inquiryMessage = t.inquiry(width, depth, height, mountOption.label, pillarCount, color.label);
+  const inquiryMessage = t.inquiry(
+    width,
+    depth,
+    height,
+    mountOption.label,
+    pillarCount,
+    color.label,
+    patternOption.label
+  );
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -1251,7 +1270,7 @@ export default function PergolaConfigurator({ locale = "hr" }: { locale?: Locale
             <label className="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-2 block">
               {t.patternLabel}
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {patternOptions.map((option) => (
                 <button
                   key={option.id}
@@ -1285,7 +1304,7 @@ export default function PergolaConfigurator({ locale = "hr" }: { locale?: Locale
                         <polygon points="38,6 48,6 43,22" />
                         <polygon points="50,22 60,22 55,6" />
                       </>
-                    ) : (
+                    ) : option.id === "squares" ? (
                       Array.from({ length: 18 }, (_, i) => {
                         const col = i % 9;
                         const row = Math.floor(i / 9);
@@ -1300,6 +1319,12 @@ export default function PergolaConfigurator({ locale = "hr" }: { locale?: Locale
                           />
                         );
                       })
+                    ) : (
+                      <>
+                        <circle cx="20" cy="14" r="2.4" fill={patternId === option.id ? "#ffffff" : "#71717a"} stroke="none" />
+                        <circle cx="32" cy="14" r="2.4" fill={patternId === option.id ? "#ffffff" : "#71717a"} stroke="none" />
+                        <circle cx="44" cy="14" r="2.4" fill={patternId === option.id ? "#ffffff" : "#71717a"} stroke="none" />
+                      </>
                     )}
                   </svg>
                   <span
@@ -1313,12 +1338,6 @@ export default function PergolaConfigurator({ locale = "hr" }: { locale?: Locale
               ))}
             </div>
             <p className="text-xs text-zinc-500 leading-relaxed mt-3">{t.patternNote}</p>
-            <Link
-              href={localizedPath("/kontakt", locale)}
-              className="mt-2 block w-full text-center border border-dashed border-zinc-300 text-zinc-600 hover:border-zinc-400 hover:text-zinc-900 py-2.5 rounded-lg text-xs font-semibold transition-colors"
-            >
-              {t.patternOther}
-            </Link>
           </div>
         </div>
 
