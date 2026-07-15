@@ -117,7 +117,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
 
   useEffect(() => {
     const poruka = new URLSearchParams(window.location.search).get("poruka");
-    if (poruka) setPrefilledMessage(poruka);
+    if (poruka) setPrefilledMessage(poruka.slice(0, 2000));
   }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -207,6 +207,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                       type="text"
                       name="Ime/Tvrtka"
                       required
+                      maxLength={150}
                       className="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent"
                     />
                   </div>
@@ -218,6 +219,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                       type="email"
                       name="_replyto"
                       required
+                      maxLength={254}
                       className="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent"
                     />
                   </div>
@@ -246,6 +248,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                     name="Poruka"
                     rows={4}
                     required
+                    maxLength={5000}
                     defaultValue={prefilledMessage}
                     className="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent resize-none"
                   ></textarea>

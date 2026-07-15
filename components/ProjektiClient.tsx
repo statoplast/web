@@ -12,6 +12,15 @@ type Post = {
   permalink: string;
 };
 
+function isSafeHttpsUrl(value: unknown): value is string {
+  if (typeof value !== "string" || value.length > 2000) return false;
+  try {
+    return new URL(value).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 const T: Record<
   Locale,
   {
@@ -69,7 +78,16 @@ export default function ProjektiClient({ locale = "hr" }: { locale?: Locale }) {
       })
       .then((data) => {
         if (!Array.isArray(data)) throw new Error("Invalid data format.");
-        setPosts(data);
+        const safePosts = (data as unknown[])
+          .filter(
+            (item): item is Post =>
+              typeof item === "object" &&
+              item !== null &&
+              isSafeHttpsUrl((item as Post).mediaUrl) &&
+              isSafeHttpsUrl((item as Post).permalink)
+          )
+          .slice(0, 100);
+        setPosts(safePosts);
       })
       .catch((err) => {
         console.error("Error loading Instagram feed:", err);
