@@ -145,11 +145,19 @@ export default function ONamaPage() {
         <div className="border-t border-zinc-800/60 py-6 text-xs text-zinc-500">
           <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>&copy; 2026 Statoplast d.o.o. Sva prava pridržana.</div>
-            <div>
-              Dizajn i razvoj:{" "}
-              <a href="#" className="hover:text-zinc-400 transition-colors">
-                STATOPLAST D.O.O.
-              </a>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <Link href="/politika-privatnosti" className="hover:text-zinc-300 transition-colors">
+                Politika privatnosti
+              </Link>
+              <Link href="/uvjeti-koristenja" className="hover:text-zinc-300 transition-colors">
+                Uvjeti korištenja
+              </Link>
+              <span>
+                Dizajn i razvoj:{" "}
+                <a href="#" className="hover:text-zinc-400 transition-colors">
+                  STATOPLAST D.O.O.
+                </a>
+              </span>
             </div>
           </div>
         </div>

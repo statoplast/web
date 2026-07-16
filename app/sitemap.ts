@@ -19,6 +19,8 @@ const ROUTES = [
   "/cnc-obrada",
   "/ormari",
   "/serijska-proizvodnja",
+  "/politika-privatnosti",
+  "/uvjeti-koristenja",
 ];
 
 const BUILD_DATE = new Date();
@@ -31,8 +33,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({
         url: `${SITE_URL}${path === "/" ? "/" : `${path}/`}`,
         lastModified: BUILD_DATE,
-        changeFrequency: route === "/" ? "weekly" : "monthly",
-        priority: route === "/" ? 1 : route === "/bioklimatske-pergole/konfigurator" ? 0.9 : 0.7,
+        changeFrequency:
+          route === "/"
+            ? "weekly"
+            : route === "/politika-privatnosti" || route === "/uvjeti-koristenja"
+              ? "yearly"
+              : "monthly",
+        priority:
+          route === "/"
+            ? 1
+            : route === "/bioklimatske-pergole/konfigurator"
+              ? 0.9
+              : route === "/politika-privatnosti" || route === "/uvjeti-koristenja"
+                ? 0.2
+                : 0.7,
         alternates: { languages: alternateLanguages(route) },
       });
     }

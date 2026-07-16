@@ -149,11 +149,19 @@ export default function UeberUnsPage() {
         <div className="border-t border-zinc-800/60 py-6 text-xs text-zinc-500">
           <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>&copy; 2026 Statoplast d.o.o. Alle Rechte vorbehalten.</div>
-            <div>
-              Design & Entwicklung:{" "}
-              <a href="#" className="hover:text-zinc-400 transition-colors">
-                STATOPLAST D.O.O.
-              </a>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <Link href="/de/datenschutz" className="hover:text-zinc-300 transition-colors">
+                Datenschutzerklärung
+              </Link>
+              <Link href="/de/nutzungsbedingungen" className="hover:text-zinc-300 transition-colors">
+                Nutzungsbedingungen
+              </Link>
+              <span>
+                Design & Entwicklung:{" "}
+                <a href="#" className="hover:text-zinc-400 transition-colors">
+                  STATOPLAST D.O.O.
+                </a>
+              </span>
             </div>
           </div>
         </div>

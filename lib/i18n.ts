@@ -51,6 +51,16 @@ const SLUG_MAP: Record<string, Record<Locale, string>> = {
     en: "series-production",
     de: "serienproduktion",
   },
+  "politika-privatnosti": {
+    hr: "politika-privatnosti",
+    en: "privacy-policy",
+    de: "datenschutz",
+  },
+  "uvjeti-koristenja": {
+    hr: "uvjeti-koristenja",
+    en: "terms-of-service",
+    de: "nutzungsbedingungen",
+  },
 };
 
 function translateSlug(slug: string, locale: Locale): string {

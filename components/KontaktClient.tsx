@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
-import { Locale } from "@/lib/i18n";
+import { Locale, localizedPath } from "@/lib/i18n";
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -31,6 +32,17 @@ const T: Record<
     errorTitle: string;
     errorText: string;
     retry: string;
+    legalTitle: string;
+    legalSeat: string;
+    legalPlant: string;
+    legalPlantValue: string;
+    legalDirectors: string;
+    legalCourt: string;
+    legalCapital: string;
+    legalCapitalValue: string;
+    legalBank: string;
+    privacyLink: string;
+    termsLink: string;
   }
 > = {
   hr: {
@@ -57,6 +69,17 @@ const T: Record<
     errorTitle: "Uuups! Došlo je do greške.",
     errorText: "Molimo pokušajte ponovno ili nam pošaljite direktan e-mail na info@statoplast.hr",
     retry: "Pokušaj ponovno",
+    legalTitle: "Podaci o tvrtki",
+    legalSeat: "Sjedište: Sveti Urban 256a, 40312 Štrigova, Hrvatska",
+    legalPlant: "Proizvodni pogon",
+    legalPlantValue: "Stanetinec bb, 40312 Štrigova",
+    legalDirectors: "Direktori: Zdravko Sabolčec i Denis Sabolčec",
+    legalCourt: "Upisano u sudski registar Trgovačkog suda u Varaždinu, MBS: 070015730",
+    legalCapital: "Temeljni kapital",
+    legalCapitalValue: "20.000,00 kn, uplaćen u cijelosti",
+    legalBank: "Žiro račun: Privredna banka Zagreb, IBAN: HR8023400091116012792",
+    privacyLink: "Politika privatnosti",
+    termsLink: "Uvjeti korištenja",
   },
   en: {
     heading1: "We're here for",
@@ -82,6 +105,17 @@ const T: Record<
     errorTitle: "Oops! Something went wrong.",
     errorText: "Please try again or send us a direct email at info@statoplast.hr",
     retry: "Try again",
+    legalTitle: "Company details",
+    legalSeat: "Registered seat: Sveti Urban 256a, 40312 Štrigova, Croatia",
+    legalPlant: "Production plant",
+    legalPlantValue: "Stanetinec bb, 40312 Štrigova",
+    legalDirectors: "Directors: Zdravko Sabolčec and Denis Sabolčec",
+    legalCourt: "Registered with the Commercial Court in Varaždin, reg. no. (MBS): 070015730",
+    legalCapital: "Share capital",
+    legalCapitalValue: "HRK 20,000.00, paid in full",
+    legalBank: "Bank account: Privredna banka Zagreb, IBAN: HR8023400091116012792",
+    privacyLink: "Privacy Policy",
+    termsLink: "Terms of Service",
   },
   de: {
     heading1: "Wir sind da für",
@@ -107,6 +141,17 @@ const T: Record<
     errorTitle: "Hoppla! Es ist ein Fehler aufgetreten.",
     errorText: "Bitte versuchen Sie es erneut oder senden Sie uns eine direkte E-Mail an info@statoplast.hr",
     retry: "Erneut versuchen",
+    legalTitle: "Firmenangaben",
+    legalSeat: "Sitz: Sveti Urban 256a, 40312 Štrigova, Kroatien",
+    legalPlant: "Produktionsstätte",
+    legalPlantValue: "Stanetinec bb, 40312 Štrigova",
+    legalDirectors: "Geschäftsführer: Zdravko Sabolčec und Denis Sabolčec",
+    legalCourt: "Eingetragen beim Handelsgericht Varaždin, Registernummer (MBS): 070015730",
+    legalCapital: "Stammkapital",
+    legalCapitalValue: "20.000,00 HRK, vollständig eingezahlt",
+    legalBank: "Bankverbindung: Privredna banka Zagreb, IBAN: HR8023400091116012792",
+    privacyLink: "Datenschutzerklärung",
+    termsLink: "Nutzungsbedingungen",
   },
 };
 
@@ -304,6 +349,40 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                 </button>
               </div>
             )}
+          </div>
+        </div>
+
+        <div className="mt-16 md:mt-24 pt-10 border-t border-zinc-200">
+          <h2 className="text-xs font-bold tracking-widest text-zinc-400 uppercase mb-6">
+            {t.legalTitle}
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-2 text-sm text-zinc-500 leading-relaxed">
+            <p>STATOPLAST d.o.o.</p>
+            <p>{t.legalSeat}</p>
+            <p>
+              {t.legalPlant}: {t.legalPlantValue}
+            </p>
+            <p>{t.legalDirectors}</p>
+            <p>OIB: 24717387663 · VAT: HR24717387663</p>
+            <p>{t.legalCourt}</p>
+            <p>
+              {t.legalCapital}: {t.legalCapitalValue}
+            </p>
+            <p>{t.legalBank}</p>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <Link
+              href={localizedPath("/politika-privatnosti", locale)}
+              className="text-zinc-500 hover:text-black transition-colors"
+            >
+              {t.privacyLink}
+            </Link>
+            <Link
+              href={localizedPath("/uvjeti-koristenja", locale)}
+              className="text-zinc-500 hover:text-black transition-colors"
+            >
+              {t.termsLink}
+            </Link>
           </div>
         </div>
       </main>
