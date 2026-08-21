@@ -12,6 +12,23 @@ export const metadata: Metadata = {
     languages: alternateLanguages("/politika-privatnosti"),
   },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Datenschutzerklärung | Statoplast",
+    description:
+      "Datenschutzerklärung von Statoplast d.o.o. — welche Daten wir über das Kontaktformular erheben, wie sie verarbeitet werden und Ihre Rechte nach der DSGVO.",
+    url: "/de/datenschutz/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Datenschutzerklärung | Statoplast",
+    description:
+      "Datenschutzerklärung von Statoplast d.o.o. — welche Daten wir über das Kontaktformular erheben, wie sie verarbeitet werden und Ihre Rechte nach der DSGVO.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function DatenschutzPage() {
@@ -25,7 +42,7 @@ export default function DatenschutzPage() {
         <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4">
           Datenschutz<span className="font-bold">erklärung.</span>
         </h1>
-        <p className="text-sm text-zinc-500 mb-12">Zuletzt aktualisiert: Juli 2026.</p>
+        <p className="text-sm text-zinc-500 mb-12">Zuletzt aktualisiert: August 2026.</p>
 
         <div className="space-y-10 text-zinc-700 leading-relaxed">
           <section>
@@ -49,10 +66,11 @@ export default function DatenschutzPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">2. Welche Daten wir erheben</h2>
             <p>
-              Diese Website erhebt beim Besuch keine personenbezogenen Daten automatisch. Wir
-              erheben ausschließlich Daten, die Sie uns selbst über das Kontaktformular auf der
-              Kontaktseite mitteilen: Name bzw. Firmenname, E-Mail-Adresse, Betreff Ihrer Anfrage
-              sowie den Inhalt Ihrer Nachricht.
+              Wir erheben zwei Arten von Daten: (a) Daten, die Sie uns selbst über das
+              Kontaktformular auf der Kontaktseite mitteilen — Name bzw. Firmenname,
+              E-Mail-Adresse, Betreff Ihrer Anfrage sowie den Inhalt Ihrer Nachricht; und (b)
+              Daten, die beim Besuch der Website automatisch über die in Abschnitt 6 beschriebenen
+              Analyse- und Werbetools erhoben werden, etwa Ihre IP-Adresse.
             </p>
           </section>
 
@@ -75,8 +93,9 @@ export default function DatenschutzPage() {
               Zur technischen Verarbeitung und Zustellung der über das Kontaktformular gesendeten
               Nachrichten nutzen wir den Dienst eines Drittanbieters, Formspree (Formspree, Inc.).
               Formspree fungiert dabei als unser Auftragsverarbeiter und leitet die eingegebenen
-              Formulardaten an unser E-Mail-Postfach weiter. Ihre Daten werden nicht verkauft oder
-              zu Marketingzwecken an Dritte weitergegeben.
+              Formulardaten an unser E-Mail-Postfach weiter. Die in Abschnitt 6 beschriebenen
+              Analyse- und Werbetools verarbeiten Daten über Google (siehe dort). Ihre Daten werden
+              nicht verkauft oder zu Marketingzwecken an andere Dritte weitergegeben.
             </p>
           </section>
 
@@ -93,10 +112,36 @@ export default function DatenschutzPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">6. Cookies</h2>
             <p>
-              Diese Website verwendet keine Cookies zu Analyse-, Werbe- oder
-              Tracking-Zwecken. Wir nutzen weder Google Analytics noch vergleichbare Tools. Sollte
-              sich dies künftig ändern, wird diese Datenschutzerklärung entsprechend aktualisiert
-              und, soweit erforderlich, Ihre Einwilligung eingeholt.
+              Diese Website nutzt Google Tag Manager, um Google Analytics 4 (Besuchsstatistiken)
+              sowie Google Werbe-Cookies für Remarketing einzubinden, einschließlich Google Signals
+              (Anzeige unserer Werbung an Personen, die die Website zuvor besucht haben, auf
+              anderen Google-Seiten und Partnernetzwerken). Diese Tools erheben Daten wie Ihre
+              IP-Adresse, Geräte- und Browserinformationen, die von Ihnen besuchten Seiten sowie
+              Ihren ungefähren Standort; die Verarbeitung erfolgt durch Google gemäß dessen eigener
+              Datenschutzerklärung.
+            </p>
+            <p className="mt-3">
+              Auf dieser Website ist derzeit noch kein Cookie-Consent-Tool (CMP) aktiv; wir
+              arbeiten an dessen Einrichtung. Bis dahin können Sie diese Cookies über Ihre
+              Browsereinstellungen, über die{" "}
+              <a
+                href="https://adssettings.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Google Anzeigeneinstellungen
+              </a>{" "}
+              oder durch Installation des{" "}
+              <a
+                href="https://tools.google.com/dlpage/gaoptout"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Google Analytics Deaktivierungs-Add-ons
+              </a>{" "}
+              deaktivieren.
             </p>
           </section>
 

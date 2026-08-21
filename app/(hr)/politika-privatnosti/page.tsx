@@ -12,6 +12,23 @@ export const metadata: Metadata = {
     languages: alternateLanguages("/politika-privatnosti"),
   },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Politika Privatnosti | Statoplast",
+    description:
+      "Politika privatnosti Statoplast d.o.o. — koji se podaci prikupljaju putem kontakt obrasca, kako se obrađuju te koja su vaša prava prema GDPR-u.",
+    url: "/politika-privatnosti/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Politika Privatnosti | Statoplast",
+    description:
+      "Politika privatnosti Statoplast d.o.o. — koji se podaci prikupljaju putem kontakt obrasca, kako se obrađuju te koja su vaša prava prema GDPR-u.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function PolitikaPrivatnostiPage() {
@@ -25,7 +42,7 @@ export default function PolitikaPrivatnostiPage() {
         <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4">
           Politika <span className="font-bold">privatnosti.</span>
         </h1>
-        <p className="text-sm text-zinc-500 mb-12">Zadnje ažurirano: srpanj 2026.</p>
+        <p className="text-sm text-zinc-500 mb-12">Zadnje ažurirano: kolovoz 2026.</p>
 
         <div className="space-y-10 text-zinc-700 leading-relaxed">
           <section>
@@ -49,10 +66,11 @@ export default function PolitikaPrivatnostiPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">2. Koje podatke prikupljamo</h2>
             <p>
-              Ova stranica ne prikuplja osobne podatke automatski prilikom preglavanja. Podatke o
-              vama prikupljamo isključivo kada nam ih sami dostavite putem kontakt obrasca na
-              stranici Kontakt, i to: ime i prezime ili naziv tvrtke, adresu e-pošte, predmet
-              upita i sadržaj poruke koju nam pošaljete.
+              Prikupljamo dvije vrste podataka: (a) podatke koje nam sami dostavite putem kontakt
+              obrasca na stranici Kontakt — ime i prezime ili naziv tvrtke, adresu e-pošte, predmet
+              upita i sadržaj poruke; i (b) podatke koji se prikupljaju automatski prilikom
+              pregledavanja stranice putem alata za analitiku i oglašavanje opisanih u odjeljku 6.,
+              poput IP adrese.
             </p>
           </section>
 
@@ -74,8 +92,10 @@ export default function PolitikaPrivatnostiPage() {
             <p>
               Za tehničku obradu i dostavu poruka poslanih putem kontakt obrasca koristimo uslugu
               trećeg pružatelja, Formspree (Formspree, Inc.). Formspree djeluje kao naš izvršitelj
-              obrade te podatke unesene u obrazac prosljeđuje na naš e-mail. Vaše podatke ne
-              prodajemo niti ustupamo trećim stranama u marketinške svrhe.
+              obrade te podatke unesene u obrazac prosljeđuje na naš e-mail. Podatke prikupljene
+              putem alata za analitiku i oglašavanje opisanih u odjeljku 6. obrađuje Google (vidi
+              taj odjeljak). Vaše podatke ne prodajemo niti ustupamo drugim trećim stranama u
+              marketinške svrhe.
             </p>
           </section>
 
@@ -91,10 +111,35 @@ export default function PolitikaPrivatnostiPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">6. Kolačići (cookies)</h2>
             <p>
-              Ova stranica ne koristi kolačiće za analitiku, oglašavanje ili praćenje ponašanja
-              korisnika. Ne koristimo Google Analytics niti slične alate. Ukoliko se to u
-              budućnosti promijeni, ova politika privatnosti bit će ažurirana na odgovarajući
-              način, a po potrebi ćete biti zamoljeni za privolu.
+              Ova stranica koristi Google Tag Manager za postavljanje alata Google Analytics 4
+              (statistika posjećenosti) te Google oglašivačkih kolačića za remarketing, uključujući
+              Google Signals (prikaz naših oglasa korisnicima koji su ranije posjetili stranicu, na
+              drugim Google stranicama i partnerskim mrežama). Ovi alati prikupljaju podatke poput
+              IP adrese, podataka o uređaju i pregledniku, stranicama koje posjetite te približne
+              lokacije, a obrađuje ih Google u skladu sa svojom vlastitom politikom privatnosti.
+            </p>
+            <p className="mt-3">
+              Trenutno na stranici nije aktivan alat za upravljanje privolom za kolačiće (CMP), na
+              čemu radimo. Do njegove implementacije, ove kolačiće možete onemogućiti putem
+              postavki svog preglednika, putem{" "}
+              <a
+                href="https://adssettings.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Google postavki oglasa
+              </a>{" "}
+              ili instalacijom{" "}
+              <a
+                href="https://tools.google.com/dlpage/gaoptout"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Google Analytics dodatka za isključivanje
+              </a>
+              .
             </p>
           </section>
 
