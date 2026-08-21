@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
         <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4">
           Privacy <span className="font-bold">policy.</span>
         </h1>
-        <p className="text-sm text-zinc-500 mb-12">Last updated: July 2026.</p>
+        <p className="text-sm text-zinc-500 mb-12">Last updated: August 2026.</p>
 
         <div className="space-y-10 text-zinc-700 leading-relaxed">
           <section>
@@ -72,8 +72,10 @@ export default function PrivacyPolicyPage() {
             <p>
               To technically process and deliver messages submitted through the contact form, we
               use a third-party service, Formspree (Formspree, Inc.). Formspree acts as our data
-              processor and forwards the submitted form data to our email inbox. We do not sell or
-              share your data with third parties for marketing purposes.
+              processor and forwards the submitted form data to our email inbox. Data collected by
+              the analytics and advertising tools described in section 6 is processed by Google
+              (see that section). We do not sell or share your data with other third parties for
+              marketing purposes.
             </p>
           </section>
 
@@ -90,10 +92,35 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">6. Cookies</h2>
             <p>
-              This website does not use cookies for analytics, advertising, or tracking user
-              behaviour. We do not use Google Analytics or similar tools. Should this change in
-              the future, this privacy policy will be updated accordingly, and your consent will
-              be requested where required.
+              This website uses Google Tag Manager to deploy Google Analytics 4 (visit statistics)
+              and Google advertising cookies for remarketing, including Google Signals (showing
+              our ads to people who previously visited the site, on other Google sites and partner
+              networks). These tools collect data such as your IP address, device and browser
+              information, the pages you visit, and your approximate location, processed by Google
+              under its own privacy policy.
+            </p>
+            <p className="mt-3">
+              A cookie consent management tool (CMP) is not yet active on this site; we are working
+              on adding one. Until it is in place, you can disable these cookies via your browser
+              settings, via{" "}
+              <a
+                href="https://adssettings.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Google Ads Settings
+              </a>{" "}
+              , or by installing the{" "}
+              <a
+                href="https://tools.google.com/dlpage/gaoptout"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Google Analytics opt-out browser add-on
+              </a>
+              .
             </p>
           </section>
 

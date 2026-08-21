@@ -64,13 +64,23 @@ update consent state, not just conditional script loading), which is
 better handled by a CMP with a native GTM template (Cookiebot / Iubenda /
 CookieYes) than a custom implementation.
 
-**To do, scheduled after the DNS cutover to the real domain:**
+Note: the current live site (statoplast.hr) already runs GA4 + Google
+Signals while its own privacy policy makes no mention of it — this was an
+existing inaccuracy on the live site, not one introduced by this change.
+
+**Done (2026-08-21):** updated the Privacy Policy pages
+(`/politika-privatnosti`, `/en/privacy-policy`, `/de/datenschutz`) to
+disclose GA4 and Google advertising/remarketing cookies, name Google as a
+data recipient, and point users to Google's own opt-out mechanisms
+(Google Ads Settings, GA opt-out add-on) as an interim measure until a CMP
+is in place.
+
+**Still to do, scheduled after the DNS cutover to the real domain:**
 - Pick a CMP and add its GTM template/tag.
 - Set Consent Mode v2 defaults (`analytics_storage`, `ad_storage`,
   `ad_user_data`, `ad_personalization`) to `denied` before GTM fires,
   updated via the CMP on user choice.
-- Add a cookie policy / update the existing Privacy Policy pages
-  (`/politika-privatnosti`, `/en/privacy-policy`, `/de/datenschutz`) to
-  reflect GA4 + remarketing now that the "we don't use cookies" language
-  from the 2026-08-20 pass is no longer accurate.
+- Once a CMP is live, update the Privacy Policy cookie section again to
+  describe the consent banner itself and remove the interim opt-out-link
+  language.
 - Re-verify the CSP once the CMP's own script domains are known.
