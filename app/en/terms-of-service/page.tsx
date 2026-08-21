@@ -12,6 +12,23 @@ export const metadata: Metadata = {
     languages: alternateLanguages("/uvjeti-koristenja"),
   },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Terms of Service | Statoplast",
+    description:
+      "Terms of Service for the Statoplast d.o.o. website — intellectual property, limitation of liability, and governing law.",
+    url: "/en/terms-of-service/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms of Service | Statoplast",
+    description:
+      "Terms of Service for the Statoplast d.o.o. website — intellectual property, limitation of liability, and governing law.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function TermsOfServicePage() {

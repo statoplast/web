@@ -12,6 +12,23 @@ export const metadata: Metadata = {
     languages: alternateLanguages("/uvjeti-koristenja"),
   },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Nutzungsbedingungen | Statoplast",
+    description:
+      "Nutzungsbedingungen der Website von Statoplast d.o.o. — geistiges Eigentum, Haftungsbeschränkung und anwendbares Recht.",
+    url: "/de/nutzungsbedingungen/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nutzungsbedingungen | Statoplast",
+    description:
+      "Nutzungsbedingungen der Website von Statoplast d.o.o. — geistiges Eigentum, Haftungsbeschränkung und anwendbares Recht.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function NutzungsbedingungenPage() {

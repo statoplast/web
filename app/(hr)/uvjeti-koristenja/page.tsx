@@ -12,6 +12,23 @@ export const metadata: Metadata = {
     languages: alternateLanguages("/uvjeti-koristenja"),
   },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Uvjeti Korištenja | Statoplast",
+    description:
+      "Uvjeti korištenja internetske stranice Statoplast d.o.o. — intelektualno vlasništvo, ograničenje odgovornosti i mjerodavno pravo.",
+    url: "/uvjeti-koristenja/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Uvjeti Korištenja | Statoplast",
+    description:
+      "Uvjeti korištenja internetske stranice Statoplast d.o.o. — intelektualno vlasništvo, ograničenje odgovornosti i mjerodavno pravo.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function UvjetiKoristenjaPage() {

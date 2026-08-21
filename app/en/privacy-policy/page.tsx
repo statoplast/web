@@ -12,6 +12,23 @@ export const metadata: Metadata = {
     languages: alternateLanguages("/politika-privatnosti"),
   },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Statoplast",
+    title: "Privacy Policy | Statoplast",
+    description:
+      "Statoplast d.o.o. privacy policy — what data we collect through the contact form, how it's processed, and your rights under GDPR.",
+    url: "/en/privacy-policy/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | Statoplast",
+    description:
+      "Statoplast d.o.o. privacy policy — what data we collect through the contact form, how it's processed, and your rights under GDPR.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function PrivacyPolicyPage() {
@@ -47,10 +64,11 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">2. What data we collect</h2>
             <p>
-              This website does not automatically collect personal data as you browse. We only
-              collect data you provide yourself, via the contact form on the Contact page: your
-              name or company name, email address, subject of your inquiry, and the content of
-              your message.
+              We collect two kinds of data: (a) data you provide yourself via the contact form on
+              the Contact page — your name or company name, email address, subject of your
+              inquiry, and the content of your message; and (b) data collected automatically as
+              you browse the site via the analytics and advertising tools described in section 6,
+              such as your IP address.
             </p>
           </section>
 

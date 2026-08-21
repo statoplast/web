@@ -12,6 +12,23 @@ export const metadata: Metadata = {
     languages: alternateLanguages("/politika-privatnosti"),
   },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    locale: "hr_HR",
+    siteName: "Statoplast",
+    title: "Politika Privatnosti | Statoplast",
+    description:
+      "Politika privatnosti Statoplast d.o.o. — koji se podaci prikupljaju putem kontakt obrasca, kako se obrađuju te koja su vaša prava prema GDPR-u.",
+    url: "/politika-privatnosti/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Politika Privatnosti | Statoplast",
+    description:
+      "Politika privatnosti Statoplast d.o.o. — koji se podaci prikupljaju putem kontakt obrasca, kako se obrađuju te koja su vaša prava prema GDPR-u.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function PolitikaPrivatnostiPage() {
@@ -49,10 +66,11 @@ export default function PolitikaPrivatnostiPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">2. Koje podatke prikupljamo</h2>
             <p>
-              Ova stranica ne prikuplja osobne podatke automatski prilikom preglavanja. Podatke o
-              vama prikupljamo isključivo kada nam ih sami dostavite putem kontakt obrasca na
-              stranici Kontakt, i to: ime i prezime ili naziv tvrtke, adresu e-pošte, predmet
-              upita i sadržaj poruke koju nam pošaljete.
+              Prikupljamo dvije vrste podataka: (a) podatke koje nam sami dostavite putem kontakt
+              obrasca na stranici Kontakt — ime i prezime ili naziv tvrtke, adresu e-pošte, predmet
+              upita i sadržaj poruke; i (b) podatke koji se prikupljaju automatski prilikom
+              pregledavanja stranice putem alata za analitiku i oglašavanje opisanih u odjeljku 6.,
+              poput IP adrese.
             </p>
           </section>
 

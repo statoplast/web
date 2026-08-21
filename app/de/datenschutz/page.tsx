@@ -12,6 +12,23 @@ export const metadata: Metadata = {
     languages: alternateLanguages("/politika-privatnosti"),
   },
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "Statoplast",
+    title: "Datenschutzerklärung | Statoplast",
+    description:
+      "Datenschutzerklärung von Statoplast d.o.o. — welche Daten wir über das Kontaktformular erheben, wie sie verarbeitet werden und Ihre Rechte nach der DSGVO.",
+    url: "/de/datenschutz/",
+    images: [{ url: "/slike/moderna_arhitektura_kuca.jpeg" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Datenschutzerklärung | Statoplast",
+    description:
+      "Datenschutzerklärung von Statoplast d.o.o. — welche Daten wir über das Kontaktformular erheben, wie sie verarbeitet werden und Ihre Rechte nach der DSGVO.",
+    images: ["/slike/moderna_arhitektura_kuca.jpeg"],
+  },
 };
 
 export default function DatenschutzPage() {
@@ -49,10 +66,11 @@ export default function DatenschutzPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">2. Welche Daten wir erheben</h2>
             <p>
-              Diese Website erhebt beim Besuch keine personenbezogenen Daten automatisch. Wir
-              erheben ausschließlich Daten, die Sie uns selbst über das Kontaktformular auf der
-              Kontaktseite mitteilen: Name bzw. Firmenname, E-Mail-Adresse, Betreff Ihrer Anfrage
-              sowie den Inhalt Ihrer Nachricht.
+              Wir erheben zwei Arten von Daten: (a) Daten, die Sie uns selbst über das
+              Kontaktformular auf der Kontaktseite mitteilen — Name bzw. Firmenname,
+              E-Mail-Adresse, Betreff Ihrer Anfrage sowie den Inhalt Ihrer Nachricht; und (b)
+              Daten, die beim Besuch der Website automatisch über die in Abschnitt 6 beschriebenen
+              Analyse- und Werbetools erhoben werden, etwa Ihre IP-Adresse.
             </p>
           </section>
 
