@@ -61,6 +61,11 @@ const SLUG_MAP: Record<string, Record<Locale, string>> = {
     en: "terms-of-service",
     de: "nutzungsbedingungen",
   },
+  "hvala-na-poslanoj-poruci": {
+    hr: "hvala-na-poslanoj-poruci",
+    en: "thank-you-for-your-message",
+    de: "danke-fuer-ihre-anfrage",
+  },
 };
 
 function translateSlug(slug: string, locale: Locale): string {
@@ -108,6 +113,13 @@ export function stripLocalePrefix(pathname: string) {
     .filter(Boolean)
     .map((s) => untranslateSlug(s, locale));
   return `/${segments.join("/")}`;
+}
+
+// Full, absolute URL for `path` (canonical hr form) in the given locale,
+// e.g. "/hvala-na-poslanoj-poruci" + "en" -> "https://statoplast.hr/en/thank-you-for-your-message/".
+export function absoluteLocalizedUrl(path: string, locale: Locale) {
+  const p = localizedPath(path, locale);
+  return `${SITE_URL}${p === "/" ? "/" : `${p}/`}`;
 }
 
 export function alternateLanguages(path: string) {

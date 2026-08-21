@@ -3,9 +3,9 @@
 import { useEffect, useState, FormEvent } from "react";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
-import { Locale, localizedPath } from "@/lib/i18n";
+import { Locale, absoluteLocalizedUrl, localizedPath } from "@/lib/i18n";
 
-type Status = "idle" | "sending" | "success" | "error";
+type Status = "idle" | "sending" | "error";
 
 const T: Record<
   Locale,
@@ -27,8 +27,6 @@ const T: Record<
     messageLabel: string;
     sending: string;
     submit: string;
-    successTitle: string;
-    successText: string;
     errorTitle: string;
     errorText: string;
     retry: string;
@@ -63,9 +61,6 @@ const T: Record<
     messageLabel: "Vaša poruka",
     sending: "SLANJE U TIJEKU...",
     submit: "POŠALJITE UPIT",
-    successTitle: "Hvala vam na upitu!",
-    successText:
-      "Vaša poruka je uspješno poslana. Naš tim će vas kontaktirati u najkraćem mogućem roku na navedenu email adresu.",
     errorTitle: "Uuups! Došlo je do greške.",
     errorText: "Molimo pokušajte ponovno ili nam pošaljite direktan e-mail na info@statoplast.hr",
     retry: "Pokušaj ponovno",
@@ -99,9 +94,6 @@ const T: Record<
     messageLabel: "Your message",
     sending: "SENDING...",
     submit: "SEND INQUIRY",
-    successTitle: "Thank you for your inquiry!",
-    successText:
-      "Your message has been sent successfully. Our team will contact you as soon as possible at the email address provided.",
     errorTitle: "Oops! Something went wrong.",
     errorText: "Please try again or send us a direct email at info@statoplast.hr",
     retry: "Try again",
@@ -135,9 +127,6 @@ const T: Record<
     messageLabel: "Ihre Nachricht",
     sending: "WIRD GESENDET...",
     submit: "ANFRAGE SENDEN",
-    successTitle: "Vielen Dank für Ihre Anfrage!",
-    successText:
-      "Ihre Nachricht wurde erfolgreich gesendet. Unser Team wird Sie so schnell wie möglich unter der angegebenen E-Mail-Adresse kontaktieren.",
     errorTitle: "Hoppla! Es ist ein Fehler aufgetreten.",
     errorText: "Bitte versuchen Sie es erneut oder senden Sie uns eine direkte E-Mail an info@statoplast.hr",
     retry: "Erneut versuchen",
@@ -159,6 +148,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
   const t = T[locale];
   const [status, setStatus] = useState<Status>("idle");
   const [prefilledMessage, setPrefilledMessage] = useState("");
+  const thankYouUrl = absoluteLocalizedUrl("/hvala-na-poslanoj-poruci", locale);
 
   useEffect(() => {
     const poruka = new URLSearchParams(window.location.search).get("poruka");
@@ -176,7 +166,11 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
         body: new FormData(form),
         headers: { Accept: "application/json" },
       });
-      setStatus(response.ok ? "success" : "error");
+      if (response.ok) {
+        window.location.href = thankYouUrl;
+        return;
+      }
+      setStatus("error");
     } catch {
       setStatus("error");
     }
@@ -236,7 +230,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
           </div>
 
           <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-zinc-100 flex flex-col justify-center min-h-[500px]">
-            {status !== "success" && status !== "error" && (
+            {status !== "error" && (
               <form
                 action="https://formspree.io/f/xqeraako"
                 method="POST"
@@ -300,6 +294,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                 </div>
 
                 <input type="text" name="_gotcha" style={{ display: "none" }} />
+                <input type="hidden" name="_next" value={thankYouUrl} />
 
                 <div className="pt-6">
                   <button
@@ -311,30 +306,6 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                   </button>
                 </div>
               </form>
-            )}
-
-            {status === "success" && (
-              <div className="text-center animate-fade-in p-6">
-                <div className="w-16 h-16 bg-zinc-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg
-                    className="w-8 h-8 text-black"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    ></path>
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold text-black mb-3">{t.successTitle}</h3>
-                <p className="text-zinc-500 font-light max-w-sm mx-auto leading-relaxed">
-                  {t.successText}
-                </p>
-              </div>
             )}
 
             {status === "error" && (
