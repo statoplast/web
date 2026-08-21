@@ -9,6 +9,9 @@
 /proizvodi/pivot-vrata/              /pivot-vrata/                      301
 /proizvodi/ogradni-sistemi/          /moderne-ograde/                   301
 /proizvodi/zatvaranje-nadstresnice/  /zatvaranje-nadstresnica/          301
+/proizvodi/metalna-galanterija/      /ormari/                           301
+/proizvodi/ulazna-vrata/             /pivot-vrata/                      301
+/proizvodi/grilje/                   /aluminijska-stolarija/            301
 /usluge/                             /                                  301
 /proizvodi/                          /                                  301
 
@@ -18,6 +21,7 @@
 /en/products/bioclimatic-pergolas/   /en/bioclimatic-pergolas/          301
 /en/products/pivot-doors/            /en/pivot-doors/                   301
 /en/products/fence-systems/          /en/fence-systems/                 301
+/en/products/metal-accessories/      /en/cabinets/                      301
 /en/services/                        /en/                               301
 /en/products/                        /en/                               301
 
@@ -27,5 +31,6 @@
 /de/produkte/bioklimatische-pergolen/    /de/bioklimatische-pergolen/   301
 /de/produkte/pivot-turen/                /de/pivot-turen/               301
 /de/produkte/zaunsysteme/                /de/zaunsysteme/               301
+/de/produkte/metallprodukte/             /de/elektroschraenke/          301
 /de/dienstleistungen/                    /de/                           301
 /de/produkte/                            /de/                           301
