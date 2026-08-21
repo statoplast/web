@@ -148,12 +148,21 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
   const t = T[locale];
   const [status, setStatus] = useState<Status>("idle");
   const [prefilledMessage, setPrefilledMessage] = useState("");
-  const thankYouUrl = absoluteLocalizedUrl("/hvala-na-poslanoj-poruci", locale);
+  const thankYouPath = `${localizedPath("/hvala-na-poslanoj-poruci", locale)}/`;
+  // Formspree's _next redirect needs a fully-qualified URL (it resolves
+  // relative to formspree.io, not this site). The SITE_URL-based value is
+  // correct once the real domain is live and is what a no-JS visitor gets
+  // in the static HTML; on mount we correct it to whatever origin is
+  // actually serving the page (e.g. a Cloudflare preview URL).
+  const [nextUrl, setNextUrl] = useState(() =>
+    absoluteLocalizedUrl("/hvala-na-poslanoj-poruci", locale)
+  );
 
   useEffect(() => {
+    setNextUrl(`${window.location.origin}${thankYouPath}`);
     const poruka = new URLSearchParams(window.location.search).get("poruka");
     if (poruka) setPrefilledMessage(poruka.slice(0, 2000));
-  }, []);
+  }, [thankYouPath]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -167,7 +176,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
         headers: { Accept: "application/json" },
       });
       if (response.ok) {
-        window.location.href = thankYouUrl;
+        window.location.href = thankYouPath;
         return;
       }
       setStatus("error");
@@ -294,7 +303,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                 </div>
 
                 <input type="text" name="_gotcha" style={{ display: "none" }} />
-                <input type="hidden" name="_next" value={thankYouUrl} />
+                <input type="hidden" name="_next" value={nextUrl} />
 
                 <div className="pt-6">
                   <button
