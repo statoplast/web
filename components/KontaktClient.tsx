@@ -2,8 +2,11 @@
 
 import { useEffect, useState, FormEvent } from "react";
 import Link from "next/link";
+import Script from "next/script";
 import SiteHeader from "@/components/SiteHeader";
-import { Locale, absoluteLocalizedUrl, localizedPath } from "@/lib/i18n";
+import { Locale, localizedPath } from "@/lib/i18n";
+
+const TURNSTILE_SITE_KEY = "0x4AAAAAAEduTZKtX5EJeeka";
 
 type Status = "idle" | "sending" | "error";
 
@@ -148,21 +151,14 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
   const t = T[locale];
   const [status, setStatus] = useState<Status>("idle");
   const [prefilledMessage, setPrefilledMessage] = useState("");
+  // Our own backend, same origin - a relative path is always correct
+  // regardless of which domain is actually serving the page.
   const thankYouPath = `${localizedPath("/hvala-na-poslanoj-poruci", locale)}/`;
-  // Formspree's _next redirect needs a fully-qualified URL (it resolves
-  // relative to formspree.io, not this site). The SITE_URL-based value is
-  // correct once the real domain is live and is what a no-JS visitor gets
-  // in the static HTML; on mount we correct it to whatever origin is
-  // actually serving the page (e.g. a Cloudflare preview URL).
-  const [nextUrl, setNextUrl] = useState(() =>
-    absoluteLocalizedUrl("/hvala-na-poslanoj-poruci", locale)
-  );
 
   useEffect(() => {
-    setNextUrl(`${window.location.origin}${thankYouPath}`);
     const poruka = new URLSearchParams(window.location.search).get("poruka");
     if (poruka) setPrefilledMessage(poruka.slice(0, 2000));
-  }, [thankYouPath]);
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -187,6 +183,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
 
   return (
     <div className="bg-zinc-50 text-zinc-900 font-sans antialiased selection:bg-zinc-900 selection:text-white min-h-screen">
+      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="afterInteractive" async defer />
       <div className="sticky top-0 z-50 flex flex-col w-full">
         <SiteHeader variant="light" locale={locale} />
       </div>
@@ -241,7 +238,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
           <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-zinc-100 flex flex-col justify-center min-h-[500px]">
             {status !== "error" && (
               <form
-                action="https://formspree.io/f/xqeraako"
+                action="/api/contact"
                 method="POST"
                 className="space-y-6"
                 onSubmit={handleSubmit}
@@ -253,7 +250,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                     </label>
                     <input
                       type="text"
-                      name="Ime/Tvrtka"
+                      name="name"
                       required
                       maxLength={150}
                       className="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent"
@@ -265,7 +262,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                     </label>
                     <input
                       type="email"
-                      name="_replyto"
+                      name="email"
                       required
                       maxLength={254}
                       className="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent"
@@ -278,7 +275,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                     {t.subjectLabel}
                   </label>
                   <select
-                    name="Predmet"
+                    name="subject"
                     className="border-b-2 border-zinc-200 py-3 focus:outline-none focus:border-black transition-colors bg-transparent text-zinc-700"
                   >
                     <option value="ALU Sustavi">{t.subjectAlu}</option>
@@ -293,7 +290,7 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                   </label>
                   <textarea
                     key={prefilledMessage}
-                    name="Poruka"
+                    name="message"
                     rows={4}
                     required
                     maxLength={5000}
@@ -310,7 +307,8 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                   aria-hidden="true"
                   style={{ display: "none" }}
                 />
-                <input type="hidden" name="_next" value={nextUrl} />
+                <input type="hidden" name="next" value={thankYouPath} />
+                <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>
 
                 <div className="pt-6">
                   <button
