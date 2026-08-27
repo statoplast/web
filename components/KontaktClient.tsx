@@ -175,8 +175,11 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
         window.location.href = thankYouPath;
         return;
       }
+      const body = await response.text().catch(() => "");
+      console.error("Contact form submission failed:", response.status, body);
       setStatus("error");
-    } catch {
+    } catch (err) {
+      console.error("Contact form submission threw:", err);
       setStatus("error");
     }
   };
