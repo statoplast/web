@@ -74,7 +74,7 @@ export async function onRequestPost(context) {
       "content-type": "application/json",
     },
     body: JSON.stringify({
-      from: "Statoplast Web <web@upiti.statoplast.hr>",
+      from: "Statoplast Web <upiti@statoplast.hr>",
       to: ["info@statoplast.hr"],
       reply_to: email,
       subject: `Novi upit s weba - ${subject || "Opći upit"}`,
