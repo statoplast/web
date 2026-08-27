@@ -302,7 +302,14 @@ export default function KontaktClient({ locale = "hr" }: { locale?: Locale }) {
                   ></textarea>
                 </div>
 
-                <input type="text" name="_gotcha" style={{ display: "none" }} />
+                <input
+                  type="text"
+                  name="_gotcha"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ display: "none" }}
+                />
                 <input type="hidden" name="_next" value={nextUrl} />
 
                 <div className="pt-6">
