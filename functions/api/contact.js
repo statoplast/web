@@ -82,7 +82,20 @@ export async function onRequestPost(context) {
     }),
   });
 
-  if (!emailRes.ok) return fail(502, "email_send_failed");
+  if (!emailRes.ok) {
+    const resendError = await emailRes.text().catch(() => "");
+    console.error("Resend send failed:", emailRes.status, resendError);
+    if (acceptsJson) {
+      return jsonResponse(502, {
+        ok: false,
+        error: "email_send_failed",
+        resendStatus: emailRes.status,
+        resendError,
+      });
+    }
+    const referer = request.headers.get("referer") || "/";
+    return Response.redirect(referer, 302);
+  }
 
   if (acceptsJson) return jsonResponse(200, { ok: true });
   return Response.redirect(field("next", 200) || "/", 302);
