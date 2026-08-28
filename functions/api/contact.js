@@ -13,6 +13,59 @@ function jsonResponse(status, body) {
   });
 }
 
+function escapeHtml(value) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function buildEmailHtml({ logoUrl, name, email, subject, message }) {
+  const row = (label, value) => `
+        <tr>
+          <td style="padding:4px 0;color:#71717a;font-size:13px;width:110px;vertical-align:top;">${label}</td>
+          <td style="padding:4px 0;color:#18181b;font-size:14px;">${value}</td>
+        </tr>`;
+
+  return `<!DOCTYPE html>
+<html lang="hr">
+  <body style="margin:0;padding:0;background:#f4f4f5;font-family:Arial,Helvetica,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f5;padding:32px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e4e4e7;">
+            <tr>
+              <td style="padding:28px 32px;border-bottom:1px solid #e4e4e7;">
+                <img src="${logoUrl}" alt="Statoplast" height="28" style="display:block;height:28px;width:auto;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px 32px;">
+                <p style="margin:0 0 20px;color:#18181b;font-size:16px;font-weight:bold;">Novi upit s web stranice</p>
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+                  ${row("Ime/Tvrtka", name)}
+                  ${row("Email", `<a href="mailto:${email}" style="color:#2563eb;text-decoration:none;">${email}</a>`)}
+                  ${row("Predmet", subject || "-")}
+                </table>
+                <p style="margin:20px 0 6px;color:#71717a;font-size:13px;">Poruka</p>
+                <p style="margin:0;color:#18181b;font-size:14px;line-height:1.6;white-space:pre-wrap;">${message}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px;background:#fafafa;border-top:1px solid #e4e4e7;">
+                <p style="margin:0;color:#a1a1aa;font-size:12px;">Poslano putem kontakt obrasca na statoplast.hr</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
 // Only ever redirect to a same-site relative path. `next` comes straight
 // from client-submitted form data, so without this a crafted POST with
 // next=https://evil.example could turn this endpoint into an open
@@ -80,6 +133,12 @@ export async function onRequestPost(context) {
   const to = ["info@statoplast.hr"];
   if (subject === "ALU Sustavi") to.push("jelena@statoplast.hr");
 
+  // Logo needs to be a publicly reachable absolute URL for email clients to
+  // fetch - use the request's own origin rather than a hardcoded domain, so
+  // this keeps working on preview deploys and after the eventual DNS cutover
+  // alike.
+  const logoUrl = `${new URL(request.url).origin}/logo.png`;
+
   const emailRes = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -92,6 +151,13 @@ export async function onRequestPost(context) {
       reply_to: email,
       subject: `Novi upit s weba - ${subject || "Opći upit"}`,
       text: `Ime/Tvrtka: ${name}\nEmail: ${email}\nPredmet: ${subject}\n\nPoruka:\n${message}`,
+      html: buildEmailHtml({
+        logoUrl,
+        name: escapeHtml(name),
+        email: escapeHtml(email),
+        subject: escapeHtml(subject),
+        message: escapeHtml(message),
+      }),
     }),
   });
 
