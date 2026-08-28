@@ -76,6 +76,10 @@ export async function onRequestPost(context) {
 
   if (!name || !email || !message) return fail(400, "missing_fields");
 
+  // ALU Sustavi inquiries also go to Jelena, in addition to the usual inbox.
+  const to = ["info@statoplast.hr"];
+  if (subject === "ALU Sustavi") to.push("jelena@statoplast.hr");
+
   const emailRes = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -84,7 +88,7 @@ export async function onRequestPost(context) {
     },
     body: JSON.stringify({
       from: "Statoplast Web <upiti@statoplast.hr>",
-      to: ["info@statoplast.hr"],
+      to,
       reply_to: email,
       subject: `Novi upit s weba - ${subject || "Opći upit"}`,
       text: `Ime/Tvrtka: ${name}\nEmail: ${email}\nPredmet: ${subject}\n\nPoruka:\n${message}`,
