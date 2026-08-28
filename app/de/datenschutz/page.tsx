@@ -90,12 +90,14 @@ export default function DatenschutzPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">4. Empfänger der Daten</h2>
             <p>
-              Zur technischen Verarbeitung und Zustellung der über das Kontaktformular gesendeten
-              Nachrichten nutzen wir den Dienst eines Drittanbieters, Formspree (Formspree, Inc.).
-              Formspree fungiert dabei als unser Auftragsverarbeiter und leitet die eingegebenen
-              Formulardaten an unser E-Mail-Postfach weiter. Die in Abschnitt 6 beschriebenen
-              Analyse- und Werbetools verarbeiten Daten über Google (siehe dort). Ihre Daten werden
-              nicht verkauft oder zu Marketingzwecken an andere Dritte weitergegeben.
+              Zur Zustellung der über das Kontaktformular gesendeten Nachrichten an unser
+              E-Mail-Postfach nutzen wir den Dienst eines Drittanbieters, Resend (Resend, Inc.),
+              der dabei als unser Auftragsverarbeiter fungiert. Zum Schutz des Formulars vor
+              automatisierten (Bot-)Anfragen nutzen wir Cloudflare Turnstile, das zu diesem Zweck
+              technische Daten wie Ihre IP-Adresse und Browser-Signale verarbeitet. Die in
+              Abschnitt 6 beschriebenen Analyse- und Werbetools verarbeiten Daten über Google
+              (siehe dort). Ihre Daten werden nicht verkauft oder zu Marketingzwecken an andere
+              Dritte weitergegeben.
             </p>
           </section>
 

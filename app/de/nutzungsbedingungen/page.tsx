@@ -96,10 +96,11 @@ export default function NutzungsbedingungenPage() {
               5. Inhalte Dritter und externe Links
             </h2>
             <p>
-              Die Seite Projekte zeigt Inhalte von unserem offiziellen Instagram-Profil, und die
-              Website enthält zudem Links zu externen Diensten (z. B. Formspree zur Übermittlung
-              von Anfragen). Wir übernehmen keine Verantwortung für die Verfügbarkeit oder den
-              Inhalt externer Websites und Dienste, auf die wir verlinken.
+              Die Seite Projekte zeigt Inhalte von unserem offiziellen Instagram-Profil, und das
+              Kontaktformular nutzt Dienste Dritter (Resend zur Zustellung von Nachrichten,
+              Cloudflare Turnstile zum Schutz vor automatisierten Anfragen). Wir übernehmen keine
+              Verantwortung für die Verfügbarkeit oder den Inhalt externer Websites und Dienste,
+              auf die wir verlinken.
             </p>
           </section>
 

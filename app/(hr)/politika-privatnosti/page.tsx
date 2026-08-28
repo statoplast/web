@@ -90,12 +90,13 @@ export default function PolitikaPrivatnostiPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">4. Primatelji podataka</h2>
             <p>
-              Za tehničku obradu i dostavu poruka poslanih putem kontakt obrasca koristimo uslugu
-              trećeg pružatelja, Formspree (Formspree, Inc.). Formspree djeluje kao naš izvršitelj
-              obrade te podatke unesene u obrazac prosljeđuje na naš e-mail. Podatke prikupljene
-              putem alata za analitiku i oglašavanje opisanih u odjeljku 6. obrađuje Google (vidi
-              taj odjeljak). Vaše podatke ne prodajemo niti ustupamo drugim trećim stranama u
-              marketinške svrhe.
+              Za slanje poruka poslanih putem kontakt obrasca na naš e-mail koristimo uslugu
+              trećeg pružatelja, Resend (Resend, Inc.), koji djeluje kao naš izvršitelj obrade. Za
+              zaštitu obrasca od automatiziranih (bot) upita koristimo Cloudflare Turnstile, koji u
+              tu svrhu obrađuje tehničke podatke poput IP adrese i signala preglednika. Podatke
+              prikupljene putem alata za analitiku i oglašavanje opisanih u odjeljku 6. obrađuje
+              Google (vidi taj odjeljak). Vaše podatke ne prodajemo niti ustupamo drugim trećim
+              stranama u marketinške svrhe.
             </p>
           </section>
 

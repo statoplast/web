@@ -84,3 +84,53 @@ is in place.
   describe the consent banner itself and remove the interim opt-out-link
   language.
 - Re-verify the CSP once the CMP's own script domains are known.
+
+## 2026-08-28 — Formspree replaced with Resend + Turnstile
+
+The contact form previously posted straight to Formspree. Formspree was
+silently spam-flagging at least one genuine customer inquiry (confirmed in
+their dashboard's Spam folder), so it's being replaced with a
+self-hosted path: a Cloudflare Pages Function (`functions/api/contact.js`)
+that verifies a Cloudflare Turnstile token server-side, then sends via
+Resend's API. `RESEND_API_KEY` and `TURNSTILE_SECRET_KEY` are read from
+`context.env` (Cloudflare Pages Production/Preview environment variables)
+and never reach the client bundle — the Turnstile *site* key is public by
+design and is fine to embed in `KontaktClient.tsx`.
+
+**Found and fixed before merging to `main`:** an open redirect. The
+Function's native-form-POST fallback (for browsers with JS disabled, or
+Turnstile's own honeypot short-circuit) redirected to a `next` field taken
+directly from client-submitted form data, with no validation. A crafted
+`POST /api/contact` with `next=https://evil.example` would have made the
+site issue a same-domain-looking redirect to an arbitrary external URL -
+classic phishing bait. Added a `safePath()` guard (must start with a
+single `/`, rejects `//` protocol-relative URLs) used on every redirect
+call site; also removed a similar (lower-severity, since it reflects a
+browser-set rather than free-text field) trust of the `Referer` header on
+generic failure, replaced with a fixed same-origin fallback.
+
+Also trimmed back a temporary debug measure: while diagnosing a domain-
+verification failure on the Resend side, the Function was forwarding
+Resend's raw error text back in the JSON response so it could be read in
+the browser console. Not sensitive (no secrets in it), but no reason to
+keep exposing internal send-provider errors to anyone who calls the
+endpoint once the actual bug was found - reverted to a generic
+`email_send_failed` client response, full detail still logged
+server-side.
+
+Updated the Privacy Policy and Terms of Service pages (all three locales)
+to name Resend and Cloudflare Turnstile instead of Formspree.
+
+**Known, accepted tradeoff:** the no-JS native-form-POST fallback is now
+effectively dead. Turnstile requires JavaScript to solve its challenge, so
+a visitor with JS disabled will always submit with an empty
+`cf-turnstile-response` and get bounced with `missing_turnstile_token`.
+This is inherent to adding real bot protection, not a bug - no-JS-only
+visitors are vanishingly rare in practice, and email is always available
+as a fallback (both `mailto:info@statoplast.hr` links stay on the Kontakt
+page regardless).
+
+**Not implemented:** application-level rate limiting on `/api/contact`.
+Turnstile is the primary defense against automated abuse; an additional
+layer (e.g. a Cloudflare WAF rate-limiting rule scoped to that path) would
+be configured in the Cloudflare dashboard, not in this repo.
