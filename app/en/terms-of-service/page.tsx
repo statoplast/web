@@ -93,10 +93,10 @@ export default function TermsOfServicePage() {
               5. Third-party content and external links
             </h2>
             <p>
-              The Projects page displays content from our official Instagram profile, and the site
-              also links to external services (e.g. Formspree for submitting inquiries). We are
-              not responsible for the availability or content of external sites and services we
-              link to.
+              The Projects page displays content from our official Instagram profile, and the
+              contact form uses third-party services (Resend for delivering messages, Cloudflare
+              Turnstile for protection against automated submissions). We are not responsible for
+              the availability or content of external sites and services we link to.
             </p>
           </section>
 

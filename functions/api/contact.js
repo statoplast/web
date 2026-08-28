@@ -13,14 +13,23 @@ function jsonResponse(status, body) {
   });
 }
 
+// Only ever redirect to a same-site relative path. `next` comes straight
+// from client-submitted form data, so without this a crafted POST with
+// next=https://evil.example could turn this endpoint into an open
+// redirect off a trusted domain.
+function safePath(value) {
+  if (typeof value !== "string") return "/";
+  if (!value.startsWith("/") || value.startsWith("//")) return "/";
+  return value;
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
   const acceptsJson = (request.headers.get("accept") || "").includes("application/json");
 
   const fail = (status, error) => {
     if (acceptsJson) return jsonResponse(status, { ok: false, error });
-    const referer = request.headers.get("referer") || "/";
-    return Response.redirect(referer, 302);
+    return Response.redirect(new URL("/", request.url), 302);
   };
 
   let fields;
@@ -42,7 +51,7 @@ export async function onRequestPost(context) {
   // them without sending anything, so they don't retry.
   if (field("_gotcha", 100)) {
     if (acceptsJson) return jsonResponse(200, { ok: true });
-    return Response.redirect(field("next", 200) || "/", 302);
+    return Response.redirect(new URL(safePath(field("next", 200)), request.url), 302);
   }
 
   const token = field("cf-turnstile-response", 2048);
@@ -83,20 +92,13 @@ export async function onRequestPost(context) {
   });
 
   if (!emailRes.ok) {
-    const resendError = await emailRes.text().catch(() => "");
-    console.error("Resend send failed:", emailRes.status, resendError);
-    if (acceptsJson) {
-      return jsonResponse(502, {
-        ok: false,
-        error: "email_send_failed",
-        resendStatus: emailRes.status,
-        resendError,
-      });
-    }
-    const referer = request.headers.get("referer") || "/";
-    return Response.redirect(referer, 302);
+    // Logged server-side (Cloudflare Pages Function logs) for our own
+    // debugging - Resend's error text isn't sensitive, but there's no
+    // reason to hand it to whoever calls this endpoint.
+    console.error("Resend send failed:", emailRes.status, await emailRes.text().catch(() => ""));
+    return fail(502, "email_send_failed");
   }
 
   if (acceptsJson) return jsonResponse(200, { ok: true });
-  return Response.redirect(field("next", 200) || "/", 302);
+  return Response.redirect(new URL(safePath(field("next", 200)), request.url), 302);
 }

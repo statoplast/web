@@ -88,12 +88,13 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-xl font-bold text-zinc-900 mb-3">4. Recipients of data</h2>
             <p>
-              To technically process and deliver messages submitted through the contact form, we
-              use a third-party service, Formspree (Formspree, Inc.). Formspree acts as our data
-              processor and forwards the submitted form data to our email inbox. Data collected by
-              the analytics and advertising tools described in section 6 is processed by Google
-              (see that section). We do not sell or share your data with other third parties for
-              marketing purposes.
+              To deliver messages submitted through the contact form to our email inbox, we use a
+              third-party service, Resend (Resend, Inc.), which acts as our data processor. To
+              protect the form from automated (bot) submissions, we use Cloudflare Turnstile, which
+              processes technical data such as your IP address and browser signals for that
+              purpose. Data collected by the analytics and advertising tools described in section 6
+              is processed by Google (see that section). We do not sell or share your data with
+              other third parties for marketing purposes.
             </p>
           </section>
 

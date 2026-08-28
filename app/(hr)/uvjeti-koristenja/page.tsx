@@ -95,9 +95,10 @@ export default function UvjetiKoristenjaPage() {
               5. Sadržaji trećih strana i vanjske poveznice
             </h2>
             <p>
-              Stranica Projekti prikazuje sadržaj s našeg službenog Instagram profila, a stranica
-              sadrži i poveznice prema vanjskim uslugama (npr. Formspree za slanje upita). Ne
-              odgovaramo za dostupnost ili sadržaj vanjskih stranica i usluga na koje upućujemo.
+              Stranica Projekti prikazuje sadržaj s našeg službenog Instagram profila, a kontakt
+              obrazac koristi usluge trećih strana (Resend za slanje poruka, Cloudflare Turnstile
+              za zaštitu od automatiziranih upita). Ne odgovaramo za dostupnost ili sadržaj
+              vanjskih stranica i usluga na koje upućujemo.
             </p>
           </section>
 
