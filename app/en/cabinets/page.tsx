@@ -88,20 +88,12 @@ export default function CabinetsPage() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/slike/ormari-it.jpg"
-              alt="Server and IT cabinets"
-              className="w-full h-64 object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/slike/ormari-detalj.jpg"
-              alt="Assembled electrical cabinet detail"
-              className="w-full h-64 object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-            />
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/slike/ormari-it.jpg"
+            alt="Server and IT cabinets"
+            className="block w-full h-64 md:h-80 object-cover rounded-xl border border-slate-800 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             {/* eslint-disable-next-line @next/next/no-img-element */}
